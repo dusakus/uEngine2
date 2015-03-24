@@ -1,9 +1,36 @@
 package dcode.games.uEngine2.games.uping;
 
+import java.awt.event.KeyEvent;
+
 /**
  * Created by dusakus on 24.03.15.
  */
 public class InHandler extends dcode.games.uEngine2.PInputHandler {
+
+	public boolean isKeyUp() {
+		return this.isKeyPressed(KeyEvent.VK_UP) || isKeyPressed(KeyEvent.VK_W);
+	}
+
+	public boolean isKeyDown() {
+		return this.isKeyPressed(KeyEvent.VK_DOWN) || isKeyPressed(KeyEvent.VK_S);
+	}
+
+	public boolean isKeyLeft() {
+		return this.isKeyPressed(KeyEvent.VK_LEFT) || isKeyPressed(KeyEvent.VK_A);
+	}
+
+	public boolean isKeyRight() {
+		return this.isKeyPressed(KeyEvent.VK_RIGHT) || isKeyPressed(KeyEvent.VK_D);
+	}
+
+	public boolean isKeyZ() {
+		return this.isKeyPressed(KeyEvent.VK_ENTER) || isKeyPressed(KeyEvent.VK_Z);
+	}
+
+	public boolean isKeyX() {
+		return this.isKeyPressed(KeyEvent.VK_ESCAPE) || isKeyPressed(KeyEvent.VK_X);
+	}
+
 	@Override
 	public void keyTyped(char Char) {
 

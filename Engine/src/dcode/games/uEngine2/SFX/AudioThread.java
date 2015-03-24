@@ -16,10 +16,15 @@ public class AudioThread extends Thread {
 	public boolean RUN = true;
 	//
 	private int TPS = 60;
+	private boolean disableSound = false;
 
 	public AudioThread() {
 
 		TPS = StData.setup.TPS_MSX;
+		if(StData.setup.TPS_MSX <= 0){
+			TPS = 2;
+			disableSound = true;
+		}
 	}
 
 	@Override
@@ -45,6 +50,15 @@ public class AudioThread extends Thread {
 			}
 
 			nextTime += timeStep;
+
+
+			if(!disableSound){
+
+				//TODO: sound system ]:I
+
+				//Do the sound stuff
+
+			}
 
 
 			if (StData.setup.debug) {
