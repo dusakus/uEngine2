@@ -7,6 +7,12 @@ import java.awt.event.KeyEvent;
  */
 public class InHandler extends dcode.games.uEngine2.PInputHandler {
 
+	public static InHandler inst;
+
+	public InHandler() {
+		inst = this;
+	}
+
 	public boolean isKeyUp() {
 		return this.isKeyPressed(KeyEvent.VK_UP) || isKeyPressed(KeyEvent.VK_W);
 	}

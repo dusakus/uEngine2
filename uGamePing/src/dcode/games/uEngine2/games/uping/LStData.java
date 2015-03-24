@@ -1,5 +1,7 @@
 package dcode.games.uEngine2.games.uping;
 
+import java.awt.image.BufferedImage;
+
 /**
  * Created by dusakus on 09.02.15.
  */
@@ -16,6 +18,14 @@ public class LStData {
 	public static int currentMode = 0;                              //Represents current app mode
 
 	public static int currentStatus = 0;                            //Represents current app status
+
+	public static int currAreaX = 16, currAreaY = 16;
+
+	public static LAYERs_GameScene gameworld;
+	public static ballMan ball;
+	public static BatMan bats;
+
 	public static boolean enableCollisionOverlay = true;
+	public static BufferedImage collisionMap;
 }
 
