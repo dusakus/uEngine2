@@ -1,0 +1,23 @@
+
+List of states per mode:
+    Mode_Menu_MAIN:
+        1: screen bound
+        2: waiting for textures
+        3: building content
+        101: animation start
+        101-200: animation
+        201: animation end
+        250: prepare listener
+        300: ready, no selection
+        301: selection => list
+        302: selection => settings
+        303: selection => info
+        304: selection => exit
+        311: selected => list
+        312: selected => settings
+        313: selected => info
+        314: selected => exit
+        501: start selected object
+        808: wrong input file occured
+        808: wrong input file confirmed
+    Mode_Menu_LIST:
