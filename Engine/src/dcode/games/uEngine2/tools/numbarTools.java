@@ -20,4 +20,9 @@ public class numbarTools {
 		if (inputValue > maxValue) return maxValue;
 		return inputValue;
 	}
+
+	public static int mod(int i) {
+		if (i >= 0) return i;
+		return -i;
+	}
 }
