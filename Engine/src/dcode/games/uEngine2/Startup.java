@@ -1,0 +1,67 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package dcode.games.uEngine2;
+
+import dcode.games.uEngine2.BGTasks.BackgroundTasks;
+import dcode.games.uEngine2.LOGIC.LogicTasks;
+import dcode.games.uEngine2.ResourceManager.ResMan;
+
+import java.io.File;
+
+/**
+ * @author dusakus
+ */
+public class Startup {
+
+	public static void StartGame(PuGameBase GB) {
+		StData.GameInitializer = GB;
+		StData.setup = GB.setup;
+		StData.gameStorageDirectory = new File(System.getProperty("user.dir") + "/DCODE/uEngine/" + StData.setup.safeName);
+		StData.LOG = new DCoutputH(GB.setup.debug);
+		StData.threadManager = new ThreadManager();
+		StData.resources = new ResMan();
+		StData.currentGC = new GameContainer();
+		StData.logicTasks = new LogicTasks();
+		StData.generalBGT = new BackgroundTasks();
+		StData.threadManager.startEngine();
+		StData.threadManager.setInputHandler(GB.initialInputHandler);
+		GB.contentInitializer.loadInitialGameContent();
+		StData.threadManager.monitorThreads();
+		StData.LOG.println("MONITOR THREAD CEASED BEING ALIVE, EXITTING");
+		StData.LOG.dumpBuffer();
+		StData.LOG.END("uEngine2: BaYo!");
+
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+		}
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+		}
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+		}
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+		}
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+		}
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+		}
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+		}
+		System.exit(-1);
+	}
+}
