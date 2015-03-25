@@ -16,7 +16,7 @@ public class LAYERs_GameScene {
 	public int shiftByX = 0, shiftByY = 0;
 	public boolean moving = false;
 	int lastAreaX = 16, lastAreaY = 16;
-	private int mStep;
+	private int mStep = 0;
 
 
 	public Area createArea(String str, int i, int i1, LAYERs_GameScene worldMan) {
@@ -25,15 +25,25 @@ public class LAYERs_GameScene {
 
 	public void update() {
 		if (!moving) {
+			areas[lastAreaX][lastAreaY].old = true;
 			areas[LStData.currAreaX][LStData.currAreaY].enable();
+			StData.LOG.println("Moving to Area [" + LStData.currAreaX + "," + LStData.currAreaY + "]");
 			moving = true;
+		} else {
+			shiftByX = (mStep * 4 * (LStData.currAreaX - lastAreaX));
+			shiftByY = ((int) (mStep * 2.4 * (LStData.currAreaY - lastAreaY)));
 		}
-
+		mStep++;
 		if (mStep == 100) {
 			areas[lastAreaX][lastAreaY].disable();
+			StData.LOG.println("Moving done [" + LStData.currAreaX + "," + LStData.currAreaY + "]");
 			lastAreaX = LStData.currAreaX;
 			lastAreaY = LStData.currAreaY;
 			LStData.currentStatus = 301;
+			shiftByX = 0;
+			shiftByY = 0;
+			mStep = 0;
+			moving = false;
 		}
 	}
 
@@ -44,6 +54,7 @@ public class LAYERs_GameScene {
 
 	public class Area extends AreaDataContainer {
 
+		public boolean old;
 		private LayerBottom lb;
 		private LayerTop lt;
 		private LayerData ls;
@@ -94,7 +105,18 @@ public class LAYERs_GameScene {
 
 		@Override
 		public void draw(Graphics2D G2D) {
-			G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "B", 400, 240), 0, 0, null);
+			if (gameScene.moving) {
+				if (gameScene.lastAreaX == areaCoordX && gameScene.lastAreaY == areaCoordY)
+					G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "B", 400, 240), 0 - gameScene.shiftByX, 0 - gameScene.shiftByY, null);
+				else if (gameScene.lastAreaX == areaCoordX && gameScene.lastAreaY > areaCoordY)
+					G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "B", 400, 240), 0, 0 - gameScene.shiftByY - 240, null);
+				else if (gameScene.lastAreaX == areaCoordX && gameScene.lastAreaY < areaCoordY)
+					G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "B", 400, 240), 0, 0 - gameScene.shiftByY + 240, null);
+				else if (gameScene.lastAreaX > areaCoordX && gameScene.lastAreaY == areaCoordY)
+					G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "B", 400, 240), 0 - gameScene.shiftByX - 400, 0, null);
+				else if (gameScene.lastAreaX < areaCoordX && gameScene.lastAreaY == areaCoordY)
+					G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "B", 400, 240), 0 - gameScene.shiftByX + 400, 0, null);
+			} else G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "B", 400, 240), 0, 0, null);
 		}
 
 		@Override
@@ -117,8 +139,18 @@ public class LAYERs_GameScene {
 
 		@Override
 		public void draw(Graphics2D G2D) {
-			G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "T", 400, 240), 0, 0, null);
-
+			if (gameScene.moving) {
+				if (gameScene.lastAreaX == areaCoordX && gameScene.lastAreaY == areaCoordY)
+					G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "T", 400, 240), 0 - gameScene.shiftByX, 0 - gameScene.shiftByY, null);
+				else if (gameScene.lastAreaX == areaCoordX && gameScene.lastAreaY > areaCoordY)
+					G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "T", 400, 240), 0, 0 - gameScene.shiftByY - 240, null);
+				else if (gameScene.lastAreaX == areaCoordX && gameScene.lastAreaY < areaCoordY)
+					G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "T", 400, 240), 0, 0 - gameScene.shiftByY + 240, null);
+				else if (gameScene.lastAreaX > areaCoordX && gameScene.lastAreaY == areaCoordY)
+					G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "T", 400, 240), 0 - gameScene.shiftByX - 400, 0, null);
+				else if (gameScene.lastAreaX < areaCoordX && gameScene.lastAreaY == areaCoordY)
+					G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "T", 400, 240), 0 - gameScene.shiftByX + 400, 0, null);
+			} else G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "T", 400, 240), 0, 0, null);
 		}
 
 		@Override
@@ -141,7 +173,7 @@ public class LAYERs_GameScene {
 
 		@Override
 		public void draw(Graphics2D G2D) {
-			G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "D", 400, 240), 0, 0, null);
+			//G2D.drawImage(StData.resources.grf.getScaledTexture(areaID + "D", 400, 240), 0, 0, null);
 
 		}
 

@@ -25,7 +25,7 @@ public class LStData {
 	public static ballMan ball;
 	public static BatMan bats;
 
-	public static boolean enableCollisionOverlay = true;
+	public static boolean enableCollisionOverlay = false;
 	public static BufferedImage collisionMap;
 }
 

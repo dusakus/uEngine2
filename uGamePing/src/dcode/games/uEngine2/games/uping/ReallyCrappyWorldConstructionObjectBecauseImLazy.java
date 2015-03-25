@@ -14,6 +14,13 @@ public class ReallyCrappyWorldConstructionObjectBecauseImLazy {
 		b.color = Color.BLUE;
 		BatMan.areas[16][16].addBat(b);
 		BatMan.areas[16][16].addBat(new Bat(80, Bat.FACING_RIGHT, 8, 80));
+		BatMan.areas[17][16].addBat(b);
+		BatMan.areas[17][16].addBat(new Bat(80, Bat.FACING_RIGHT, 8, 80));
+		BatMan.areas[15][16].addBat(b);
+		BatMan.areas[15][16].addBat(new Bat(80, Bat.FACING_RIGHT, 8, 80));
+		worldMan.areas[17][16] = worldMan.createArea("str", 17, 16, worldMan);
+		worldMan.areas[15][16] = worldMan.createArea("str", 15, 16, worldMan);
+
 	}
 
 }

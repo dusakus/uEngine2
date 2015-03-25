@@ -1,7 +1,10 @@
 package dcode.games.uEngine2.games.uping;
 
+import dcode.games.uEngine2.GFX.layers.ClearColorLayer;
 import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
+
+import java.awt.*;
 
 import static dcode.games.uEngine2.StData.*;
 import static dcode.games.uEngine2.games.uping.LStData.*;
@@ -31,12 +34,16 @@ public class BaseLogic implements ILogicTask {
 			case MODE_GAME_PLAY:
 				switch (currentStatus) {
 					case 101:
+						StData.currentGC.currentSC.layers_Background.add(new ClearColorLayer(Color.BLACK));
 						LStData.enableCollisionOverlay = true;
 						LStData.gameworld = new LAYERs_GameScene();
 						LStData.bats = new BatMan();
 						LStData.ball = new ballMan();
 						StData.currentGC.currentBGT.HPTasks.add(new BGT_collisionUpdate());
 						StData.currentGC.currentSC.layers_Center.add(bats);
+
+						StData.currentGC.currentSC.sprites[1] = ball;
+						StData.currentGC.currentSC.sprites_middle[1] = 1;
 
 						new ReallyCrappyWorldConstructionObjectBecauseImLazy().writeWorldData(gameworld);
 

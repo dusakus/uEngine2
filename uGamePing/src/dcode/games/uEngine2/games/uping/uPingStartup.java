@@ -10,8 +10,8 @@ import dcode.games.uEngine2.*;
 public class uPingStartup {
 	public static void main(String[] args) {
 		uGameSetup gs = new uGameSetup();
-		gs.FPS = 16;
-		gs.TPS_logic = 100;
+		gs.FPS = 60;
+		gs.TPS_logic = 200;
 		gs.TPS_MSX = 0;
 		gs.TPS_BG = 5;
 
@@ -19,6 +19,12 @@ public class uPingStartup {
 		gs.width = 400;
 		gs.height = 240;
 		gs.scale = 2;
+
+		gs.spriteTableSize = 10;
+		gs.enableSpriteWrappers = false;
+		gs.postProcCount = 0;
+		gs.spriteLayerSize = 4;
+
 
 		gs.safeName = "uping";
 		gs.screenName = "uGamePing";

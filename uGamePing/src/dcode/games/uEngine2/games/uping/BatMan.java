@@ -1,7 +1,7 @@
 package dcode.games.uEngine2.games.uping;
 
 import dcode.games.uEngine2.GFX.ILayer;
-import dcode.games.uEngine2.tools.numbarTools;
+import dcode.games.uEngine2.StData;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,6 +16,11 @@ public class BatMan implements ILayer {
 
 	public BatMan() {
 		areas = new BatPack[33][33];
+		for (int i = 0; i < 33; i++) {
+			for (int j = 0; j < 33; j++) {
+				areas[i][j] = new BatPack();
+			}
+		}
 	}
 
 	@Override
@@ -38,6 +43,7 @@ public class BatMan implements ILayer {
 	}
 
 	public int collideAt(int x, int y) {
+		StData.LOG.println("Checking collisions for " + x + " " + y);
 		return areas[LStData.currAreaX][LStData.currAreaY].checkCollision(x, y);
 	}
 
@@ -106,28 +112,45 @@ class BatPack {
 	public int checkCollision(int x, int y) {
 
 		for (Bat b : verti) {
-			if (b.facing == 1 && b.coordX + 13 == x && b.coordY >= y && b.coordY + b.width <= y) {
-				y -= (b.coordY + (b.width / 2));
-				return ((numbarTools.mod(b.coordY - y)) / (b.width / 2)) * 100;
+			StData.LOG.println("testing vertical bat[ facing=" + b.facing + ",x=" + b.coordX + ",y=" + b.coordY + ",h=" + b.width);
+
+			if (b.facing == 2 && b.coordX - 1 == x && b.coordY <= y && (b.coordY + b.width) >= y) {
+				y -= b.coordY;
+				StData.LOG.println("ypos: " + y + " , effect:  " + (((b.coordY - y) / (b.width / 2)) * 100));
+
+				return selectCEffect(y, b.width);
 			}
-			if (b.facing == 2 && b.coordX - 1 == x && b.coordY >= y && b.coordY + b.width <= y) {
-				y -= (b.coordY + (b.width / 2));
-				return ((numbarTools.mod(b.coordY - y)) / (b.width / 2)) * 100;
+			if (b.facing == 1 && b.coordX + 13 == x && b.coordY <= y && (b.coordY + b.width) >= y) {
+				y -= b.coordY;
+				StData.LOG.println("ypos: " + y + " , effect:  " + (((b.coordY - y)) / (b.width / 2) * 100));
+
+				return selectCEffect(y, b.width);
 			}
 		}
 		for (Bat b : horiz) {
-			if (b.facing == 11 && b.coordY + 13 == y && b.coordX >= x && b.coordX + b.width <= x) {
-				x -= (b.coordX + (b.width / 2));
-				return ((numbarTools.mod(b.coordX - x)) / (b.width / 2)) * 100;
+			if (b.facing == 11 && b.coordY + 13 == y && b.coordX >= x && (b.coordX + b.width) <= x) {
+				x -= b.coordX;
+				StData.LOG.println("ypos: " + x + " , effect:  " + (((b.coordX - x)) / (b.width / 2) * 100));
+				return selectCEffect(y, b.width);
 			}
-			if (b.facing == 12 && b.coordY - 1 == y && b.coordX >= x && b.coordX + b.width <= x) {
-				x -= (b.coordX + (b.width / 2));
-				return ((numbarTools.mod(b.coordX - x)) / (b.width / 2)) * 100;
+			if (b.facing == 12 && b.coordY - 1 == y && b.coordX >= x && (b.coordX + b.width) <= x) {
+				x -= b.coordX;
+				StData.LOG.println("ypos: " + x + " , effect:  " + (((b.coordX - x)) / (b.width / 2) * 100));
+				return selectCEffect(y, b.width);
 			}
 		}
 
 
 		return -1;
+	}
+
+	int selectCEffect(int cposition, int olenght) {
+		if (cposition < olenght / 5) return 25;
+		if (cposition < 2 * olenght / 5) return 60;
+		if (cposition < 3 * olenght / 5) return 100;
+		if (cposition < 4 * olenght / 5) return 140;
+		if (cposition < olenght) return 175;
+		return 100;
 	}
 }
 
