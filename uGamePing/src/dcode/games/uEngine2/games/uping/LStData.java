@@ -19,7 +19,7 @@ public class LStData {
 
 	public static int currentStatus = 0;                            //Represents current app status
 
-	public static int currAreaX = 16, currAreaY = 16;
+	public static int currAreaX = 3, currAreaY = 2;
 
 	public static LAYERs_GameScene gameworld;
 	public static ballMan ball;

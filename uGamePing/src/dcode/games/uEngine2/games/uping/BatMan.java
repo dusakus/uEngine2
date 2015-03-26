@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by dusakus on 24.03.15.
  */
-public class BatMan implements ILayer {
+class BatMan implements ILayer {
 
 
 	public static BatPack[][] areas;
@@ -43,7 +43,6 @@ public class BatMan implements ILayer {
 	}
 
 	public int collideAt(int x, int y) {
-		StData.LOG.println("Checking collisions for " + x + " " + y);
 		return areas[LStData.currAreaX][LStData.currAreaY].checkCollision(x, y);
 	}
 
@@ -112,8 +111,6 @@ class BatPack {
 	public int checkCollision(int x, int y) {
 
 		for (Bat b : verti) {
-			StData.LOG.println("testing vertical bat[ facing=" + b.facing + ",x=" + b.coordX + ",y=" + b.coordY + ",h=" + b.width);
-
 			if (b.facing == 2 && b.coordX - 1 == x && b.coordY <= y && (b.coordY + b.width) >= y) {
 				y -= b.coordY;
 				StData.LOG.println("ypos: " + y + " , effect:  " + (((b.coordY - y) / (b.width / 2)) * 100));

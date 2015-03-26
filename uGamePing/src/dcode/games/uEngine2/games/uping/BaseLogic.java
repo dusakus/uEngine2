@@ -1,5 +1,6 @@
 package dcode.games.uEngine2.games.uping;
 
+import dcode.games.uEngine2.BGTasks.internalTasks.LoadBasicTexture;
 import dcode.games.uEngine2.GFX.layers.ClearColorLayer;
 import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
@@ -45,6 +46,7 @@ public class BaseLogic implements ILogicTask {
 						StData.currentGC.currentSC.sprites[1] = ball;
 						StData.currentGC.currentSC.sprites_middle[1] = 1;
 
+
 						new ReallyCrappyWorldConstructionObjectBecauseImLazy().writeWorldData(gameworld);
 
 						gameworld.areas[currAreaX][currAreaY].enable();
@@ -64,6 +66,10 @@ public class BaseLogic implements ILogicTask {
 				switch (currentStatus) {
 					case 0:
 						currentStatus = 1;
+
+						StData.generalBGT.LPTasks.add(new LoadBasicTexture("levels/level_W1_DATA.png", "lv1D"));
+						StData.generalBGT.LPTasks.add(new LoadBasicTexture("levels/level_W1_LOW.png", "lv1B"));
+						StData.generalBGT.LPTasks.add(new LoadBasicTexture("levels/level_W1_HIGH.png", "lv1T"));
 						break;
 					case 1:
 						currentStatus = 2;

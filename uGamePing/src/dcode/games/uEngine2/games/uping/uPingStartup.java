@@ -11,7 +11,7 @@ public class uPingStartup {
 	public static void main(String[] args) {
 		uGameSetup gs = new uGameSetup();
 		gs.FPS = 60;
-		gs.TPS_logic = 200;
+		gs.TPS_logic = 100;
 		gs.TPS_MSX = 0;
 		gs.TPS_BG = 5;
 
