@@ -16,7 +16,7 @@ public class ballMan extends Sprite {
 
     int qdir = 1;     // 1 = |_  , 2 = |   , 3 =   | , 4 =  _|
 
-    float speed = 2F;
+    float speed = 8F;
 
     float X = 100F, Y = 100F;
     private int collisionLock = 10;
@@ -86,35 +86,6 @@ public class ballMan extends Sprite {
                 return;
             } else {
 
-				/*if (qdir == 1 && LStData.collisionMap.getRGB(newX, newY - 5) == -1) {
-                    qdir = 2;
-					direction = -direction;
-				}
-				if (qdir == 4 && LStData.collisionMap.getRGB(newX, newY - 5) == -1) {
-					qdir = 3;
-					direction = -direction;
-				}
-				if (qdir == 2 && LStData.collisionMap.getRGB(newX, newY + 5) == -1) {
-					qdir = 1;
-					direction = -direction;
-				}
-				if (qdir == 3 && LStData.collisionMap.getRGB(newX, newY + 5) == -1) {
-					qdir = 4;
-					direction = -direction;
-				}
-				if (qdir == 1 && LStData.collisionMap.getRGB(newX + 5, newY) == -1) {
-					qdir = 4;
-				}
-				if (qdir == 2 && LStData.collisionMap.getRGB(newX + 5, newY) == -1) {
-					qdir = 3;
-				}
-				if (qdir == 4 && LStData.collisionMap.getRGB(newX - 5, newY) == -1) {
-					qdir = 1;
-				}
-				if (qdir == 3 && LStData.collisionMap.getRGB(newX - 5, newY) == -1) {
-					qdir = 2;
-				}
-				*/
                 boolean col1 = LStData.collisionMap.getRGB(newX, newY - 5) == -1;
                 boolean col2 = LStData.collisionMap.getRGB(newX + 5, newY) == -1;
                 boolean col3 = LStData.collisionMap.getRGB(newX, newY + 5) == -1;
@@ -124,73 +95,17 @@ public class ballMan extends Sprite {
                 if (col2 || col4) mirrorX = !mirrorX;
 
 
-                int Bcol1 = LStData.bats.collideAt(newX + 5, newY);   // ->
-                int Bcol2 = LStData.bats.collideAt(newX, newY + 5);   // V
-                int Bcol3 = LStData.bats.collideAt(newX - 5, newY);   // <-
-                int Bcol4 = LStData.bats.collideAt(newX, newY - 5);   // /\
+                boolean Bcol1 = LStData.bats.collideAt(newX + 5, newY, Bat.FACING_LEFT);   // ->
+                boolean Bcol2 = LStData.bats.collideAt(newX, newY + 5, Bat.FACING_UP);   // V
+                boolean Bcol3 = LStData.bats.collideAt(newX - 5, newY, Bat.FACING_RIGHT);   // <-
+                boolean Bcol4 = LStData.bats.collideAt(newX, newY - 5, Bat.FACING_DOWN);   // /\
 
                 if (collisionLock <= 0) {
-                    if (Bcol1 > 0) {
-                        mirrorX = !mirrorX;
-                        if (Bcol1 < 50) {
-                            //mirrorY = !mirrorY;
-                            direction = Bcol1 * 0.01F;
-                            collisionLock = 10;
 
-                        }
-                        if (Bcol1 > 50) {
-                            //mirrorY = !mirrorY;
-                            direction = (Bcol1 - 100) * 0.01F;
-                            collisionLock = 10;
-
-                        }
-                    }
-                    if (Bcol2 > 0) {
-                        mirrorY = !mirrorY;
-                        if (Bcol2 < 50) {
-                            //mirrorX = !mirrorX;
-                            direction = Bcol2 * 0.01F;
-                            collisionLock = 10;
-
-                        }
-                        if (Bcol2 > 50) {
-                            //mirrorX = !mirrorX;
-                            direction = (Bcol2 - 100) * 0.01F;
-                            collisionLock = 10;
-
-                        }
-                    }
-                    if (Bcol3 > 0) {
-                        mirrorX = !mirrorX;
-                        if (Bcol3 < 50) {
-                            //mirrorY = !mirrorY;
-                            direction = Bcol3 * 0.01F;
-                            collisionLock = 10;
-
-                        }
-                        if (Bcol3 > 50) {
-                            //mirrorY = !mirrorY;
-                            direction = (Bcol3 - 100) * 0.01F;
-                            collisionLock = 10;
-
-                        }
+                    if (Bcol1 || Bcol2 || Bcol3 || Bcol4) {
+                        LStData.bats.collisionEffect(this);
                     }
 
-                    if (Bcol4 > 0) {
-                        mirrorY = !mirrorY;
-                        if (Bcol4 < 50) {
-                            //mirrorX = !mirrorX;
-                            direction = Bcol4 * 0.01F;
-                            collisionLock = 10;
-
-                        }
-                        if (Bcol4 > 50) {
-                            //mirrorX = !mirrorX;
-                            direction = (Bcol4 - 100) * 0.01F;
-                            collisionLock = 10;
-
-                        }
-                    }
                 } else {
                     collisionLock--;
                 }
@@ -232,5 +147,9 @@ public class ballMan extends Sprite {
         G.setColor(Color.WHITE);
         G.fillRect(x - 3, y - 5, 6, 10);
         G.fillRect(x - 5, y - 3, 10, 6);
+        if (LStData.gameworld.moving) {
+            G.fillRect(x + LStData.gameworld.shiftByX - 3, y + LStData.gameworld.shiftByY - 5, 6, 10);
+            G.fillRect(x + LStData.gameworld.shiftByX - 5, y + LStData.gameworld.shiftByY - 3, 10, 6);
+        }
     }
 }
