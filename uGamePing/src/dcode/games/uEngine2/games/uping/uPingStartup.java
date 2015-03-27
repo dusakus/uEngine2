@@ -13,7 +13,7 @@ public class uPingStartup {
 		gs.FPS = 60;
 		gs.TPS_logic = 100;
 		gs.TPS_MSX = 0;
-		gs.TPS_BG = 5;
+		gs.TPS_BG = 16;
 
 		gs.debug = true;
 		gs.width = 400;
