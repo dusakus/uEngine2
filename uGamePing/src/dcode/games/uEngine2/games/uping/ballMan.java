@@ -134,13 +134,13 @@ public class ballMan extends Sprite {
                         mirrorX = !mirrorX;
                         if (Bcol1 < 50) {
                             //mirrorY = !mirrorY;
-                            //direction = Bcol1 * 0.05F;
+                            direction = Bcol1 * 0.01F;
                             collisionLock = 10;
 
                         }
                         if (Bcol1 > 50) {
                             //mirrorY = !mirrorY;
-                            //direction = (Bcol1 - 50) * 0.05F;
+                            direction = (Bcol1 - 100) * 0.01F;
                             collisionLock = 10;
 
                         }
@@ -149,13 +149,13 @@ public class ballMan extends Sprite {
                         mirrorY = !mirrorY;
                         if (Bcol2 < 50) {
                             //mirrorX = !mirrorX;
-                            //direction = Bcol2 * 0.05F;
+                            direction = Bcol2 * 0.01F;
                             collisionLock = 10;
 
                         }
                         if (Bcol2 > 50) {
                             //mirrorX = !mirrorX;
-                            //direction = (Bcol2 - 50) * 0.05F;
+                            direction = (Bcol2 - 100) * 0.01F;
                             collisionLock = 10;
 
                         }
@@ -164,13 +164,13 @@ public class ballMan extends Sprite {
                         mirrorX = !mirrorX;
                         if (Bcol3 < 50) {
                             //mirrorY = !mirrorY;
-                            //direction = Bcol3 * 0.05F;
+                            direction = Bcol3 * 0.01F;
                             collisionLock = 10;
 
                         }
                         if (Bcol3 > 50) {
                             //mirrorY = !mirrorY;
-                            //direction = (Bcol3 - 50) * 0.05F;
+                            direction = (Bcol3 - 100) * 0.01F;
                             collisionLock = 10;
 
                         }
@@ -180,13 +180,13 @@ public class ballMan extends Sprite {
                         mirrorY = !mirrorY;
                         if (Bcol4 < 50) {
                             //mirrorX = !mirrorX;
-                            //direction = Bcol4 * 0.05F;
+                            direction = Bcol4 * 0.01F;
                             collisionLock = 10;
 
                         }
                         if (Bcol4 > 50) {
                             //mirrorX = !mirrorX;
-                            //direction = (Bcol4 - 50) * 0.05F;
+                            direction = (Bcol4 - 100) * 0.01F;
                             collisionLock = 10;
 
                         }
