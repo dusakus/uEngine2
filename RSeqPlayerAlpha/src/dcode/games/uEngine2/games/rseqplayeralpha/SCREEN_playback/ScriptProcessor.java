@@ -31,7 +31,7 @@ public class ScriptProcessor {
 			activeScripts[i] = false;
 		}
 		activeScripts[0] = true;
-		tickID = 1;
+		tickID = 0;
 	}
 
 	public boolean TICK() {
@@ -60,6 +60,9 @@ public class ScriptProcessor {
 						case "VARS":
 							CG_VARS(sc, i);
 							break;
+						case "BACKGROUND":
+							CG_BACKGROUND(sc, i);
+							break;
 						default:
 							StData.LOG.println("ScriptProcessor: unknown command group: " + sc.commandGroup, "D");
 					}
@@ -70,6 +73,10 @@ public class ScriptProcessor {
 		}
 
 		return false;
+	}
+
+	private void CG_BACKGROUND(plbContainer.SCommand sc, int i) {
+
 	}
 
 	private boolean CG_VARS(plbContainer.SCommand sc, int scriptID) {
@@ -182,6 +189,8 @@ public class ScriptProcessor {
 			case "ROTATE":
 
 				break;
+			default:
+				StData.LOG.println("ScriptProcessor: unknown VARS command: " + sc.commandKey, "D");
 
 		}
 
@@ -206,6 +215,9 @@ public class ScriptProcessor {
 				StData.LOG.println("[SCRIPT]: delaying next tick by " + sc.int1 + ", MSG: " + sc.extra, "N");
 				nextTickDelay = sc.int1;
 				break;
+			default:
+				StData.LOG.println("ScriptProcessor: unknown SYSTEM command: " + sc.commandKey, "D");
+
 
 		}
 
