@@ -16,7 +16,7 @@ public class ballMan extends Sprite {
 
     int qdir = 1;     // 1 = |_  , 2 = |   , 3 =   | , 4 =  _|
 
-    float speed = 8F;
+    float speed = 2F;
 
     float X = 100F, Y = 100F;
     private int collisionLock = 10;
@@ -36,27 +36,6 @@ public class ballMan extends Sprite {
             if (mirrorX) shiftXf = -shiftXf;
             if (mirrorY) shiftYf = -shiftYf;
 
-
-            /*
-            switch (qdir) {
-                case 1:
-                    shiftYf = -shiftYf;
-                    break;
-                case 2:
-                    tmpf = shiftXf;
-                    shiftXf = shiftYf;
-                    shiftYf = tmpf;
-                    break;
-                case 3:
-                    tmpf = shiftYf;
-                    shiftYf = shiftXf;
-                    shiftXf = -tmpf;
-                    break;
-                case 4:
-                    shiftXf = -shiftXf;
-                    shiftYf = -shiftYf;
-            }
-*/
             float tX = X + shiftXf;
             float tY = Y + shiftYf;
 
@@ -95,10 +74,10 @@ public class ballMan extends Sprite {
                 if (col2 || col4) mirrorX = !mirrorX;
 
 
-                boolean Bcol1 = LStData.bats.collideAt(newX + 5, newY, Bat.FACING_LEFT);   // ->
-                boolean Bcol2 = LStData.bats.collideAt(newX, newY + 5, Bat.FACING_UP);   // V
-                boolean Bcol3 = LStData.bats.collideAt(newX - 5, newY, Bat.FACING_RIGHT);   // <-
-                boolean Bcol4 = LStData.bats.collideAt(newX, newY - 5, Bat.FACING_DOWN);   // /\
+                boolean Bcol1 = LStData.bats.collideAt(newX + 5, newY, Bat.FACING_LEFT);      // ->
+                boolean Bcol2 = LStData.bats.collideAt(newX, newY + 5, Bat.FACING_UP);        // \/
+                boolean Bcol3 = LStData.bats.collideAt(newX - 5, newY, Bat.FACING_RIGHT);     // <-
+                boolean Bcol4 = LStData.bats.collideAt(newX, newY - 5, Bat.FACING_DOWN);      // /\
 
                 if (collisionLock <= 0) {
 

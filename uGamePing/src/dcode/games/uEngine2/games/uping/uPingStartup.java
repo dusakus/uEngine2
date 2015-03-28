@@ -15,7 +15,7 @@ public class uPingStartup {
 		gs.TPS_MSX = 0;
 		gs.TPS_BG = 50;
 
-		gs.debug = true;
+		gs.debug = false;
 		gs.width = 400;
 		gs.height = 240;
 		gs.scale = 2;

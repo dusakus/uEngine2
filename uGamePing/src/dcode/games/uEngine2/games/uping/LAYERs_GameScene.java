@@ -200,7 +200,7 @@ public class LAYERs_GameScene {
         public void draw(Graphics2D G2D) {
             Image td;
 
-            StData.LOG.println("Animating...  direction is " + extension + " and current shX: " + shiftByX + " shY: " + shiftByY);
+            StData.LOG.println("Animating...  direction is " + extension + " and current shX: " + shiftByX + " shY: " + shiftByY, "D");
 
             switch (extension) {
                 case Bat.FACING_UP:
