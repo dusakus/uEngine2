@@ -16,10 +16,11 @@ public class ballMan extends Sprite {
 
     int qdir = 1;     // 1 = |_  , 2 = |   , 3 =   | , 4 =  _|
 
-    float speed = 2F;
+    float speed = 2.5F;
 
     float X = 100F, Y = 100F;
     private int collisionLock = 10;
+    private int colldelay = 4;
 
 
     public void tick() {
@@ -70,9 +71,18 @@ public class ballMan extends Sprite {
                 boolean col3 = LStData.collisionMap.getRGB(newX, newY + 5) == -1;
                 boolean col4 = LStData.collisionMap.getRGB(newX - 5, newY) == -1;
 
-                if (col1 || col3) mirrorY = !mirrorY;
-                if (col2 || col4) mirrorX = !mirrorX;
-
+                if (colldelay <= 0) {
+                    if (col1 || col3) {
+                        mirrorY = !mirrorY;
+                        colldelay = 30;
+                    }
+                    if (col2 || col4) {
+                        mirrorX = !mirrorX;
+                        colldelay = 30;
+                    }
+                } else {
+                    colldelay--;
+                }
 
                 boolean Bcol1 = LStData.bats.collideAt(newX + 5, newY, Bat.FACING_LEFT);      // ->
                 boolean Bcol2 = LStData.bats.collideAt(newX, newY + 5, Bat.FACING_UP);        // \/
