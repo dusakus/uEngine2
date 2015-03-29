@@ -6,6 +6,11 @@ import dcode.games.uEngine2.*;
  * Created by dusakus on 24.03.15.
  * <p/>
  * This project may (or may not) be my commission for miniLD #58
+ * miniLD 58: done.
+ * BUGS: will not fix.
+ *
+ * screw this one, starting version 2: ]]PING[[
+ * 	wiht fixed dem bugz ]:I
  */
 public class uPingStartup {
 	public static void main(String[] args) {
