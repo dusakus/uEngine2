@@ -56,6 +56,9 @@ public class RenderThread extends Thread {
 			nextTime += timeStep;
 			//END OF TIMING STUFF
 			//==================================================================
+			if (StData.NextFrame == null)
+				StData.NextFrame = new BufferedImage(StData.setup.width, StData.setup.height, BufferedImage.TYPE_INT_ARGB);
+
 			Graphics2D G2D = StData.NextFrame.createGraphics();
 
 			ScreenContent sc = StData.currentGC.currentSC;
@@ -81,7 +84,7 @@ public class RenderThread extends Thread {
 				drawLayers(sc.layers_Overlay, G2D);
 			}
 
-			postProcess(StData.NextFrame);
+			if (StData.setup.postProcCount > 0) postProcess(StData.NextFrame);
 
 			systemDraw(StData.NextFrame.createGraphics());
 
@@ -133,10 +136,11 @@ public class RenderThread extends Thread {
 					} else {
 						String texKey = s.getTextureKey();
 						if (texKey == null) {
-							if (s.getCustomTexture() == null) {
-								StData.LOG.println("RT: sprite with key " + s.getTextureKey() + " textures missing", "D"); //TODO: better message ...
+							Image im = s.getCustomTexture();
+							if (im == null) {
+								StData.LOG.println("[RENDER]: sprite [" + i + ":" + texKey + "]:MODE_CustomTexture: no texture!", "D");
 							} else {
-								G2D.drawImage(s.getCustomTexture(), s.getX(), s.getY(), null);
+								G2D.drawImage(im, s.getX(), s.getY(), null);
 							}
 						} else {
 							G2D.drawImage(StData.resources.grf.getTexture(texKey), s.getX(), s.getY(), null);
@@ -151,13 +155,18 @@ public class RenderThread extends Thread {
 		for (int i = 0; i < StData.currentGC.currentSC.postProcessors.length; i++) {
 			IGrfPostProcessor postProcessor = StData.currentGC.currentSC.postProcessors[i];
 			if (postProcessor != null) {
+				BufferedImage bf = StData.NextFrame;
 				try {
 					if (postProcessor.enabled()) {
 						NextFrame = postProcessor.processFrame(NextFrame);
 						StData.NextFrame = NextFrame;
 					}
 				} catch (Exception e) {
-
+					StData.LOG.printerr(e, "[RENDER] post processing on channel " + i + " failed", "E1");
+				}
+				if (StData.NextFrame == null) {
+					StData.NextFrame = bf;
+					StData.LOG.println("[RENDER] post processor on channel " + i + " is borked, it's " + postProcessor.getClass().getCanonicalName(), "E3");
 				}
 			}
 		}

@@ -8,6 +8,7 @@ package dcode.games.uEngine2;
 import dcode.games.uEngine2.BGTasks.BackgroundTasks;
 import dcode.games.uEngine2.LOGIC.LogicTasks;
 import dcode.games.uEngine2.ResourceManager.ResMan;
+import dcode.games.uEngine2.translator.Translator;
 
 import java.io.File;
 
@@ -26,6 +27,7 @@ public class Startup {
 		StData.currentGC = new GameContainer();
 		StData.logicTasks = new LogicTasks();
 		StData.generalBGT = new BackgroundTasks();
+		if (StData.setup.enableTranslator) StData.translator = new Translator(StData.setup.defaultLangId);
 		StData.threadManager.startEngine();
 		StData.threadManager.setInputHandler(GB.initialInputHandler);
 		GB.contentInitializer.loadInitialGameContent();

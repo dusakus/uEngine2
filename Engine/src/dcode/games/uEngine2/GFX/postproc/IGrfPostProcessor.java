@@ -5,6 +5,7 @@
  */
 package dcode.games.uEngine2.GFX.postproc;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**

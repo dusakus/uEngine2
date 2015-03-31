@@ -13,6 +13,7 @@ import dcode.games.uEngine2.LOGIC.LogicThread;
 import dcode.games.uEngine2.SFX.AudioThread;
 import dcode.games.uEngine2.input.KeyWrapper;
 import dcode.games.uEngine2.input.PointerWrapper;
+import dcode.games.uEngine2.translator.Translator;
 import dcode.games.uEngine2.window.Canvas;
 import dcode.games.uEngine2.window.Window;
 

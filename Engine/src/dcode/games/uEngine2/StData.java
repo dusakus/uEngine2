@@ -8,6 +8,7 @@ package dcode.games.uEngine2;
 import dcode.games.uEngine2.BGTasks.BackgroundTasks;
 import dcode.games.uEngine2.LOGIC.LogicTasks;
 import dcode.games.uEngine2.ResourceManager.ResMan;
+import dcode.games.uEngine2.translator.Translator;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -19,7 +20,7 @@ import java.io.File;
  */
 public class StData {
 
-	public static final String VersionString = "2.0 r1 alpha";                  //Engine version string
+	public static final String VersionString = "2.1.a.003";                    //Engine version string
 
 	public static uGameSetup setup;                                             //game configuration object
 	public static DCoutputH LOG;                                                //Log output
@@ -33,4 +34,5 @@ public class StData {
 	public static File gameStorageDirectory;
 	public static boolean gameIsRunning = true;                                 //is game running, or should stop execution
 	static PuGameBase GameInitializer;                                          //Game initialization object, provided by game itself
+	public static Translator translator;
 }

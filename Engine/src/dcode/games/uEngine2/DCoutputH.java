@@ -23,7 +23,7 @@ public class DCoutputH {
 	public DCoutputH() {
 		timed = new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss");
 		time = new Date();
-		logfile = new File(System.getProperty("user.dir") + "/DCODE/uEngine/" + StData.setup.safeName + "/Log.dcl");
+		logfile = new File(System.getProperty("user.dir") + "/DCODE/uEngine2/" + StData.setup.safeName + "/Log.dcl");
 		buffer = new LinkedList<>();
 		logfileC();
 	}
@@ -32,7 +32,7 @@ public class DCoutputH {
 		timed = new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss");
 		time = new Date();
 		debug = debugI;
-		logfile = new File(System.getProperty("user.dir") + "/DCODE/uEngine/" + StData.setup.safeName + "/Log.dcl");
+		logfile = new File(System.getProperty("user.dir") + "/DCODE/uEngine2/" + StData.setup.safeName + "/Log.dcl");
 		buffer = new LinkedList<>();
 		logfileC();
 	}
