@@ -5,6 +5,7 @@
  */
 package dcode.games.uEngine2.GFX.sprites;
 
+import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
 
 import java.awt.*;
@@ -16,12 +17,14 @@ import java.awt.*;
  *
  * @author dusakus
  */
-public class SpriteWrapper extends Sprite {
+public class SpriteWrapper extends Sprite implements ILogicTask {
 	public boolean shiftOrReplace = true; // true for shift, false for replace;
 	public int spriteId;
 	public Sprite localSprite;
 
 	public boolean enabled = false;
+	private SpriteLogicTask slt;
+	private int tick;
 
 	public void setSprite(Sprite s) {
 		localSprite = s;
@@ -71,6 +74,10 @@ public class SpriteWrapper extends Sprite {
 		enabled = true;
 	}
 
+	public void setUpdateOperation(SpriteLogicTask slt) {
+		this.slt = slt;
+	}
+
 	//return texture
 	@Override
 	public String getTextureKey() {
@@ -94,4 +101,20 @@ public class SpriteWrapper extends Sprite {
 		getSprite().customRender(G);
 	}
 
+	@Override
+	public boolean isReady() {
+		return true;
+	}
+
+	@Override
+	public void perform() {
+		if (slt != null) {
+			slt.update(this, tick);
+		}
+	}
+
+	@Override
+	public boolean doRepeat() {
+		return true;
+	}
 }

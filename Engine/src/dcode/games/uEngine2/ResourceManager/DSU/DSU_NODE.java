@@ -14,9 +14,9 @@ import dcode.games.uEngine2.StData;
 public class DSU_NODE {
 
 	int level = -1;
-	DSU_NODE_SUBSTOR SS;
-	DSU_NODE[] NODE_ARRAY;
-	DSU_OBJECT finalKey;
+	public DSU_NODE_SUBSTOR SS;
+	public DSU_NODE[] NODE_ARRAY;
+	public DSU_OBJECT finalKey;
 	private boolean optimizationRequested = false;
 
 	public DSU_NODE(int level, boolean extend) {
@@ -78,6 +78,15 @@ public class DSU_NODE {
 			NODE_ARRAY[ob.KEY.charAt(level + 1) - 32].storeObject(ob);
 		}
 
+	}
+
+	public DSU_NODE getNode(String key) {
+		if (key.length() == this.level) {
+			return this;
+		} else if (NODE_ARRAY[key.charAt(level + 1) - 32] != null) {
+			return NODE_ARRAY[key.charAt(level + 1) - 32].getNode(key);
+		}
+		return null;
 	}
 
 	public void optimize() {

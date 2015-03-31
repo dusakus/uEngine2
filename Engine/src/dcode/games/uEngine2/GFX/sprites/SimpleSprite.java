@@ -5,9 +5,31 @@
  */
 package dcode.games.uEngine2.GFX.sprites;
 
+import java.awt.*;
+
 /**
  * @author dusakus
  */
-public class SimpleSprite {
+public class SimpleSprite extends Sprite {
 
+    public SimpleSprite(String texID, int startCoordX, int startCoordY) {
+        this.textureKey = texID;
+        x = startCoordX;
+        y = startCoordY;
+    }
+
+    @Override
+    public Image getCustomTexture() {
+        return null;
+    }
+
+    @Override
+    public boolean doCustomRender() {
+        return false;
+    }
+
+    @Override
+    public void customRender(Graphics2D G) {
+
+    }
 }

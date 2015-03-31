@@ -2,6 +2,7 @@ package dcode.games.uEngine2.games.uping;
 
 import dcode.games.uEngine2.BGTasks.internalTasks.LoadBasicTexture;
 import dcode.games.uEngine2.GFX.layers.ClearColorLayer;
+import dcode.games.uEngine2.GFX.postproc.PP_scaleblur;
 import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
 
@@ -45,6 +46,7 @@ public class BaseLogic implements ILogicTask {
 
 						StData.currentGC.currentSC.sprites[1] = ball;
 						StData.currentGC.currentSC.sprites_middle[1] = 1;
+						StData.currentGC.currentSC.postProcessors[1] = new PP_scaleblur(3F);
 
 
 						new ReallyCrappyWorldConstructionObjectBecauseImLazy().writeWorldData(gameworld);
