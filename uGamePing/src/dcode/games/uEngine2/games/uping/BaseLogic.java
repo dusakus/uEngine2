@@ -46,7 +46,7 @@ public class BaseLogic implements ILogicTask {
 
 						StData.currentGC.currentSC.sprites[1] = ball;
 						StData.currentGC.currentSC.sprites_middle[1] = 1;
-						StData.currentGC.currentSC.postProcessors[1] = new PP_scaleblur(3F);
+						StData.currentGC.currentSC.postProcessors[1] = new PP_scaleblur(1.5F);
 
 
 						new ReallyCrappyWorldConstructionObjectBecauseImLazy().writeWorldData(gameworld);
@@ -99,7 +99,7 @@ public class BaseLogic implements ILogicTask {
 			case MODE_INIT:
 				LOG.println("Beginning rSeqPlayer initialization");
 				LOG.println("QuickStarting loading screen");
-				currentGC.currentSC.layers_Background.add(new LAYER_Loading(301));
+				currentGC.currentSC.layers_Overlay.add(new LAYER_Loading(301));
 				currentStatus = 0;
 				currentMode = MODE_MENU_MAIN;
 				break;

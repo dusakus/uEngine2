@@ -21,14 +21,14 @@ public class uPingStartup {
 		gs.TPS_MSX = 0;
 		gs.TPS_BG = 50;
 
-		gs.debug = false;
+		gs.debug = true;
 		gs.width = 400;
 		gs.height = 240;
 		gs.scale = 2;
 
-		gs.spriteTableSize = 10;
+		gs.spriteTableSize = 2;
 		gs.enableSpriteWrappers = false;
-		gs.postProcCount = 4;
+		gs.postProcCount = 11;
 		gs.spriteLayerSize = 4;
 
 

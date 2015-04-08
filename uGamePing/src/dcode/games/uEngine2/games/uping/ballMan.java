@@ -16,7 +16,7 @@ public class ballMan extends Sprite {
 
     int qdir = 1;     // 1 = |_  , 2 = |   , 3 =   | , 4 =  _|
 
-    float speed = 20F;
+    float speed = 2.5F;
 
     float X = 100F, Y = 100F;
     private int collisionLock = 10;
