@@ -2,6 +2,7 @@ package dcode.games.uEngine2.games.ld32warmup;
 
 import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
+import dcode.games.uEngine2.games.ld32warmup.levels.LevelList;
 
 import static dcode.games.uEngine2.StData.LOG;
 import static dcode.games.uEngine2.StData.currentGC;
@@ -42,7 +43,12 @@ public class MainLogic implements ILogicTask {
                     case 10:
                         LOG.println("[INIT] requesting texture preloading");
                         //TODO: preload textures
-                        currentStatus += 10;
+                        currentStatus++;
+                        break;
+                    case 11:
+                        LOG.println("[INIT] creating level table");
+                        LevelList.fillList();
+                        currentStatus += 9;
                         break;
                     case 20:
                         LOG.println("[INIT] creating game objects");
