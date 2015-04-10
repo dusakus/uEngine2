@@ -27,7 +27,7 @@ public class LD32W_INIT {
         gs.safeName = "ld32warmup";
         gs.screenName = "LD32WUP";
         gs.windowTitle = " Warmup for Ludum Dare 32 ";
-
+        
         PuGameBase gb = new PuGameBase();
 
         gb.setup = gs;

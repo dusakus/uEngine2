@@ -23,7 +23,7 @@ import java.awt.image.BufferedImage;
 public class TexMan {
 
 	public InternalTextureLoader loader_internal = new InternalTextureLoader();
-	BufferedImage MISSINGTEX = null;
+	public BufferedImage MISSINGTEX = null;
 	DSU_NODE textureRegistry;
 
 	private ScaledTexture[] scaledTextureBuffer;
@@ -50,6 +50,12 @@ public class TexMan {
 		scaledTextureBuffer = new ScaledTexture[64];
 		scaledSubTextureBuffer = new ScaledSubTexture[32];
 
+		stringBuffer = new StringContainer[StData.setup.stringBufferSize];
+
+
+		for (int i = 0; i < stringBuffer.length; i++) {
+			stringBuffer[i] = new StringContainer();
+		}
 		for (int i = 0; i < scaledTextureBuffer.length; i++) {
 			scaledTextureBuffer[i] = new ScaledTexture(MISSINGTEX.getScaledInstance(4 * (65 - i), 4 * (65 - i), BufferedImage.SCALE_REPLICATE), 4 * (65 - i), 4 * (65 - i), "missing");
 		}
@@ -95,6 +101,9 @@ public class TexMan {
 			if (stringBuffer[i].text.equals(content)) {
 				if (stringBuffer[i].texKey.equals(key)) {
 					tex = stringBuffer[i].texture;
+					if (tex == null) {
+						StData.LOG.println("STRINGBUFFER" + i + " broken", "E1");
+					}
 				}
 			}
 
@@ -102,9 +111,9 @@ public class TexMan {
 
 		if (tex == null) {
 			tex = stringBuffer[nextSBwriteAt].texture;
-			StData.currentGC.currentBGT.WaitingTasks.add(new prepareString(stringBuffer[nextSBwriteAt]));
 			stringBuffer[nextSBwriteAt].texKey = key;
 			stringBuffer[nextSBwriteAt].text = content;
+			StData.threadManager.BGT.addTask(new prepareString(stringBuffer[nextSBwriteAt]));
 			tex = MISSINGTEX;
 		}
 
@@ -216,8 +225,8 @@ public class TexMan {
 
 	public class StringContainer {
 
-		public BufferedImage texture;
-		public String text;
-		public String texKey;
+		public BufferedImage texture = null;
+		public String text = "ERROR_MISSING_TEXT";
+		public String texKey = "NULL";
 	}
 }

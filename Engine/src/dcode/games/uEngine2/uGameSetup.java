@@ -48,5 +48,6 @@ public class uGameSetup {
 	public int effectTableSize = 0;                            //size of the effect table
 	public int generatorChannelCount = 0;                    //how many sound generators should be created
 
-
+	// Fonts
+	public int stringBufferSize = 16;
 }

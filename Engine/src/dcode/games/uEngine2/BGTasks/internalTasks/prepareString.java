@@ -20,12 +20,15 @@ public class prepareString extends PBGTask {
 	private TexMan.StringContainer container = null;
 
 	public prepareString(TexMan.StringContainer stringBuffer) {
-
+		StData.LOG.println("Requested creation of string buffer for " + stringBuffer.text + " using font " + stringBuffer.texKey);
+		container = stringBuffer;
+		this.TaskPriority = PRIORITY_LOW;
 	}
 
 	@Override
 	public boolean isReady() {
-		return true;
+		StData.LOG.println("STILL WAITING");
+		return StData.resources.grf.isTextureAviable("FGENC5");
 	}
 
 	@Override
