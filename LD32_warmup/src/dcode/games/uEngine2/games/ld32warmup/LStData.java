@@ -18,5 +18,7 @@ public class LStData {
 
     public static int currentStatus = 0;                            //Represents current app status
 
+    public static int roomWidth = 400, roomHeight = 300;
+
 }
 

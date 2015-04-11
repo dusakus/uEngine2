@@ -1,8 +1,12 @@
 package dcode.games.uEngine2.games.ld32warmup;
 
 import dcode.games.uEngine2.BGTasks.internalTasks.LoadBasicTexture;
+import dcode.games.uEngine2.GFX.ScreenContent;
 import dcode.games.uEngine2.LOGIC.ILogicTask;
+import dcode.games.uEngine2.StData;
 import dcode.games.uEngine2.games.ld32warmup.levels.LevelList;
+import dcode.games.uEngine2.games.ld32warmup.render.LAYER_GameSceneBACK;
+import dcode.games.uEngine2.games.ld32warmup.render.LAYER_GameSceneFRONT;
 
 import static dcode.games.uEngine2.games.ld32warmup.LStData.*;
 import static dcode.games.uEngine2.StData.*;
@@ -19,6 +23,9 @@ public class GameLogic implements ILogicTask {
     public Player player;
 
     public int currentLevel = 1;
+
+    private ScreenContent inGameSC = null;
+    private ScreenContent temp = null;
 
     @Override
     public boolean isReady() {
@@ -37,7 +44,29 @@ public class GameLogic implements ILogicTask {
                 break;
             case 2:
                 currentLevel = 1;
-                currentStatus = 109;
+                if (inGameSC != null) currentStatus = 109;
+                else currentStatus = 11;
+                break;
+            case 11:
+                LOG.println("[GL] inGameSC is null, initializing...");
+                inGameSC = new ScreenContent();
+                currentStatus++;
+                break;
+            case 12:
+                inGameSC.layers_Background.add(new LAYER_GameSceneBACK());
+                inGameSC.layers_Foreground.add(new LAYER_GameSceneFRONT());
+                currentStatus++;
+                break;
+            case 13:
+                player = new Player();
+                LOG.println("[GL] requesting player textures");
+                player.requestTextures();
+                inGameSC.sprites[2] = player;
+                currentStatus++;
+                break;
+            case 14:
+                LOG.println("[GL] initialization complete");
+                currentStatus = 2;
                 break;
             case 109:
                 if (room == null || room.levelID != currentLevel) {
@@ -49,6 +78,8 @@ public class GameLogic implements ILogicTask {
             case 102:
                 room.init();
                 LOG.println("[GL] level begins now");
+                temp = StData.currentGC.currentSC;
+                StData.currentGC.currentSC = inGameSC;
                 currentStatus = 101;
                 break;
             case 501:
@@ -64,9 +95,9 @@ public class GameLogic implements ILogicTask {
             case 502:
                 LOG.println("[GL] requesting room textures...");
 
-                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_BACK.png", room.texId + "B"));
-                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_FRONT.png", room.texId + "F"));
-                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_DATA.png", room.texId + "D"));
+                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_BACK.png", "RB"));
+                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_FRONT.png", "RF"));
+                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_DATA.png", "RD"));
 
                 currentStatus = 512;
             case 512:

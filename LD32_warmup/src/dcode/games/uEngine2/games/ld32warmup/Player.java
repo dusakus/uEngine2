@@ -27,4 +27,7 @@ public class Player extends Sprite {
     public void customRender(Graphics2D G) {
 
     }
+
+    public void requestTextures() {
+    }
 }

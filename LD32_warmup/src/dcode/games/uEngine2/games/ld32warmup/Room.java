@@ -22,11 +22,16 @@ public class Room {
         level = l;
         levelID = lid;
         texId = l.getTextureId();
+        StData.resources.grf.unload("RB");
+        StData.resources.grf.unload("RF");
+        StData.resources.grf.unload("RD");
     }
 
     public boolean tryLoadDataLayer() {
-        if (StData.resources.grf.isTextureAviable(texId + "D")) {
-            dataLayer = StData.resources.grf.getTexture(texId + "D");
+        if (StData.resources.grf.isTextureAviable("RD")) {
+            dataLayer = StData.resources.grf.getTexture("RD");
+            LStData.roomWidth = dataLayer.getWidth();
+            LStData.roomHeight = dataLayer.getHeight();
             return true;
         } else return false;
     }
