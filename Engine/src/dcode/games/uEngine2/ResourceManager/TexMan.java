@@ -185,6 +185,10 @@ public class TexMan {
 		textureRegistry.storeObject(new DSU_OBJECT(identifier, BI));
 	}
 
+	public void unload(String rd) {
+		textureRegistry.removeObject(rd);
+	}
+
 	public class ScaledTexture {
 
 		public Image texture;

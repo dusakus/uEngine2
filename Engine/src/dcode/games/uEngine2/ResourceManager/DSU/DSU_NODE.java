@@ -53,7 +53,7 @@ public class DSU_NODE {
         if (SS != null) {
             SS.removeObject(key);
         }
-        if (finalKey.KEY.length() == level) {
+        if (key.length() == level) {
             finalKey = null;
         }
         try {
