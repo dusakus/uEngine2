@@ -3,6 +3,7 @@ package dcode.games.uEngine2.games.ld32warmup.render;
 import dcode.games.uEngine2.GFX.ILayer;
 import dcode.games.uEngine2.StData;
 import dcode.games.uEngine2.games.ld32warmup.LStData;
+import dcode.games.uEngine2.games.ld32warmup.Player;
 import dcode.games.uEngine2.tools.numbarTools;
 
 import java.awt.*;
@@ -15,8 +16,8 @@ public class LAYER_GameSceneFRONT implements ILayer {
     public void draw(Graphics2D G2D) {
         if(LStData.currentStatus == 101){
             G2D.drawImage(StData.resources.grf.getPartTexture("RF",
-                    numbarTools.clamp(StData.currentGC.currentSC.sprites[2].getX() - 200, 0, LStData.roomWidth-400),
-                    numbarTools.clamp(StData.currentGC.currentSC.sprites[2].getY() - 150, 0, LStData.roomHeight-300),
+                    numbarTools.clamp(((Player)StData.currentGC.currentSC.sprites[2]).inRoomX - 200, 0, LStData.roomWidth-400),
+                    numbarTools.clamp(((Player)StData.currentGC.currentSC.sprites[2]).inRoomY - 150, 0, LStData.roomHeight-300),
                     400,300
             ),0,0,null);
         }

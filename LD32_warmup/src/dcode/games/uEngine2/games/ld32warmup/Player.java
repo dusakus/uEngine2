@@ -16,19 +16,30 @@ public class Player extends Sprite {
     public int direction = 0;
 
     private int lastX = 0, lastY = 0;
+    public int inRoomX = 0, inRoomY = 0;
     public int targetX = 0, targetY = 0;
+
+    GameLogic gl;
+    private int animDelay = 4;
+
+    public Player(GameLogic gameLogic) {
+        gl = gameLogic;
+    }
 
 
     @Override
     public Image getCustomTexture() {
-        if (lastX != x || lastY != y) {
-            animID++;
-            if (lastX > x) direction = 0;
-            if (lastX < x) direction = 1;
-            if (animID > 4) animID = 1;
-            lastX = x;
-            lastY = y;
-        }
+        if (animDelay == 0) {
+            if (lastX != inRoomX || lastY != inRoomY) {
+                animID++;
+                if (lastX > inRoomX) direction = 0;
+                if (lastX < inRoomX) direction = 1;
+                if (animID > 4) animID = 1;
+                lastX = inRoomX;
+                lastY = inRoomY;
+                animDelay = 6;
+            }
+        } else animDelay--;
         return StData.resources.grf.getTexture("pla" + (animID + (direction * 4)));
     }
 
@@ -59,14 +70,44 @@ public class Player extends Sprite {
 
         sc.sprites_middle[0] = 2;
 
-        if (targetX > x) x++;
-        if (targetX < x) x--;
+        if (targetX > inRoomX && gl.room.checkWalkable(inRoomX + 1, inRoomY)) inRoomX++;
+        if (targetX < inRoomX && gl.room.checkWalkable(inRoomX - 1, inRoomY)) inRoomX--;
         if (delayY) {
             delayY = false;
         } else {
             delayY = true;
-            if (targetY > y) y++;
-            if (targetY < y) y--;
+            if (targetY > inRoomY && gl.room.checkWalkable(inRoomX, inRoomY + 1)) inRoomY++;
+            if (targetY < inRoomY && gl.room.checkWalkable(inRoomX, inRoomY - 1)) inRoomY--;
         }
+
+        if (inRoomX < 200) x = inRoomX;
+        else if (inRoomX > LStData.roomWidth - 200) x = inRoomX + 400 - LStData.roomWidth;
+        else x = 200;
+
+        if (inRoomY < 150) y = inRoomY;
+        else if (inRoomY > LStData.roomHeight - 150) y = inRoomY + 300 - LStData.roomHeight;
+        else y = 150;
+
+        //correct the coords for rendering;
+
+        x = x - 32;
+        y = y - 60;
+
+    }
+
+    public void checkTarget() {
+        if (targetX > LStData.roomWidth || targetX < 0 || targetY > LStData.roomHeight || targetY < 0 || !gl.room.checkWalkable(targetX, targetY)) {
+            targetX = inRoomX;
+            targetY = inRoomY;
+            gl.showMessage("I can't go here", GameLogic.MSGtYPE_warning);
+        }
+    }
+
+    public void updateTarget(int x, int y) {
+
+        targetX = inRoomX + x - this.x - 32;
+        targetY = inRoomY + y - this.y - 60;
+
+        StData.LOG.println("[PLAYER] updating target to " + targetX + " : " + targetY);
     }
 }

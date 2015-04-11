@@ -119,8 +119,8 @@ public class InHandler extends dcode.games.uEngine2.PInputHandler {
     @Override
     public void clickedLeft(int x, int y) {
         if(LStData.currentMode == LStData.MODE_GAME_PLAY && LStData.currentStatus == 101){
-            ((Player)StData.currentGC.currentSC.sprites[2]).targetX = x;
-            ((Player)StData.currentGC.currentSC.sprites[2]).targetY = y;
+            ((Player)StData.currentGC.currentSC.sprites[2]).updateTarget(x,y);
+            ((Player)StData.currentGC.currentSC.sprites[2]).checkTarget();
         }
     }
 

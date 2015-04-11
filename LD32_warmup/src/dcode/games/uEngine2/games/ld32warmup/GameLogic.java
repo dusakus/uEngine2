@@ -26,6 +26,7 @@ public class GameLogic implements ILogicTask {
 
     private ScreenContent inGameSC = null;
     private ScreenContent temp = null;
+    public static final int MSGtYPE_warning = 11;
 
     @Override
     public boolean isReady() {
@@ -59,7 +60,7 @@ public class GameLogic implements ILogicTask {
                 currentStatus++;
                 break;
             case 13:
-                player = new Player();
+                player = new Player(this);
                 LOG.println("[GL] requesting player textures");
                 player.requestTextures();
                 inGameSC.sprites[2] = player;
@@ -108,11 +109,13 @@ public class GameLogic implements ILogicTask {
                 }
                 break;
             case 513:
-                player = new Player();
+                player = new Player(this);
                 player.setX((int)room.level.getInitialPlayerLocation().getX());
                 player.setY((int) room.level.getInitialPlayerLocation().getY());
                 player.targetX = (int)room.level.getInitialPlayerLocation().getX();
                 player.targetY = (int)room.level.getInitialPlayerLocation().getY();
+                player.inRoomX = player.targetX;
+                player.inRoomY = player.targetY;
                 currentStatus = 109;
 
         }
@@ -121,5 +124,9 @@ public class GameLogic implements ILogicTask {
     @Override
     public boolean doRepeat() {
         return true;
+    }
+
+    public void showMessage(String s, int msGtYPE_warning) {
+
     }
 }

@@ -3,6 +3,7 @@ package dcode.games.uEngine2.games.ld32warmup;
 import dcode.games.uEngine2.StData;
 import dcode.games.uEngine2.games.ld32warmup.levels.LevelBase;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -43,6 +44,10 @@ public class Room {
     public void init() {
         texId = level.getTextureId();
         level.registerSprites(worldObjects);
+    }
+
+    public boolean checkWalkable(int targetX, int targetY) {
+        return new Color(dataLayer.getRGB(targetX,targetY)).getRed() != 255;
     }
 
 
