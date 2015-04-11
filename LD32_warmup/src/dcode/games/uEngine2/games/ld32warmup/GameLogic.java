@@ -36,7 +36,8 @@ public class GameLogic implements ILogicTask {
     public void perform() {
         switch (currentStatus) {
             case 101:
-                //TODO: game tick;
+                room.tick(this);
+                player.checkMove(inGameSC);
                 break;
             case 1:
                 LOG.println("[GL] Entering game_play environment");
@@ -80,6 +81,7 @@ public class GameLogic implements ILogicTask {
                 LOG.println("[GL] level begins now");
                 temp = StData.currentGC.currentSC;
                 StData.currentGC.currentSC = inGameSC;
+                inGameSC.sprites[2] = player;
                 currentStatus = 101;
                 break;
             case 501:
@@ -107,6 +109,10 @@ public class GameLogic implements ILogicTask {
                 break;
             case 513:
                 player = new Player();
+                player.setX((int)room.level.getInitialPlayerLocation().getX());
+                player.setY((int) room.level.getInitialPlayerLocation().getY());
+                player.targetX = (int)room.level.getInitialPlayerLocation().getX();
+                player.targetY = (int)room.level.getInitialPlayerLocation().getY();
                 currentStatus = 109;
 
         }

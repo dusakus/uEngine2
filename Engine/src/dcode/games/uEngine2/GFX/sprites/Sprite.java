@@ -51,5 +51,4 @@ public abstract class Sprite {
 	public abstract boolean doCustomRender();
 
 	public abstract void customRender(Graphics2D G);
-
 }

@@ -1,5 +1,7 @@
 package dcode.games.uEngine2.games.ld32warmup;
 
+import dcode.games.uEngine2.StData;
+
 /**
  * Created by dusakus on 10.04.15.
  */
@@ -116,7 +118,10 @@ public class InHandler extends dcode.games.uEngine2.PInputHandler {
 
     @Override
     public void clickedLeft(int x, int y) {
-
+        if(LStData.currentMode == LStData.MODE_GAME_PLAY && LStData.currentStatus == 101){
+            ((Player)StData.currentGC.currentSC.sprites[2]).targetX = x;
+            ((Player)StData.currentGC.currentSC.sprites[2]).targetY = y;
+        }
     }
 
     @Override
