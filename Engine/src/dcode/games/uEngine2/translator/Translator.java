@@ -12,7 +12,7 @@ public class Translator {
 
 	public Translator(String IbaseLang) {
 		baseLang = IbaseLang;
-		languages = new ArrayList<>();
+		languages = new ArrayList<LangContainer>();
 		languages.add(new LangContainer(baseLang));
 	}
 

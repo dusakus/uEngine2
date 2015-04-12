@@ -17,7 +17,7 @@ public class LogicTasks {
 	LinkedList<ILogicTask> tasks;
 
 	public LogicTasks() {
-		tasks = new LinkedList<>();
+		tasks = new LinkedList<ILogicTask>();
 	}
 
 	public void performAll() {

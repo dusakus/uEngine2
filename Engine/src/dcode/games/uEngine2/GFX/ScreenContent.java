@@ -46,13 +46,13 @@ public class ScreenContent {
 	public ScreenContent() {
 
 		//construction of object storage
-		layers_Background = new ArrayList<>();
+		layers_Background = new ArrayList<ILayer>();
 		sprites_back = new int[StData.setup.spriteLayerSize];
-		layers_Center = new ArrayList<>();
+		layers_Center = new ArrayList<ILayer>();
 		sprites_middle = new int[StData.setup.spriteLayerSize];
-		layers_Foreground = new ArrayList<>();
+		layers_Foreground = new ArrayList<ILayer>();
 		sprites_front = new int[StData.setup.spriteLayerSize];
-		layers_Overlay = new ArrayList<>();
+		layers_Overlay = new ArrayList<ILayer>();
 
 		//if the game wants to use sprite wrappers prepare storage for them
 		if (StData.setup.enableSpriteWrappers) {

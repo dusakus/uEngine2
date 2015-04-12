@@ -14,7 +14,7 @@ public class DSU_NODE_SUBSTOR {
 	ArrayList<DSU_OBJECT> objects;
 
 	public DSU_NODE_SUBSTOR() {
-		objects = new ArrayList<>();
+		objects = new ArrayList<DSU_OBJECT>();
 	}
 
 	public Object getObject(String key) {

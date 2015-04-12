@@ -21,9 +21,9 @@ public class BackgroundTasks {
 	private boolean didFinishLoop = true;
 
 	public BackgroundTasks() {
-		HPTasks = new LinkedList<>();
-		LPTasks = new LinkedList<>();
-		WaitingTasks = new LinkedList<>();
+		HPTasks = new LinkedList<PBGTask>();
+		LPTasks = new LinkedList<PBGTask>();
+		WaitingTasks = new LinkedList<PBGTask>();
 
 	}
 

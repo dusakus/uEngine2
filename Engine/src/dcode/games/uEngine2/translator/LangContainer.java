@@ -26,8 +26,8 @@ public class LangContainer {
 
 	public class LangTreeBranch {
 		public String Key;
-		Map<String, LangTreeLeaf> leaves = new HashMap<>();
-		Map<String, LangTreeBranch> branches = new HashMap<>();
+		Map<String, LangTreeLeaf> leaves = new HashMap<String, LangTreeLeaf>();
+		Map<String, LangTreeBranch> branches = new HashMap<String, LangTreeBranch>();
 		private boolean isROOT = false;
 
 		public LangTreeBranch(String key) {

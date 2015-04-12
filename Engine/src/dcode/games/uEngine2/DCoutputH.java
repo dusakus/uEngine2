@@ -24,7 +24,7 @@ public class DCoutputH {
 		timed = new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss");
 		time = new Date();
 		logfile = new File(System.getProperty("user.dir") + "/DCODE/uEngine2/" + StData.setup.safeName + "/Log.dcl");
-		buffer = new LinkedList<>();
+		buffer = new LinkedList<String>();
 		logfileC();
 	}
 
@@ -33,7 +33,7 @@ public class DCoutputH {
 		time = new Date();
 		debug = debugI;
 		logfile = new File(System.getProperty("user.dir") + "/DCODE/uEngine2/" + StData.setup.safeName + "/Log.dcl");
-		buffer = new LinkedList<>();
+		buffer = new LinkedList<String>();
 		logfileC();
 	}
 
@@ -42,7 +42,7 @@ public class DCoutputH {
 		time = new Date();
 		debug = debugI;
 
-		buffer = new LinkedList<>();
+		buffer = new LinkedList<String>();
 		if (where != null) {
 			logfile = new File(where);
 			logfileC();
@@ -93,55 +93,68 @@ public class DCoutputH {
 		if (mode.equals("D") && !debug) {
 			return true;
 		}
-		switch (mode) {
-			case "N":
-				this.println(input);
-				break;
-			case "E1":
-				//for a little error
-				this.println("[E1] Whops ...");
-				this.println("[E1]=> " + input);
-				this.println("[E1] of course it's still working :)");
-				break;
-			case "E2":
-				this.println("[E2] Something went wrong ...");
-				this.println("[E2]=> " + input);
-				this.println("[E2] but it didn't crashed yet ;)");
-				break;
-			case "E3":
-				this.println("[E3] I have very bad news");
-				this.println("[E3]=> " + input);
-				this.println("[E3] <Skips the problematic thingy>");
-				break;
-			case "E4":
-				this.println("[E4] Oh, it hurts so much");
-				this.println("[E4]=> " + input);
-				this.println("[E4] i'm dying !");
-				this.println("BZZt Bzzt bzz...");
-				System.exit(2);
-			case "E5":
-				this.println("[E5] Critical error ocured:");
-				this.println("[E5]=> " + input);
-				this.println("[E5] Killing in NOW");
-				this.println("!!!ERROR!!!");
-				System.exit(2);
-			case "D":
-				if (debug) {
-					this.println("[Debug]=> " + input);
-				}
-				break;
-			case "debug":
-				if (debug) {
-					this.println("[Debug]=> " + input);
-				}
-				break;
-			case "E6S":
-				this.println("[E6] Sorry, but " + input);
-				this.println("[E6] You might try again ;)");
-				break;
-			default:
-				this.println(input);
+		if (mode.equals("N")) {
+			this.println(input);
 
+		} else if (mode.equals("E1")) {//for a little error
+			this.println("[E1] Whops ...");
+			this.println("[E1]=> " + input);
+			this.println("[E1] of course it's still working :)");
+
+		} else if (mode.equals("E2")) {
+			this.println("[E2] Something went wrong ...");
+			this.println("[E2]=> " + input);
+			this.println("[E2] but it didn't crashed yet ;)");
+
+		} else if (mode.equals("E3")) {
+			this.println("[E3] I have very bad news");
+			this.println("[E3]=> " + input);
+			this.println("[E3] <Skips the problematic thingy>");
+
+		} else if (mode.equals("E4")) {
+			this.println("[E4] Oh, it hurts so much");
+			this.println("[E4]=> " + input);
+			this.println("[E4] i'm dying !");
+			this.println("BZZt Bzzt bzz...");
+			System.exit(2);
+
+			this.println("[E5] Critical error ocured:");
+			this.println("[E5]=> " + input);
+			this.println("[E5] Killing in NOW");
+			this.println("!!!ERROR!!!");
+			System.exit(2);
+
+			if (debug) {
+				this.println("[Debug]=> " + input);
+			}
+
+		} else if (mode.equals("E5")) {
+			this.println("[E5] Critical error ocured:");
+			this.println("[E5]=> " + input);
+			this.println("[E5] Killing in NOW");
+			this.println("!!!ERROR!!!");
+			System.exit(2);
+
+			if (debug) {
+				this.println("[Debug]=> " + input);
+			}
+
+		} else if (mode.equals("D")) {
+			if (debug) {
+				this.println("[Debug]=> " + input);
+			}
+
+		} else if (mode.equals("debug")) {
+			if (debug) {
+				this.println("[Debug]=> " + input);
+			}
+
+		} else if (mode.equals("E6S")) {
+			this.println("[E6] Sorry, but " + input);
+			this.println("[E6] You might try again ;)");
+
+		} else {
+			this.println(input);
 		}
 		return true;
 	}
@@ -179,79 +192,102 @@ public class DCoutputH {
 			println(input);
 			return true;
 		}
-		switch (mode) {
-			case "N":
-				this.println(input);
+		if (mode.equals("N")) {
+			this.println(input);
+			this.print(e);
+
+		} else if (mode.equals("E1")) {//for a little error
+			this.println("[E1] Whops ...");
+			this.println("[E1]=> " + input);
+			this.longMode("|E1 >--------------------------------------");
+			this.print(e);
+			this.longMode("|E1 >--------------------------------------");
+			this.println("[E1] of course it's still working :)");
+
+		} else if (mode.equals("E2")) {
+			this.println("[E2] Something went wrong ...");
+			this.println("[E2]=> " + input);
+			this.longMode("|E2 >--------------------------------------");
+			this.print(e);
+			this.longMode("|E2 >--------------------------------------");
+			this.println("[E2] but it didn't crashed yet ;)");
+
+		} else if (mode.equals("E3")) {
+			this.println("[E3] I have very bad news");
+			this.println("[E3]=> " + input);
+			this.longMode("|E3 >--------------------------------------");
+			this.print(e);
+			this.longMode("|E3 >--------------------------------------");
+			this.println("[E3] <Skips the problematic thingy>");
+
+		} else if (mode.equals("E4")) {
+			this.println("[E4] Oh, it hurts so much");
+			this.println("[E4]=> " + input);
+			this.longMode("|E4 >--------------------------------------");
+			this.print(e);
+			this.longMode("|E4 >--------------------------------------");
+			this.println("[E4] i'm dying !");
+			this.println("BZZt Bzzt bzz...");
+			System.exit(2);
+
+			this.println("[E5] Critical error ocured:");
+			this.println("[E5]=> " + input);
+			this.longMode("|E5 >--------------------------------------");
+			this.print(e);
+			this.longMode("|E5 >--------------------------------------");
+			this.println("[E5] Killing in NOW");
+			this.println("!!!ERROR!!!");
+			System.exit(2);
+
+			if (debug) {
+				this.println("[Debug]=> " + input);
+				this.longMode("|Debug >--------------------------------------");
 				this.print(e);
-				break;
-			case "E1":
-				//for a little error
-				this.println("[E1] Whops ...");
-				this.println("[E1]=> " + input);
-				this.longMode("|E1 >--------------------------------------");
+				this.longMode("|Debug >--------------------------------------");
+			}
+
+		} else if (mode.equals("E5")) {
+			this.println("[E5] Critical error ocured:");
+			this.println("[E5]=> " + input);
+			this.longMode("|E5 >--------------------------------------");
+			this.print(e);
+			this.longMode("|E5 >--------------------------------------");
+			this.println("[E5] Killing in NOW");
+			this.println("!!!ERROR!!!");
+			System.exit(2);
+
+			if (debug) {
+				this.println("[Debug]=> " + input);
+				this.longMode("|Debug >--------------------------------------");
 				this.print(e);
-				this.longMode("|E1 >--------------------------------------");
-				this.println("[E1] of course it's still working :)");
-				break;
-			case "E2":
-				this.println("[E2] Something went wrong ...");
-				this.println("[E2]=> " + input);
-				this.longMode("|E2 >--------------------------------------");
+				this.longMode("|Debug >--------------------------------------");
+			}
+
+		} else if (mode.equals("D")) {
+			if (debug) {
+				this.println("[Debug]=> " + input);
+				this.longMode("|Debug >--------------------------------------");
 				this.print(e);
-				this.longMode("|E2 >--------------------------------------");
-				this.println("[E2] but it didn't crashed yet ;)");
-				break;
-			case "E3":
-				this.println("[E3] I have very bad news");
-				this.println("[E3]=> " + input);
-				this.longMode("|E3 >--------------------------------------");
+				this.longMode("|Debug >--------------------------------------");
+			}
+
+		} else if (mode.equals("debug")) {
+			if (debug) {
+				this.println("[Debug]=> " + input);
+				this.longMode("|Debug >--------------------------------------");
 				this.print(e);
-				this.longMode("|E3 >--------------------------------------");
-				this.println("[E3] <Skips the problematic thingy>");
-				break;
-			case "E4":
-				this.println("[E4] Oh, it hurts so much");
-				this.println("[E4]=> " + input);
-				this.longMode("|E4 >--------------------------------------");
-				this.print(e);
-				this.longMode("|E4 >--------------------------------------");
-				this.println("[E4] i'm dying !");
-				this.println("BZZt Bzzt bzz...");
-				System.exit(2);
-			case "E5":
-				this.println("[E5] Critical error ocured:");
-				this.println("[E5]=> " + input);
-				this.longMode("|E5 >--------------------------------------");
-				this.print(e);
-				this.longMode("|E5 >--------------------------------------");
-				this.println("[E5] Killing in NOW");
-				this.println("!!!ERROR!!!");
-				System.exit(2);
-			case "D":
-				if (debug) {
-					this.println("[Debug]=> " + input);
-					this.longMode("|Debug >--------------------------------------");
-					this.print(e);
-					this.longMode("|Debug >--------------------------------------");
-				}
-				break;
-			case "debug":
-				if (debug) {
-					this.println("[Debug]=> " + input);
-					this.longMode("|Debug >--------------------------------------");
-					this.print(e);
-					this.longMode("|Debug >--------------------------------------");
-				}
-				break;
-			case "E6S":
-				this.println("[E6] Sorry, but " + input);
-				this.longMode("|E6 >--------------------------------------");
-				this.print(e);
-				this.println("|E6 >--------------------------------------");
-				this.longMode("[E6] You might try again ;)");
-				break;
-			default:
-				this.print(e);
+				this.longMode("|Debug >--------------------------------------");
+			}
+
+		} else if (mode.equals("E6S")) {
+			this.println("[E6] Sorry, but " + input);
+			this.longMode("|E6 >--------------------------------------");
+			this.print(e);
+			this.println("|E6 >--------------------------------------");
+			this.longMode("[E6] You might try again ;)");
+
+		} else {
+			this.print(e);
 		}
 		return true;
 	}
