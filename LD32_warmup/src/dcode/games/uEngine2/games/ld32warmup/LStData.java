@@ -2,6 +2,7 @@ package dcode.games.uEngine2.games.ld32warmup;
 
 import dcode.games.uEngine2.GameContainer;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 
 /**
@@ -25,5 +26,6 @@ public class LStData {
 
     public static GameLogic GL;
 
+    public static BufferedImage StoredFrame;
 }
 

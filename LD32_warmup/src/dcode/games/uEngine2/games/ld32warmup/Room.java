@@ -2,7 +2,6 @@ package dcode.games.uEngine2.games.ld32warmup;
 
 import dcode.games.uEngine2.BGTasks.internalTasks.LoadBasicTexture;
 import dcode.games.uEngine2.GFX.ScreenContent;
-import dcode.games.uEngine2.GFX.sprites.SimpleSprite;
 import dcode.games.uEngine2.StData;
 import dcode.games.uEngine2.games.ld32warmup.levels.LevelBase;
 
@@ -51,13 +50,15 @@ public class Room {
     }
 
     public boolean checkWalkable(int targetX, int targetY) {
-        return new Color(dataLayer.getRGB(targetX, targetY)).getRed() != 255;
+        if (new Color(dataLayer.getRGB(targetX, targetY)).getRed() == 255) return false;
+        if (new Color(dataLayer.getRGB(targetX, targetY)).getRed() == 0) return true;
+        return level.isColorUnlocked(new Color(dataLayer.getRGB(targetX, targetY)).getRed());
     }
 
     public void loadWorldObjects() {
         for (WorldObject wo : worldObjects) {
             if (wo != null) {
-                StData.generalBGT.LPTasks.add(new LoadBasicTexture("sprites/R/" + levelID + "/" + wo.texSource, wo.texKey));
+                StData.generalBGT.LPTasks.add(new LoadBasicTexture("sprites/R/" + levelID + "/" + wo.texSource, wo.getTextureKey()));
             }
         }
     }
@@ -65,7 +66,7 @@ public class Room {
     public void unloadWorldObjects() {
         for (WorldObject wo : worldObjects) {
             if (wo != null) {
-                StData.resources.grf.unload(wo.texKey);
+                StData.resources.grf.unload(wo.getTextureKey());
             }
         }
     }
@@ -74,7 +75,7 @@ public class Room {
         for (int i = 0; i < 100; i++) {
             WorldObject wo = worldObjects[i];
             if (wo != null) {
-                sc.sprites[i + 10] = new SimpleSprite(wo.texKey, wo.x, wo.y);
+                sc.sprites[i + 10] = wo;
                 sc.sprites_middle[wo.spritePosition] = i + 10;
             }
         }
@@ -88,13 +89,32 @@ public class Room {
     public void checkRClick(Player p, int rclickX, int rclickY) {
         int targetX = p.inRoomX + rclickX - p.getX() - 32;
         int targetY = p.inRoomY + rclickY - p.getY() - 60;
-
         Color c = new Color(dataLayer.getRGB(targetX, targetY));
         Color playerpColor = new Color(dataLayer.getRGB(p.inRoomX, p.inRoomY));
 
-        if(c.getBlue() - 100 > 0){
+        if (c.getBlue() - 100 > 0) {
             level.onObjectClicked(c.getBlue() - 100, playerpColor);
         }
+    }
+
+    public int getCurrentXShift() {
+        Player p = LStData.GL.player;
+        return p.inRoomX - p.getX() - 32;
+
+    }
+
+    public int getCurrentYShift() {
+        Player p = LStData.GL.player;
+        return p.inRoomY - p.getY() - 60;
+    }
+
+    public void reLoadWorldObjects(ScreenContent sc, WorldObject[] wos) {
+        StData.LOG.println("[ROOM] reloading sprites");
+        for (int i = 0; i < 100; i++) {
+            worldObjects[i] = wos[i];
+        }
+        loadWorldObjects();
+        insertWorldObjects(sc);
     }
 }
 

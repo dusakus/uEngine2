@@ -2,6 +2,9 @@ package dcode.games.uEngine2.games.ld32warmup;
 
 import dcode.games.uEngine2.BGTasks.internalTasks.LoadBasicTexture;
 import dcode.games.uEngine2.GFX.ScreenContent;
+import dcode.games.uEngine2.GFX.layers.FillTextureLayer;
+import dcode.games.uEngine2.GFX.postproc.PP_scaleblur;
+import dcode.games.uEngine2.GFX.sprites.Sprite;
 import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
 import dcode.games.uEngine2.games.ld32warmup.levels.LevelList;
@@ -10,8 +13,7 @@ import dcode.games.uEngine2.games.ld32warmup.render.LAYER_GameMessage2;
 import dcode.games.uEngine2.games.ld32warmup.render.LAYER_GameSceneBACK;
 import dcode.games.uEngine2.games.ld32warmup.render.LAYER_GameSceneFRONT;
 
-import static dcode.games.uEngine2.StData.LOG;
-import static dcode.games.uEngine2.StData.threadManager;
+import static dcode.games.uEngine2.StData.*;
 import static dcode.games.uEngine2.games.ld32warmup.LStData.*;
 
 
@@ -29,10 +31,9 @@ public class GameLogic implements ILogicTask {
 
     public int currentLevel = 1;
 
-    public Item currentItem = null;
+    public Item currentItem = new Item("nul", "nul", false, "nul");
 
     public ScreenContent inGameSC = null;
-    private ScreenContent temp = null;
     public static final int MSGtYPE_warning = 11;
     public static final int MSGtYPE_info = 12;
     public static final int MSGtYPE_item = 13;
@@ -87,6 +88,10 @@ public class GameLogic implements ILogicTask {
                 break;
             case 109:
                 if (room == null || room.levelID != currentLevel) {
+                    inGameSC.sprites_middle = new int[StData.setup.spriteLayerSize];
+                    inGameSC.sprites = new Sprite[StData.setup.spriteTableSize];
+                    inGameSC.sprites[2] = player;
+                    currentGC.currentSC = inGameSC;
                     currentStatus = 501;
                 } else {
                     currentStatus = 102;
@@ -95,10 +100,9 @@ public class GameLogic implements ILogicTask {
             case 102:
                 room.init();
                 LOG.println("[GL] level begins now");
-                temp = StData.currentGC.currentSC;
                 StData.currentGC.currentSC = inGameSC;
                 inGameSC.sprites[2] = player;
-                currentStatus = 101;
+                currentStatus = 2020;
                 break;
             case 501:
                 LOG.println("[GL] loading new level: " + currentLevel);
@@ -147,6 +151,161 @@ public class GameLogic implements ILogicTask {
                 if (inGameSC.layers_Overlay.size() == 0) {
                     currentStatus = 101;
                 }
+                break;
+            case 2020:
+                threadManager.LT.LOOP_TPS = 4;
+                threadManager.LT.LOOP_Recalculate = true;
+                currentStatus++;
+                break;
+            case 2050:
+                currentGC.currentSC.layers_Overlay.clear();
+                threadManager.LT.LOOP_TPS = 60;
+                threadManager.LT.LOOP_Recalculate = true;
+                inGameSC.postProcessors[1] = null;
+                currentStatus = 101;
+                break;
+            case 2001:
+                currentLevel++;
+                LStData.StoredFrame = StData.NextFrame.getSubimage(0, 0, 400, 300);
+                resources.grf.registerTexture(LStData.StoredFrame, "STRFR");
+                currentGC.currentSC.layers_Overlay.clear();
+                currentGC.currentSC.layers_Overlay.add(new FillTextureLayer("STRFR"));
+                threadManager.LT.LOOP_TPS = 4;
+                threadManager.LT.LOOP_Recalculate = true;
+                currentStatus++;
+                break;
+            case 2002:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(1.1F);
+                currentStatus++;
+                break;
+
+            case 2003:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(1.4F);
+                currentStatus++;
+                break;
+
+            case 2004:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(1.8F);
+                currentStatus++;
+                break;
+
+            case 2005:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(2.1F);
+                currentStatus++;
+                break;
+
+            case 2006:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(2.8F);
+                currentStatus++;
+                break;
+
+            case 2007:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(4F);
+                currentStatus++;
+                break;
+
+            case 2008:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(5F);
+                currentStatus++;
+                break;
+
+            case 2009:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(7F);
+                currentStatus++;
+                break;
+
+            case 2010:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(9F);
+                currentStatus++;
+                break;
+
+            case 2011:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(13F);
+                currentStatus++;
+                break;
+
+            case 2012:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(18F);
+                currentStatus++;
+                break;
+
+            case 2013:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(25F);
+                currentStatus++;
+                break;
+
+            case 2014:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(42F);
+                currentStatus = 109;
+                break;
+            case 2033:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(1.1F);
+                currentStatus = 2050;
+                break;
+
+            case 2032:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(1.4F);
+                currentStatus++;
+                break;
+
+            case 2031:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(1.8F);
+                currentStatus++;
+                break;
+
+            case 2030:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(2.1F);
+                currentStatus++;
+                break;
+
+            case 2029:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(2.8F);
+                currentStatus++;
+                break;
+
+            case 2028:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(4F);
+                currentStatus++;
+                break;
+
+            case 2027:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(5F);
+                currentStatus++;
+                break;
+
+            case 2026:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(7F);
+                currentStatus++;
+                break;
+
+            case 2025:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(9F);
+                currentStatus++;
+                break;
+
+            case 2024:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(13F);
+                currentStatus++;
+                break;
+
+            case 2023:
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(18F);
+                currentStatus++;
+                break;
+
+            case 2022:
+                resources.grf.registerTexture(LStData.StoredFrame, "STRFR");
+                currentGC.currentSC.layers_Overlay.add(new FillTextureLayer("STRFR"));
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(25F);
+                currentStatus++;
+                break;
+
+            case 2021:
+                currentGC.currentSC.layers_Overlay.clear();
+                currentGC.currentSC.postProcessors[1] = new PP_scaleblur(42F);
+                currentStatus++;
+                break;
+
         }
     }
 
@@ -169,10 +328,14 @@ public class GameLogic implements ILogicTask {
                 break;
             case MSGtYPE_item:
                 currentStatus = 1201;
-                inGameSC.layers_Overlay.add(new LAYER_GameMessage2(item,180,this));  //Green message, with 2 second timeout;
+                inGameSC.layers_Overlay.add(new LAYER_GameMessage2(item, 180, this));  //Green message, with 2 second timeout;
                 message = s;
                 break;
 
         }
+    }
+
+    public void reLoadWorldObjects(WorldObject[] wos) {
+        room.reLoadWorldObjects(inGameSC, wos);
     }
 }

@@ -11,5 +11,6 @@ public class LevelList {
 
         levelList[0] = new LEVEL_testificate();
         levelList[1] = new LEVEL_1();
+        levelList[2] = new LEVEL_2();
     }
 }

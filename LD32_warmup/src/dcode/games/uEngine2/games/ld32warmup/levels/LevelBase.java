@@ -23,4 +23,5 @@ public abstract class LevelBase {
     }
 
     public abstract void onObjectClicked(int objectID, Color playerPositionColor);
+    public abstract boolean isColorUnlocked(int RED);
 }

@@ -13,14 +13,14 @@ public class LD32W_INIT {
         gs.TPS_MSX = 0;
         gs.TPS_BG = 16;
 
-        gs.debug = true;
+        gs.debug = false;
         gs.width = 400;
         gs.height = 300;
         gs.scale = 2;
 
         gs.spriteTableSize = 120;
         gs.enableSpriteWrappers = true;
-        gs.postProcCount = 0;
+        gs.postProcCount = 2;
         gs.spriteLayerSize = 120;
 
 

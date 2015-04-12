@@ -42,6 +42,7 @@ public class Player extends Sprite {
                 animDelay = 6;
             }
         } else animDelay--;
+        if(LStData.GL.currentItem.modifyPlayerSkin)return StData.resources.grf.getTexture("pla" + LStData.GL.currentItem.playerModifier + (animID + (direction * 4)));
         return StData.resources.grf.getTexture("pla" + (animID + (direction * 4)));
     }
 

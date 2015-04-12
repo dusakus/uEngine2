@@ -23,4 +23,9 @@ public class LEVEL_testificate extends LevelBase {
     public void onObjectClicked(int objectID, Color playerPositionColor) {
 
     }
+
+    @Override
+    public boolean isColorUnlocked(int RED) {
+        return false;
+    }
 }
