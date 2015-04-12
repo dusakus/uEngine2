@@ -22,6 +22,8 @@ public class Player extends Sprite {
     GameLogic gl;
     private int animDelay = 4;
 
+    private int sPos = 2;
+
     public Player(GameLogic gameLogic) {
         gl = gameLogic;
     }
@@ -93,13 +95,19 @@ public class Player extends Sprite {
         x = x - 32;
         y = y - 60;
 
+        //set sprite position in sprite table
+        gl.inGameSC.sprites_middle[sPos] = -1;
+        this.sPos = gl.room.getSpritezindex(inRoomX, inRoomY);
+        gl.inGameSC.sprites_middle[sPos] = 2;
+
+
     }
 
     public void checkTarget() {
         if (targetX > LStData.roomWidth || targetX < 0 || targetY > LStData.roomHeight || targetY < 0 || !gl.room.checkWalkable(targetX, targetY)) {
             targetX = inRoomX;
             targetY = inRoomY;
-            gl.showMessage("I can't go here", GameLogic.MSGtYPE_warning);
+            gl.showMessage("I can't go there", GameLogic.MSGtYPE_warning, null);
         }
     }
 

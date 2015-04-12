@@ -5,11 +5,14 @@ import dcode.games.uEngine2.GFX.ScreenContent;
 import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
 import dcode.games.uEngine2.games.ld32warmup.levels.LevelList;
+import dcode.games.uEngine2.games.ld32warmup.render.LAYER_GameMessage1;
+import dcode.games.uEngine2.games.ld32warmup.render.LAYER_GameMessage2;
 import dcode.games.uEngine2.games.ld32warmup.render.LAYER_GameSceneBACK;
 import dcode.games.uEngine2.games.ld32warmup.render.LAYER_GameSceneFRONT;
 
+import static dcode.games.uEngine2.StData.LOG;
+import static dcode.games.uEngine2.StData.threadManager;
 import static dcode.games.uEngine2.games.ld32warmup.LStData.*;
-import static dcode.games.uEngine2.StData.*;
 
 
 /**
@@ -18,15 +21,21 @@ import static dcode.games.uEngine2.StData.*;
 public class GameLogic implements ILogicTask {
 
 
+    public String message = "NULL";
+
     public Room room;
 
     public Player player;
 
     public int currentLevel = 1;
 
-    private ScreenContent inGameSC = null;
+    public Item currentItem = null;
+
+    public ScreenContent inGameSC = null;
     private ScreenContent temp = null;
     public static final int MSGtYPE_warning = 11;
+    public static final int MSGtYPE_info = 12;
+    public static final int MSGtYPE_item = 13;
 
     @Override
     public boolean isReady() {
@@ -39,9 +48,15 @@ public class GameLogic implements ILogicTask {
             case 101:
                 room.tick(this);
                 player.checkMove(inGameSC);
+                if (newRightClick) {
+                    room.checkRClick(player, RclickX, RclickY);
+                    newRightClick = false;
+                }
                 break;
             case 1:
                 LOG.println("[GL] Entering game_play environment");
+                GL = this;
+
                 currentStatus++;
                 break;
             case 2:
@@ -110,14 +125,28 @@ public class GameLogic implements ILogicTask {
                 break;
             case 513:
                 player = new Player(this);
-                player.setX((int)room.level.getInitialPlayerLocation().getX());
+                player.setX((int) room.level.getInitialPlayerLocation().getX());
                 player.setY((int) room.level.getInitialPlayerLocation().getY());
-                player.targetX = (int)room.level.getInitialPlayerLocation().getX();
-                player.targetY = (int)room.level.getInitialPlayerLocation().getY();
+                player.targetX = (int) room.level.getInitialPlayerLocation().getX();
+                player.targetY = (int) room.level.getInitialPlayerLocation().getY();
                 player.inRoomX = player.targetX;
                 player.inRoomY = player.targetY;
+                currentStatus = 521;
+                break;
+            case 521:
+                LOG.println("[GL] requesting worldObject textures...");
+                room.loadWorldObjects();
+                currentStatus++;
+                break;
+            case 522:
+                LOG.println("[GL] placing world objects");
+                room.insertWorldObjects(inGameSC);
                 currentStatus = 109;
-
+                break;
+            case 1201:
+                if (inGameSC.layers_Overlay.size() == 0) {
+                    currentStatus = 101;
+                }
         }
     }
 
@@ -126,7 +155,24 @@ public class GameLogic implements ILogicTask {
         return true;
     }
 
-    public void showMessage(String s, int msGtYPE_warning) {
+    public void showMessage(String s, int msGtYPE, Item item) {
+        switch (msGtYPE) {
+            case MSGtYPE_warning:
+                currentStatus = 1201;
+                inGameSC.layers_Overlay.add(new LAYER_GameMessage1("WARN", 60, this));  //Orange message, with 1 second timeout;
+                message = "WARN: " + s;
+                break;
+            case MSGtYPE_info:
+                currentStatus = 1201;
+                inGameSC.layers_Overlay.add(new LAYER_GameMessage1("INFO", 90, this));  //Blue message, with 1.5 second timeout;
+                message = "> " + s;
+                break;
+            case MSGtYPE_item:
+                currentStatus = 1201;
+                inGameSC.layers_Overlay.add(new LAYER_GameMessage2(item,180,this));  //Green message, with 2 second timeout;
+                message = s;
+                break;
 
+        }
     }
 }

@@ -18,10 +18,10 @@ public class LD32W_INIT {
         gs.height = 300;
         gs.scale = 2;
 
-        gs.spriteTableSize = 16;
+        gs.spriteTableSize = 120;
         gs.enableSpriteWrappers = true;
         gs.postProcCount = 0;
-        gs.spriteLayerSize = 16;
+        gs.spriteLayerSize = 120;
 
 
         gs.safeName = "ld32warmup";

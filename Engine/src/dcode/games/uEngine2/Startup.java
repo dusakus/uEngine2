@@ -18,6 +18,7 @@ import java.io.File;
 public class Startup {
 
 	public static void StartGame(PuGameBase GB) {
+		//System.setProperty("sun.java2d.opengl","True"); // does that change anything? (Except for crashing the game)
 		StData.GameInitializer = GB;
 		StData.setup = GB.setup;
 		StData.gameStorageDirectory = new File(System.getProperty("user.dir") + "/DCODE/uEngine/" + StData.setup.safeName);

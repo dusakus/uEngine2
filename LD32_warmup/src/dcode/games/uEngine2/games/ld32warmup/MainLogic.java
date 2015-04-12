@@ -1,5 +1,6 @@
 package dcode.games.uEngine2.games.ld32warmup;
 
+import dcode.games.uEngine2.BGTasks.internalTasks.LoadBasicTexture;
 import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
 import dcode.games.uEngine2.games.ld32warmup.levels.LevelList;
@@ -42,6 +43,11 @@ public class MainLogic implements ILogicTask {
                         break;
                     case 10:
                         LOG.println("[INIT] requesting texture preloading");
+
+                        StData.generalBGT.LPTasks.add(new LoadBasicTexture("msg/warning.png","MSGWARN"));
+                        StData.generalBGT.LPTasks.add(new LoadBasicTexture("msg/info.png","MSGINFO"));
+                        StData.generalBGT.LPTasks.add(new LoadBasicTexture("msg/item.png","MSGITEM"));
+
                         //TODO: preload textures
                         currentStatus++;
                         break;

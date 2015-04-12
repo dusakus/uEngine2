@@ -10,5 +10,6 @@ public class LevelList {
         levelList = new LevelBase[16];
 
         levelList[0] = new LEVEL_testificate();
+        levelList[1] = new LEVEL_1();
     }
 }

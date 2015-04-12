@@ -113,7 +113,11 @@ public class InHandler extends dcode.games.uEngine2.PInputHandler {
 
     @Override
     public void clickedRight(int x, int y) {
-
+        if(LStData.currentMode == LStData.MODE_GAME_PLAY && LStData.currentStatus == 101){
+            LStData.newRightClick = true;
+            LStData.RclickX = x;
+            LStData.RclickY = y;
+        }
     }
 
     @Override

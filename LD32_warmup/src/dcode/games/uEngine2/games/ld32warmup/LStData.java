@@ -20,5 +20,10 @@ public class LStData {
 
     public static int roomWidth = 400, roomHeight = 300;
 
+    public static boolean newRightClick = false;
+    public static int RclickX = 10, RclickY = 10;
+
+    public static GameLogic GL;
+
 }
 
