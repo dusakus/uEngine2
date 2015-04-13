@@ -2,7 +2,6 @@ package dcode.games.uEngine2.games.ld32warmup;
 
 import dcode.games.uEngine2.BGTasks.internalTasks.LoadBasicTexture;
 import dcode.games.uEngine2.GFX.ScreenContent;
-import dcode.games.uEngine2.GFX.layers.FillTextureLayer;
 import dcode.games.uEngine2.GFX.postproc.PP_scaleblur;
 import dcode.games.uEngine2.GFX.sprites.Sprite;
 import dcode.games.uEngine2.LOGIC.ILogicTask;
@@ -46,7 +45,9 @@ public class GameLogic implements ILogicTask {
     @Override
     public void perform() {
         switch (currentStatus) {
-            case 101:
+
+
+            case 101:           // inGame Tick
                 room.tick(this);
                 player.checkMove(inGameSC);
                 if (newRightClick) {
@@ -54,17 +55,23 @@ public class GameLogic implements ILogicTask {
                     newRightClick = false;
                 }
                 break;
+
+
             case 1:
                 LOG.println("[GL] Entering game_play environment");
                 GL = this;
+                currentLevel = 1;
 
                 currentStatus++;
                 break;
             case 2:
-                currentLevel = 1;
                 if (inGameSC != null) currentStatus = 109;
                 else currentStatus = 11;
                 break;
+
+
+            // First run INIT
+
             case 11:
                 LOG.println("[GL] inGameSC is null, initializing...");
                 inGameSC = new ScreenContent();
@@ -86,7 +93,9 @@ public class GameLogic implements ILogicTask {
                 LOG.println("[GL] initialization complete");
                 currentStatus = 2;
                 break;
-            case 109:
+            //END
+
+            case 109:           // try entering the level
                 if (room == null || room.levelID != currentLevel) {
                     inGameSC.sprites_middle = new int[StData.setup.spriteLayerSize];
                     inGameSC.sprites = new Sprite[StData.setup.spriteTableSize];
@@ -97,14 +106,18 @@ public class GameLogic implements ILogicTask {
                     currentStatus = 102;
                 }
                 break;
-            case 102:
+
+
+            case 102:           //Begin loaded level
                 room.init();
                 LOG.println("[GL] level begins now");
                 StData.currentGC.currentSC = inGameSC;
                 inGameSC.sprites[2] = player;
-                currentStatus = 2020;
+                currentStatus = 2020;  // Start animation
                 break;
-            case 501:
+
+
+            case 501:           //Load level
                 LOG.println("[GL] loading new level: " + currentLevel);
                 if (LevelList.levelList[currentLevel] == null) {
                     LOG.println("[GL] level doesn't exist, entering room 0");
@@ -114,21 +127,23 @@ public class GameLogic implements ILogicTask {
                     currentStatus++;
                 }
                 break;
+
             case 502:
                 LOG.println("[GL] requesting room textures...");
 
-                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_BACK.png", "RB"));
-                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_FRONT.png", "RF"));
-                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_DATA.png", "RD"));
+                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_BACK.png", "RB"+currentLevel));
+                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_FRONT.png", "RF"+currentLevel));
+                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_DATA.png", "RD"+currentLevel));
 
                 currentStatus = 512;
             case 512:
+                LOG.println("[GL] waiting for data texture...");
+
                 if (room.tryLoadDataLayer()) {
                     currentStatus++;
                 }
                 break;
             case 513:
-                player = new Player(this);
                 player.setX((int) room.level.getInitialPlayerLocation().getX());
                 player.setY((int) room.level.getInitialPlayerLocation().getY());
                 player.targetX = (int) room.level.getInitialPlayerLocation().getX();
@@ -153,12 +168,11 @@ public class GameLogic implements ILogicTask {
                 }
                 break;
             case 2020:
-                threadManager.LT.LOOP_TPS = 4;
+                threadManager.LT.LOOP_TPS = 10;
                 threadManager.LT.LOOP_Recalculate = true;
                 currentStatus++;
                 break;
             case 2050:
-                currentGC.currentSC.layers_Overlay.clear();
                 threadManager.LT.LOOP_TPS = 60;
                 threadManager.LT.LOOP_Recalculate = true;
                 inGameSC.postProcessors[1] = null;
@@ -166,11 +180,7 @@ public class GameLogic implements ILogicTask {
                 break;
             case 2001:
                 currentLevel++;
-                LStData.StoredFrame = StData.NextFrame.getSubimage(0, 0, 400, 300);
-                resources.grf.registerTexture(LStData.StoredFrame, "STRFR");
-                currentGC.currentSC.layers_Overlay.clear();
-                currentGC.currentSC.layers_Overlay.add(new FillTextureLayer("STRFR"));
-                threadManager.LT.LOOP_TPS = 4;
+                threadManager.LT.LOOP_TPS = 10;
                 threadManager.LT.LOOP_Recalculate = true;
                 currentStatus++;
                 break;
@@ -236,6 +246,7 @@ public class GameLogic implements ILogicTask {
 
             case 2014:
                 currentGC.currentSC.postProcessors[1] = new PP_scaleblur(42F);
+                room.unloadRoom();
                 currentStatus = 109;
                 break;
             case 2033:
@@ -294,14 +305,11 @@ public class GameLogic implements ILogicTask {
                 break;
 
             case 2022:
-                resources.grf.registerTexture(LStData.StoredFrame, "STRFR");
-                currentGC.currentSC.layers_Overlay.add(new FillTextureLayer("STRFR"));
                 currentGC.currentSC.postProcessors[1] = new PP_scaleblur(25F);
                 currentStatus++;
                 break;
 
             case 2021:
-                currentGC.currentSC.layers_Overlay.clear();
                 currentGC.currentSC.postProcessors[1] = new PP_scaleblur(42F);
                 currentStatus++;
                 break;

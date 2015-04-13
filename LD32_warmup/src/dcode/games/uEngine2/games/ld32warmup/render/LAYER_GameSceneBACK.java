@@ -14,8 +14,8 @@ import java.awt.*;
 public class LAYER_GameSceneBACK implements ILayer {
     @Override
     public void draw(Graphics2D G2D) {
-        if(LStData.currentStatus == 101){
-            G2D.drawImage(StData.resources.grf.getPartTexture("RB",
+        if(LStData.currentStatus == 101 || LStData.currentStatus > 2000){
+            G2D.drawImage(StData.resources.grf.getPartTexture("RB"+LStData.GL.currentLevel,
                     numbarTools.clamp(((Player)StData.currentGC.currentSC.sprites[2]).inRoomX - 200, 0, LStData.roomWidth-400),
                     numbarTools.clamp(((Player)StData.currentGC.currentSC.sprites[2]).inRoomY - 150, 0, LStData.roomHeight-300),
                     400,300

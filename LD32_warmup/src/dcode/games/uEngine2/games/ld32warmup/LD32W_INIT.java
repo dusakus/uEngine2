@@ -13,7 +13,7 @@ public class LD32W_INIT {
         gs.TPS_MSX = 0;
         gs.TPS_BG = 16;
 
-        gs.debug = false;
+        gs.debug = true;
         gs.width = 400;
         gs.height = 300;
         gs.scale = 2;

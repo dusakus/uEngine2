@@ -6,6 +6,7 @@ import dcode.games.uEngine2.games.ld32warmup.GameLogic;
 import dcode.games.uEngine2.games.ld32warmup.Item;
 import dcode.games.uEngine2.games.ld32warmup.LStData;
 import dcode.games.uEngine2.games.ld32warmup.WorldObject;
+import dcode.games.uEngine2.tools.numbarTools;
 
 import java.awt.*;
 import java.util.Random;
@@ -116,7 +117,7 @@ public class LEVEL_1 extends LevelBase {
         }
         if (objectID == 11 || objectID == 12 || objectID == 14 || objectID == 5) {
             if (playerPositionColor.getBlue() == objectID) {
-                if (new Random().nextInt() % 6 == 4) {
+                if (new Random().nextInt() % 2 == 1) {
                     if (keyFound) LStData.GL.showMessage(getRandomText(0), GameLogic.MSGtYPE_info, null);
                     else {
                         StData.LOG.println("[L1] " + getRandomText(2));
@@ -135,8 +136,8 @@ public class LEVEL_1 extends LevelBase {
     }
 
     private String getRandomText(int block) {
-
-        String s = RTexts[((new Random().nextInt() % 8) + (block*10))];
+        int i = numbarTools.mod(new Random().nextInt() % 8);
+        String s = RTexts[i + (block*10)];
         return s;
     }
 
