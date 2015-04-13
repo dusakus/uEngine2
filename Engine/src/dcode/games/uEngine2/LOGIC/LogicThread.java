@@ -36,9 +36,13 @@ public class LogicThread extends Thread {
 		while (StData.gameIsRunning) {
 
 			//waiting for next planned time
-			while (currentTime < nextTime) {
+			while (currentTime < nextTime || StData.gameFreeze) {
 				try {
 					Thread.sleep(0, 500000);
+					if (StData.gameFreeze) {
+						Thread.sleep(25);
+						nextTime = System.nanoTime() + timeStep;
+					}
 					currentTime = System.nanoTime();
 				} catch (InterruptedException ex) {
 				}

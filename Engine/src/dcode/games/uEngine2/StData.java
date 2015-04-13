@@ -35,4 +35,5 @@ public class StData {
 	public static boolean gameIsRunning = true;                                 //is game running, or should stop execution
 	static PuGameBase GameInitializer;                                          //Game initialization object, provided by game itself
 	public static Translator translator;
+	public static boolean gameFreeze = false;
 }

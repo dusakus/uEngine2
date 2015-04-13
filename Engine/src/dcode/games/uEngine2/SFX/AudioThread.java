@@ -41,9 +41,12 @@ public class AudioThread extends Thread {
 		while (StData.gameIsRunning) {
 
 			//waiting for next planned time and performing sidetasks
-			while (currentTime < nextTime) {
+			while (currentTime < nextTime || StData.gameFreeze) {
 				try {
-					Thread.sleep(5);
+					Thread.sleep(0, 500000);
+					if(StData.gameFreeze){
+						nextTime = System.nanoTime() + timeStep;
+					}
 					currentTime = System.nanoTime();
 				} catch (InterruptedException ex) {
 				}

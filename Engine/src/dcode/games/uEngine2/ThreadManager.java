@@ -11,9 +11,9 @@ import dcode.games.uEngine2.GFX.RenderThread;
 import dcode.games.uEngine2.LOGIC.LogicTasks;
 import dcode.games.uEngine2.LOGIC.LogicThread;
 import dcode.games.uEngine2.SFX.AudioThread;
+import dcode.games.uEngine2.SFX.tslib.TinySound;
 import dcode.games.uEngine2.input.KeyWrapper;
 import dcode.games.uEngine2.input.PointerWrapper;
-import dcode.games.uEngine2.translator.Translator;
 import dcode.games.uEngine2.window.Canvas;
 import dcode.games.uEngine2.window.Window;
 
@@ -41,6 +41,8 @@ public class ThreadManager {
 	}
 
 	public void startEngine() {
+		TinySound.init();
+
 		canvas = new Canvas();
 		window = new Window(canvas);
 
@@ -82,80 +84,82 @@ public class ThreadManager {
 			int tc_RT = RT.ticks;
 			int tc_AT = AT.ticks;
 			int tc_LT = LT.LOOP_ticks;
-
-			if (!RT.isAlive()) {
-				StData.LOG.println("[Thread Manager] Render thread died, recreating", "E3");
-				StData.LOG.dumpBuffer();
-				RT = new RenderThread();
-				RT.start();
-				RT.ticks = ltc_RT + 1;
-			}
-			if (!AT.isAlive()) {
-				StData.LOG.println("[Thread Manager] Audio thread died, recreating (C2)", "E3");
-				StData.LOG.dumpBuffer();
-				AT = new AudioThread();
-				AT.start();
-				AT.ticks = ltc_AT + 1;
-			}
-			if (!LT.isAlive()) {
-				StData.LOG.println("[Thread Manager] Logic thread died, recreating, game might be unplayable (C2)", "E3");
-				StData.LOG.dumpBuffer();
-				LT = new LogicThread();
-				LT.start();
-				LT.LOOP_ticks = ltc_LT + 1;
-			}
-			if (!BGT.isAlive()) {
-				StData.LOG.println("[Thread Manager] Background thread died, recreating, game might be unplayable (C2)", "E3");
-				StData.LOG.dumpBuffer();
-				BGT = new BackgroundThread();
-				BGT.start();
-			}
-
-			if (tc_RT - ltc_RT < StData.setup.FPS / 2) {
-				StData.LOG.println("[Thread Manager] Render thread might be stuck", "E1");
-				StData.LOG.dumpBuffer();
-			}
-
-			if (tc_RT - ltc_RT < StData.setup.FPS / 20) {
-				StData.LOG.println("[Thread Manager] Render thread is stuck, resetting", "E3");
-				StData.LOG.dumpBuffer();
-				RT.stop();
-				RT = new RenderThread();
-				RT.start();
-			}
-
-			if (tc_AT - ltc_AT < StData.setup.TPS_MSX / 2) {
-				StData.LOG.println("[Thread Manager] Audio thread might be stuck", "E1");
-				StData.LOG.dumpBuffer();
-			}
-
-			if (tc_AT - ltc_AT < StData.setup.TPS_MSX / 20) {
-				StData.LOG.println("[Thread Manager] Audio thread is stuck, resetting", "E3");
-				StData.LOG.dumpBuffer();
-				AT.stop();
-				AT = new AudioThread();
-				AT.start();
-			}
-
-			if (tc_LT - ltc_LT < StData.setup.TPS_logic / 5) {
-				StData.LOG.println("[Thread Manager] Logic thread might be stuck", "E2");
-				StData.LOG.dumpBuffer();
-			}
-
-			if (tc_LT == ltc_LT) {
-				if (LTCheckCount > 10) {
-					StData.LOG.println("[Thread Manager] Logic thread is stuck, game will be restarted", "E6S");
+			if (!StData.gameFreeze) {
+				if (!RT.isAlive()) {
+					StData.LOG.println("[Thread Manager] Render thread died, recreating", "E3");
 					StData.LOG.dumpBuffer();
-					LT.stop();
-					reinitialize();
-					break;
+					RT = new RenderThread();
+					RT.start();
+					RT.ticks = ltc_RT + 1;
+				}
+				if (!AT.isAlive()) {
+					StData.LOG.println("[Thread Manager] Audio thread died, recreating (C2)", "E3");
+					StData.LOG.dumpBuffer();
+					AT = new AudioThread();
+					AT.start();
+					AT.ticks = ltc_AT + 1;
+				}
+				if (!LT.isAlive()) {
+					StData.LOG.println("[Thread Manager] Logic thread died, recreating, game might be unplayable (C2)", "E3");
+					StData.LOG.dumpBuffer();
+					LT = new LogicThread();
+					LT.start();
+					LT.LOOP_ticks = ltc_LT + 1;
+				}
+				if (!BGT.isAlive()) {
+					StData.LOG.println("[Thread Manager] Background thread died, recreating, game might be unplayable (C2)", "E3");
+					StData.LOG.dumpBuffer();
+					BGT = new BackgroundThread();
+					BGT.start();
+				}
+
+				if (tc_RT - ltc_RT < StData.setup.FPS / 2) {
+					StData.LOG.println("[Thread Manager] Render thread might be stuck", "E1");
+					StData.LOG.dumpBuffer();
+				}
+
+				if (tc_RT - ltc_RT < StData.setup.FPS / 20) {
+					StData.LOG.println("[Thread Manager] Render thread is stuck, resetting", "E3");
+					StData.LOG.dumpBuffer();
+					RT.stop();
+					RT = new RenderThread();
+					RT.start();
+				}
+
+				if (tc_AT - ltc_AT < StData.setup.TPS_MSX / 2) {
+					StData.LOG.println("[Thread Manager] Audio thread might be stuck", "E1");
+					StData.LOG.dumpBuffer();
+				}
+
+				if (tc_AT - ltc_AT < StData.setup.TPS_MSX / 20) {
+					StData.LOG.println("[Thread Manager] Audio thread is stuck, resetting", "E3");
+					StData.LOG.dumpBuffer();
+					AT.stop();
+					AT = new AudioThread();
+					AT.start();
+				}
+
+				if (tc_LT - ltc_LT < StData.setup.TPS_logic / 5) {
+					StData.LOG.println("[Thread Manager] Logic thread might be stuck", "E2");
+					StData.LOG.dumpBuffer();
+				}
+
+				if (tc_LT == ltc_LT) {
+					if (LTCheckCount > 10) {
+						StData.LOG.println("[Thread Manager] Logic thread is stuck, game will be restarted", "E6S");
+						StData.LOG.dumpBuffer();
+						LT.stop();
+						reinitialize();
+						break;
+					} else {
+						LTCheckCount++;
+					}
 				} else {
-					LTCheckCount++;
+					LTCheckCount = 0;
 				}
 			} else {
-				LTCheckCount = 0;
+				StData.LOG.println("[Thread Manager] game freezed tick");
 			}
-
 			ltc_RT = tc_RT;
 			ltc_AT = tc_AT;
 			ltc_LT = tc_LT;
@@ -173,6 +177,7 @@ public class ThreadManager {
 	}
 
 	private void reinitialize() {
+		TinySound.shutdown();
 		RT.RUN = false;
 		AT.RUN = false;
 		LT.LOOP_RUN = false;

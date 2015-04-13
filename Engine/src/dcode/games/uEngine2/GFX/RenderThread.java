@@ -45,50 +45,57 @@ public class RenderThread extends Thread {
 		while (StData.gameIsRunning) {
 
 			//waiting for next planned time
-			while (currentTime < nextTime) {
+			while (currentTime < nextTime || StData.gameFreeze) {
 				try {
 					Thread.sleep(0, 500000);
+					if (StData.gameFreeze) {
+						Thread.sleep(25);
+						nextTime = System.nanoTime() + timeStep;
+					}
 					currentTime = System.nanoTime();
 				} catch (InterruptedException ex) {
 				}
 			}
 
 			nextTime += timeStep;
+
 			//END OF TIMING STUFF
 			//==================================================================
-			if (StData.NextFrame == null)
-				StData.NextFrame = new BufferedImage(StData.setup.width, StData.setup.height, BufferedImage.TYPE_INT_ARGB);
+			if (!StData.gameFreeze) {
+				if (StData.NextFrame == null)
+					StData.NextFrame = new BufferedImage(StData.setup.width, StData.setup.height, BufferedImage.TYPE_INT_ARGB);
 
-			Graphics2D G2D = StData.NextFrame.createGraphics();
+				Graphics2D G2D = StData.NextFrame.createGraphics();
 
-			ScreenContent sc = StData.currentGC.currentSC;
+				ScreenContent sc = StData.currentGC.currentSC;
 
-			if (StData.setup.enableSpriteWrappers) {
-				drawLayers(sc.layers_Background, G2D);
-				drawSprites(sc.sprites_back, G2D);
-				drawSpriteWrappers(sc.spriteW_back, G2D);
-				drawLayers(sc.layers_Center, G2D);
-				drawSprites(sc.sprites_middle, G2D);
-				drawSpriteWrappers(sc.spriteW_middle, G2D);
-				drawLayers(sc.layers_Foreground, G2D);
-				drawSprites(sc.sprites_front, G2D);
-				drawSpriteWrappers(sc.spriteW_front, G2D);
-				drawLayers(sc.layers_Overlay, G2D);
-			} else {
-				drawLayers(sc.layers_Background, G2D);
-				drawSprites(sc.sprites_back, G2D);
-				drawLayers(sc.layers_Center, G2D);
-				drawSprites(sc.sprites_middle, G2D);
-				drawLayers(sc.layers_Foreground, G2D);
-				drawSprites(sc.sprites_front, G2D);
-				drawLayers(sc.layers_Overlay, G2D);
+				if (StData.setup.enableSpriteWrappers) {
+					drawLayers(sc.layers_Background, G2D);
+					drawSprites(sc.sprites_back, G2D);
+					drawSpriteWrappers(sc.spriteW_back, G2D);
+					drawLayers(sc.layers_Center, G2D);
+					drawSprites(sc.sprites_middle, G2D);
+					drawSpriteWrappers(sc.spriteW_middle, G2D);
+					drawLayers(sc.layers_Foreground, G2D);
+					drawSprites(sc.sprites_front, G2D);
+					drawSpriteWrappers(sc.spriteW_front, G2D);
+					drawLayers(sc.layers_Overlay, G2D);
+				} else {
+					drawLayers(sc.layers_Background, G2D);
+					drawSprites(sc.sprites_back, G2D);
+					drawLayers(sc.layers_Center, G2D);
+					drawSprites(sc.sprites_middle, G2D);
+					drawLayers(sc.layers_Foreground, G2D);
+					drawSprites(sc.sprites_front, G2D);
+					drawLayers(sc.layers_Overlay, G2D);
+				}
+
+				if (StData.setup.postProcCount > 0) postProcess(StData.NextFrame);
+
+				systemDraw(StData.NextFrame.createGraphics());
+
+				StData.threadManager.updateCanvas();
 			}
-
-			if (StData.setup.postProcCount > 0) postProcess(StData.NextFrame);
-
-			systemDraw(StData.NextFrame.createGraphics());
-
-			StData.threadManager.updateCanvas();
 			//END OF TASKS
 			//==================================================================
 			if (StData.setup.debug) {

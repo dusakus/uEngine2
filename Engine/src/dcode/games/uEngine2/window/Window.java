@@ -25,7 +25,7 @@ public class Window {
 		gc = GC;
 		StData.LOG.println("uEngine2: Creating window", "N");
 		window = new JFrame(StData.setup.windowTitle + " | in DCode uEngine " + StData.VersionString);
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		window.setLayout(new BorderLayout());
 		window.add(GC, BorderLayout.CENTER);
 		window.setResizable(false);
@@ -40,6 +40,8 @@ public class Window {
 		gc.addMouseListener(pointM);
 		gc.requestFocus();
 		gc.requestFocusInWindow();
+
+		window.addWindowListener(new exitListener());
 	}
 
 	public void updateWLabel(String s) {

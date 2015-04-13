@@ -8,6 +8,7 @@ package dcode.games.uEngine2;
 import dcode.games.uEngine2.BGTasks.BackgroundTasks;
 import dcode.games.uEngine2.LOGIC.LogicTasks;
 import dcode.games.uEngine2.ResourceManager.ResMan;
+import dcode.games.uEngine2.SFX.tslib.TinySound;
 import dcode.games.uEngine2.translator.Translator;
 
 import java.io.File;
@@ -33,6 +34,7 @@ public class Startup {
 		StData.threadManager.setInputHandler(GB.initialInputHandler);
 		GB.contentInitializer.loadInitialGameContent();
 		StData.threadManager.monitorThreads();
+		TinySound.shutdown();
 		StData.LOG.println("MONITOR THREAD CEASED BEING ALIVE, EXITTING");
 		StData.LOG.dumpBuffer();
 		StData.LOG.END("uEngine2: BaYo!");

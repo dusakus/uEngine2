@@ -39,9 +39,10 @@ public class BackgroundThread extends Thread {
 			//waiting for next planned time
 			while (currentTime < nextTime) {
 				try {
-					Thread.sleep(2);
+					Thread.yield();
 					currentTime = System.nanoTime();
-				} catch (InterruptedException ex) {
+				} catch (Exception e) {
+					currentTime = System.nanoTime();
 				}
 			}
 			nextTime += timeStep;
@@ -50,7 +51,7 @@ public class BackgroundThread extends Thread {
 			try {
 				StData.LOG.dumpBuffer();
 				StData.generalBGT.processContent();
-				StData.currentGC.currentBGT.processContent();
+				if(!StData.gameFreeze)StData.currentGC.currentBGT.processContent();
 			} catch (Exception e) {
 				StData.LOG.printerr(e, "[BGThread] task crashed", "E2");
 			}
