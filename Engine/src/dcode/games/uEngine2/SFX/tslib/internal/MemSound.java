@@ -24,9 +24,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package kuusisto.tinysound.internal;
+package dcode.games.uEngine2.SFX.tslib.internal;
 
-import kuusisto.tinysound.Sound;
+
+import dcode.games.uEngine2.SFX.tslib.Sound;
 
 /**
  * The MemSound class is an implementation of the Sound interface that stores

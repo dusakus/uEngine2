@@ -24,12 +24,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package kuusisto.tinysound.internal;
-import java.util.concurrent.atomic.AtomicBoolean;
+package dcode.games.uEngine2.SFX.tslib.internal;
+import dcode.games.uEngine2.SFX.tslib.TinySound;
 
 import javax.sound.sampled.SourceDataLine;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import kuusisto.tinysound.TinySound;
 
 /**
  * The UpdateRunner class implements Runnable and is what performs automatic
@@ -68,7 +68,7 @@ public class UpdateRunner implements Runnable {
 			//mark the updater as running
 			this.running.set(true);
 			//1-sec buffer
-			int bufSize = (int)TinySound.FORMAT.getFrameRate() *
+			int bufSize = (int) TinySound.FORMAT.getFrameRate() *
 				TinySound.FORMAT.getFrameSize();
 			byte[] audioBuffer = new byte[bufSize];
 			//only buffer some maximum number of frames each update (25ms)

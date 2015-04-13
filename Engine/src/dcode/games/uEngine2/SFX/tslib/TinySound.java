@@ -24,34 +24,15 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package kuusisto.tinysound;
+package dcode.games.uEngine2.SFX.tslib;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import dcode.games.uEngine2.SFX.tslib.internal.*;
+import dcode.games.uEngine2.SFX.tslib.internal.Mixer;
+
+import javax.sound.sampled.*;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.SourceDataLine;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
-import kuusisto.tinysound.internal.ByteList;
-import kuusisto.tinysound.internal.MemMusic;
-import kuusisto.tinysound.internal.MemSound;
-import kuusisto.tinysound.internal.Mixer;
-import kuusisto.tinysound.internal.StreamInfo;
-import kuusisto.tinysound.internal.StreamMusic;
-import kuusisto.tinysound.internal.StreamSound;
-import kuusisto.tinysound.internal.UpdateRunner;
 
 /**
  * TinySound is the main class of the TinySound system.  In order to use the

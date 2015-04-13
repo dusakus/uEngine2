@@ -24,7 +24,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package kuusisto.tinysound;
+package dcode.games.uEngine2.SFX.tslib;
 
 /**
  * The Music interface is an abstraction for music.  Music objects should only

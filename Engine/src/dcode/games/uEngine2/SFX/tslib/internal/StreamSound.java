@@ -24,13 +24,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package kuusisto.tinysound.internal;
+package dcode.games.uEngine2.SFX.tslib.internal;
+
+import dcode.games.uEngine2.SFX.tslib.Sound;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import kuusisto.tinysound.Sound;
 
 /**
  * Thes StreamSound class is an implementation of the Sound interface that
