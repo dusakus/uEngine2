@@ -63,8 +63,8 @@ class BatPack {
     private boolean lastCollisionYmirr;
 
     public BatPack() {
-        horiz = new ArrayList<>();
-        verti = new ArrayList<>();
+        horiz = new ArrayList<Bat>();
+        verti = new ArrayList<Bat>();
     }
 
     public void addBat(Bat bat) {
@@ -124,11 +124,7 @@ class BatPack {
             for (Bat b : verti) {
                 if (b.facing == Bat.FACING_RIGHT && b.coordX + 12 == x && b.coordY < y && b.coordY + b.width > y) {
                     lastCollisionXmirr = false;
-                    if (b.coordY + (b.width / 2) > y) {
-                        lastCollisionYmirr = true;
-                    } else {
-                        lastCollisionYmirr = false;
-                    }
+                    lastCollisionYmirr = b.coordY + (b.width / 2) > y;
                     lastCollisionDir = 100 - selectCEffect((y - b.coordY) - (b.width / 2), b.width / 2);
                     return true;
                 }
@@ -137,11 +133,7 @@ class BatPack {
             for (Bat b : verti) {
                 if (b.facing == Bat.FACING_LEFT && b.coordX == x && b.coordY < y && b.coordY + b.width > y) {
                     lastCollisionXmirr = true;
-                    if (b.coordY + (b.width / 2) > y) {
-                        lastCollisionYmirr = false;
-                    } else {
-                        lastCollisionYmirr = true;
-                    }
+                    lastCollisionYmirr = b.coordY + (b.width / 2) <= y;
                     lastCollisionDir = 100 - selectCEffect((y - b.coordY) - (b.width / 2), b.width / 2);
                     return true;
                 }
@@ -150,11 +142,7 @@ class BatPack {
             for (Bat b : horiz) {
                 if (b.facing == Bat.FACING_DOWN && b.coordY + 12 == y && b.coordX < x && b.coordX + b.width > x) {
                     lastCollisionYmirr = false;
-                    if (b.coordX + (b.width / 2) > x) {
-                        lastCollisionXmirr = true;
-                    } else {
-                        lastCollisionXmirr = false;
-                    }
+                    lastCollisionXmirr = b.coordX + (b.width / 2) > x;
                     lastCollisionDir = selectCEffect((x - b.coordX) - (b.width / 2), b.width / 2);
                     return true;
                 }
@@ -163,11 +151,7 @@ class BatPack {
             for (Bat b : horiz) {
                 if (b.facing == Bat.FACING_UP && b.coordY == y && b.coordX < x && b.coordX + b.width > x) {
                     lastCollisionYmirr = true;
-                    if (b.coordX + (b.width / 2) > x) {
-                        lastCollisionXmirr = true;
-                    } else {
-                        lastCollisionXmirr = false;
-                    }
+                    lastCollisionXmirr = b.coordX + (b.width / 2) > x;
                     lastCollisionDir = selectCEffect((x - b.coordX) - (b.width / 2), b.width / 2);
                     return true;
                 }
