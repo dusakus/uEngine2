@@ -39,7 +39,7 @@ public class BackgroundThread extends Thread {
 			//waiting for next planned time
 			while (currentTime < nextTime) {
 				try {
-					Thread.yield();
+					Thread.sleep(10);
 					currentTime = System.nanoTime();
 				} catch (Exception e) {
 					currentTime = System.nanoTime();
@@ -50,7 +50,7 @@ public class BackgroundThread extends Thread {
 			//The real part of this loop
 			try {
 				StData.LOG.dumpBuffer();
-				StData.generalBGT.processContent();
+				StData.generalBGT.processContent();  // The generalBGTasks are the only thing that gets processed when game is frozen
 				if(!StData.gameFreeze)StData.currentGC.currentBGT.processContent();
 			} catch (Exception e) {
 				StData.LOG.printerr(e, "[BGThread] task crashed", "E2");
