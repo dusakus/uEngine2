@@ -1,7 +1,7 @@
 # uEngine2
 main uE2 repo, contains engine + all projects
 
-License: DLoc v0.5 (except uFlappy graphics) :
+License: DLoc v0.5 (except uFlappy graphics and TinySound lib) :
 
     <---======[ D-LIC open code 0.5 ]======--->
 
