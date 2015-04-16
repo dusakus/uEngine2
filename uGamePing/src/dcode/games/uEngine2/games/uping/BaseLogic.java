@@ -4,6 +4,8 @@ import dcode.games.uEngine2.BGTasks.internalTasks.LoadBasicTexture;
 import dcode.games.uEngine2.GFX.layers.ClearColorLayer;
 import dcode.games.uEngine2.GFX.postproc.PP_scaleblur;
 import dcode.games.uEngine2.LOGIC.ILogicTask;
+import dcode.games.uEngine2.SFX.tslib.Music;
+import dcode.games.uEngine2.SFX.tslib.TinySound;
 import dcode.games.uEngine2.StData;
 
 import java.awt.*;
@@ -30,7 +32,7 @@ public class BaseLogic implements ILogicTask {
 		return isReady;
 	}
 
-	@Override
+
 	public void perform() {
 		switch (currentMode) {
 			case MODE_GAME_PLAY:
@@ -48,6 +50,11 @@ public class BaseLogic implements ILogicTask {
 						StData.currentGC.currentSC.sprites_middle[1] = 1;
 						StData.currentGC.currentSC.postProcessors[1] = new PP_scaleblur(1.5F);
 
+						Music m = TinySound.loadMusic(getClass().getResource("/dcode/games/uEngine2/games/uping/res/msx/testificate.wav"));
+						LStData.batHit = TinySound.loadSound(getClass().getResource("/dcode/games/uEngine2/games/uping/res/sfx/hit.wav"));
+						LStData.wallHit = TinySound.loadSound(getClass().getResource("/dcode/games/uEngine2/games/uping/res/sfx/wall.wav"));
+
+						m.play(true);
 
 						new ReallyCrappyWorldConstructionObjectBecauseImLazy().writeWorldData(gameworld);
 

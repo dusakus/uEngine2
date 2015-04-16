@@ -11,6 +11,7 @@ import dcode.games.uEngine2.StData;
  * @author dusakus
  */
 public class AudioThread extends Thread {
+	private static int threadIteration = -1;
 
 	public int ticks = 0;
 	public boolean RUN = true;
@@ -29,6 +30,8 @@ public class AudioThread extends Thread {
 
 	@Override
 	public void run() {
+		threadIteration++;
+		this.setName("Audio Thread ITER"+threadIteration);
 		//Timming variables
 		int timeStep = 1000000000 / TPS;
 		long currentTime = System.nanoTime();
@@ -45,6 +48,7 @@ public class AudioThread extends Thread {
 				try {
 					Thread.sleep(0, 500000);
 					if(StData.gameFreeze){
+						Thread.sleep(10);
 						nextTime = System.nanoTime() + timeStep;
 					}
 					currentTime = System.nanoTime();

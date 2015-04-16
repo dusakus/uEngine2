@@ -1,7 +1,6 @@
 package dcode.games.uEngine2.games.uping;
 
 import dcode.games.uEngine2.*;
-import dcode.games.uEngine2.GFX.postproc.PP_scaleblur;
 
 /**
  * Created by dusakus on 24.03.15.
@@ -31,6 +30,7 @@ public class uPingStartup {
 		gs.postProcCount = 11;
 		gs.spriteLayerSize = 4;
 
+		gs.soundEnabled = true;
 
 		gs.safeName = "uping";
 		gs.screenName = "uGamePing";

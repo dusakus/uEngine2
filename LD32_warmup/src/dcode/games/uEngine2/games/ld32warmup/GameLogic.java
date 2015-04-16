@@ -36,6 +36,7 @@ public class GameLogic implements ILogicTask {
     public static final int MSGtYPE_warning = 11;
     public static final int MSGtYPE_info = 12;
     public static final int MSGtYPE_item = 13;
+    private long waitBegan;
 
     @Override
     public boolean isReady() {
@@ -131,15 +132,15 @@ public class GameLogic implements ILogicTask {
             case 502:
                 LOG.println("[GL] requesting room textures...");
 
-                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_BACK.png", "RB"+currentLevel));
-                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_FRONT.png", "RF"+currentLevel));
+                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_BACK.png", "RB" + currentLevel));
+                threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_FRONT.png", "RF" + currentLevel));
                 threadManager.BGT.addTask(new LoadBasicTexture("rooms/" + room.texId + "_DATA.png", "RD"+currentLevel));
-
+                waitBegan = System.currentTimeMillis();
                 currentStatus = 512;
             case 512:
                 LOG.println("[GL] waiting for data texture...");
 
-                if (room.tryLoadDataLayer()) {
+                if (room.tryLoadDataLayer() || waitBegan + 1000<System.currentTimeMillis()) {
                     currentStatus++;
                 }
                 break;
@@ -310,6 +311,12 @@ public class GameLogic implements ILogicTask {
                 break;
 
             case 2021:
+                player.setX((int) room.level.getInitialPlayerLocation().getX());
+                player.setY((int) room.level.getInitialPlayerLocation().getY());
+                player.targetX = (int) room.level.getInitialPlayerLocation().getX();
+                player.targetY = (int) room.level.getInitialPlayerLocation().getY();
+                player.inRoomX = player.targetX;
+                player.inRoomY = player.targetY;
                 currentGC.currentSC.postProcessors[1] = new PP_scaleblur(42F);
                 currentStatus++;
                 break;
@@ -323,21 +330,22 @@ public class GameLogic implements ILogicTask {
     }
 
     public void showMessage(String s, int msGtYPE, Item item) {
+        LOG.println("Showing message type "+msGtYPE);
         switch (msGtYPE) {
             case MSGtYPE_warning:
                 currentStatus = 1201;
-                inGameSC.layers_Overlay.add(new LAYER_GameMessage1("WARN", 60, this));  //Orange message, with 1 second timeout;
                 message = "WARN: " + s;
+                inGameSC.layers_Overlay.add(new LAYER_GameMessage1("WARN", 60, this));  //Orange message, with 1 second timeout;
                 break;
             case MSGtYPE_info:
                 currentStatus = 1201;
-                inGameSC.layers_Overlay.add(new LAYER_GameMessage1("INFO", 90, this));  //Blue message, with 1.5 second timeout;
                 message = "> " + s;
+                inGameSC.layers_Overlay.add(new LAYER_GameMessage1("INFO", 90, this));  //Blue message, with 1.5 second timeout;
                 break;
             case MSGtYPE_item:
                 currentStatus = 1201;
-                inGameSC.layers_Overlay.add(new LAYER_GameMessage2(item, 180, this));  //Green message, with 2 second timeout;
                 message = s;
+                inGameSC.layers_Overlay.add(new LAYER_GameMessage2(item, 180, this));  //Green message, with 2 second timeout;
                 break;
 
         }

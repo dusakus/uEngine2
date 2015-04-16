@@ -1,6 +1,7 @@
 package dcode.games.uEngine2.games.ugametoolkit;
 
 import dcode.games.uEngine2.GFX.ILayer;
+import dcode.games.uEngine2.StData;
 
 import java.awt.*;
 
@@ -17,7 +18,13 @@ public class LAYER_menu implements ILayer {
 
     @Override
     public void draw(Graphics2D G2D) {
-
+        switch (ml.getRenderMode()){
+            case MenuLogic.RENDERMODE_LIST:
+                for (int i = 0; i < ml.getListLength(); i++) {
+                    G2D.drawImage(StData.resources.grf.getString("FGENB",ml.getListEntry(i)), 10, 20*i + 10, null);
+                }
+                break;
+        }
     }
 
     @Override
@@ -27,6 +34,6 @@ public class LAYER_menu implements ILayer {
 
     @Override
     public boolean renderMe() {
-        return false;
+        return true;
     }
 }

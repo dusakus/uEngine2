@@ -24,7 +24,7 @@ public class DSU_NODE {
         NODE_ARRAY = new DSU_NODE[128];
         if (extend) {
             for (int i = 0; i < NODE_ARRAY.length; i++) {
-                NODE_ARRAY[i] = new DSU_NODE(level + 1, level < 3);
+                NODE_ARRAY[i] = new DSU_NODE(level+1, level < 3);
             }
         } else {
             for (int i = 0; i < NODE_ARRAY.length; i++) {
@@ -43,7 +43,7 @@ public class DSU_NODE {
             return finalKey.OBJ;
         }
         try {
-            return NODE_ARRAY[key.charAt(level + 1) - 32].getObject(key);
+            return NODE_ARRAY[key.charAt(level) - 32].getObject(key);
         } catch (Exception e) {
             return null;
         }
@@ -57,34 +57,33 @@ public class DSU_NODE {
             finalKey = null;
         }
         try {
-            NODE_ARRAY[key.charAt(level + 1) - 32].removeObject(key);
+            NODE_ARRAY[key.charAt(level) - 32].removeObject(key);
         } catch (Exception e) {
         }
     }
 
     public void storeObject(DSU_OBJECT ob) {
         if (SS != null) {
-            SS.objects.add(ob);
+            SS.add(ob);
             if (SS.getSize() > 11 && !optimizationRequested) {
                 StData.threadManager.BGT.addTask(new DSU_OptimizeNode(this));
                 optimizationRequested = true;
             }
-        } else if (ob.KEY.length() == level + 1) {
+        } else if (ob.KEY.length() == level) {
             finalKey = ob;
         } else {
-            if (NODE_ARRAY[ob.KEY.charAt(level + 1) - 32] == null) {
-                NODE_ARRAY[ob.KEY.charAt(level + 1) - 32] = new DSU_NODE(level + 1, false);
+            if (NODE_ARRAY[ob.KEY.charAt(level) - 32] == null) {
+                NODE_ARRAY[ob.KEY.charAt(level) - 32] = new DSU_NODE(level+1, false);
             }
-            NODE_ARRAY[ob.KEY.charAt(level + 1) - 32].storeObject(ob);
+            NODE_ARRAY[ob.KEY.charAt(level) - 32].storeObject(ob);
         }
-
     }
 
     public DSU_NODE getNode(String key) {
         if (key.length() == this.level) {
             return this;
-        } else if (NODE_ARRAY[key.charAt(level + 1) - 32] != null) {
-            return NODE_ARRAY[key.charAt(level + 1) - 32].getNode(key);
+        } else if (NODE_ARRAY[key.charAt(level) - 32] != null) {
+            return NODE_ARRAY[key.charAt(level) - 32].getNode(key);
         }
         return null;
     }

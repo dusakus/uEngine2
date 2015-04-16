@@ -18,6 +18,7 @@ import java.util.ArrayList;
  * @author dusakus
  */
 public class RenderThread extends Thread {
+	private static int threadIteration = -1;
 
 	public int ticks = 0;
 	public boolean RUN = true;
@@ -32,7 +33,9 @@ public class RenderThread extends Thread {
 	@Override
 	public void run() {
 
-		this.setName("Render Theread");
+
+		threadIteration++;
+		this.setName("Render Thread ITER"+threadIteration);
 		//Timming variables
 		int timeStep = 1000000000 / TPS;
 		long currentTime = System.nanoTime();

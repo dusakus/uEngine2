@@ -42,6 +42,7 @@ public class uGameSetup {
 	public String defaultLangId = "baseLang";                //the default language, file MUST EXIST
 
 	// Sound system settings               					//All disabled by default
+	public boolean soundEnabled = false;
 	public int wavChannelCount = 0;                            //how many WAV playback channels are needed
 	public int scriptChannelCount = 0;                        //how many SoundScript playback channels are needed
 	public int effectChannelCount = 0;                      //how many effect (short WAV) playback channels are needed

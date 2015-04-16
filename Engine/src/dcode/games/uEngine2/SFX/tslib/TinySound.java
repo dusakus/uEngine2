@@ -28,6 +28,7 @@ package dcode.games.uEngine2.SFX.tslib;
 
 import dcode.games.uEngine2.SFX.tslib.internal.*;
 import dcode.games.uEngine2.SFX.tslib.internal.Mixer;
+import dcode.games.uEngine2.StData;
 
 import javax.sound.sampled.*;
 import java.io.*;
@@ -39,11 +40,11 @@ import java.net.URL;
  * TinySound system, it must be initialized.  After that, Music and Sound
  * objects can be loaded and used.  When finished with the TinySound system, it
  * must be shutdown.
- * 
+ *
  * @author Finn Kuusisto
  */
 public class TinySound {
-	
+
 	public static final String VERSION = "1.1.1";
 
 	/**
@@ -57,8 +58,8 @@ public class TinySound {
 			4, //frame size 4 bytes (16-bit, 2 channel)
 			44100, //same as sampling rate
 			false //little-endian
-			);
-	
+	);
+
 	//the system has only one mixer for both music and sounds
 	private static Mixer mixer;
 	//need a line to the speakers
@@ -69,7 +70,7 @@ public class TinySound {
 	private static UpdateRunner autoUpdater;
 	//counter for unique sound IDs
 	private static int soundCount = 0;
-	
+
 	/**
 	 * Initialize Tinysound.  This must be called before loading audio.
 	 */
@@ -77,36 +78,38 @@ public class TinySound {
 		if (TinySound.inited) {
 			return;
 		}
+		StData.LOG.println("TinySound: starting audio backend");
 		//try to open a line to the speakers
 		DataLine.Info info = new DataLine.Info(SourceDataLine.class,
 				TinySound.FORMAT);
 		if (!AudioSystem.isLineSupported(info)) {
-		    System.err.println("Unsupported output format!");
-		    return;
+			StData.LOG.println("Unsupported output format!", "E3");
+			return;
 		}
 		TinySound.outLine = TinySound.tryGetLine();
 		if (TinySound.outLine == null) {
-		    System.err.println("Output line unavailable!");
-		    return;
+			StData.LOG.println("Output line unavailable!", "E3");
+			return;
 		}
 		//start the line and finish initialization
 		TinySound.outLine.start();
 		TinySound.finishInit();
 	}
-	
+
 	/**
 	 * Alternative function to initialize TinySound which should only be used by
 	 * those very familiar with the Java Sound API.  This function allows the
 	 * line that is used for audio playback to be opened on a specific Mixer.
+	 *
 	 * @param info the Mixer.Info representing the desired Mixer
 	 * @throws LineUnavailableException if a Line is not available from the
-	 * specified Mixer
-	 * @throws SecurityException if the specified Mixer or Line are unavailable
-	 * due to security restrictions
+	 *                                  specified Mixer
+	 * @throws SecurityException        if the specified Mixer or Line are unavailable
+	 *                                  due to security restrictions
 	 * @throws IllegalArgumentException if the specified Mixer is not installed
-	 * on the system
+	 *                                  on the system
 	 */
-	public static void init(javax.sound.sampled.Mixer.Info info) 
+	public static void init(javax.sound.sampled.Mixer.Info info)
 			throws LineUnavailableException, SecurityException,
 			IllegalArgumentException {
 		if (TinySound.inited) {
@@ -116,13 +119,13 @@ public class TinySound {
 		javax.sound.sampled.Mixer mixer = AudioSystem.getMixer(info);
 		DataLine.Info lineInfo = new DataLine.Info(SourceDataLine.class,
 				TinySound.FORMAT);
-		TinySound.outLine = (SourceDataLine)mixer.getLine(lineInfo);
+		TinySound.outLine = (SourceDataLine) mixer.getLine(lineInfo);
 		TinySound.outLine.open(TinySound.FORMAT);
 		//start the line and finish initialization
 		TinySound.outLine.start();
 		TinySound.finishInit();
 	}
-	
+
 	/**
 	 * Initializes the mixer and updater, and marks TinySound as initialized.
 	 */
@@ -136,13 +139,16 @@ public class TinySound {
 		try {
 			updateThread.setDaemon(true);
 			updateThread.setPriority(Thread.MAX_PRIORITY);
-		} catch (Exception e) {}
+			updateThread.setName("TinySound main thread");
+		} catch (Exception e) {
+		}
 		TinySound.inited = true;
 		updateThread.start();
 		//yield to potentially give the updater a chance
 		Thread.yield();
+		StData.LOG.println("TinySound: audio backend is running");
 	}
-	
+
 	/**
 	 * Shutdown TinySound.
 	 */
@@ -150,6 +156,7 @@ public class TinySound {
 		if (!TinySound.inited) {
 			return;
 		}
+		StData.LOG.println("TinySound: stopping audio backend");
 		TinySound.inited = false;
 		//stop the auto-updater if running
 		TinySound.autoUpdater.stop();
@@ -159,19 +166,22 @@ public class TinySound {
 		TinySound.mixer.clearMusic();
 		TinySound.mixer.clearSounds();
 		TinySound.mixer = null;
+		StData.LOG.println("TinySound: audio backend stopped");
 	}
-	
+
 	/**
 	 * Determine if TinySound is initialized and ready for use.
+	 *
 	 * @return true if TinySound is initialized, false if TinySound has not been
 	 * initialized or has subsequently been shutdown
 	 */
 	public static boolean isInitialized() {
 		return TinySound.inited;
 	}
-	
+
 	/**
 	 * Get the global volume for all audio.
+	 *
 	 * @return the global volume for all audio, -1.0 if TinySound has not been
 	 * initialized or has subsequently been shutdown
 	 */
@@ -181,10 +191,11 @@ public class TinySound {
 		}
 		return TinySound.mixer.getVolume();
 	}
-	
+
 	/**
 	 * Set the global volume.  This is an extra multiplier, not a replacement,
 	 * for all Music and Sound volume settings.  It starts at 1.0.
+	 *
 	 * @param volume the global volume to set
 	 */
 	public static void setGlobalVolume(double volume) {
@@ -193,23 +204,25 @@ public class TinySound {
 		}
 		TinySound.mixer.setVolume(volume);
 	}
-	
+
 	/**
 	 * Load a Music by a resource name.  The resource must be on the classpath
 	 * for this to work.  This will store audio data in memory.
+	 *
 	 * @param name name of the Music resource
 	 * @return Music resource as specified, null if not found/loaded
 	 */
 	public static Music loadMusic(String name) {
 		return TinySound.loadMusic(name, false);
 	}
-	
+
 	/**
 	 * Load a Music by a resource name.  The resource must be on the classpath
 	 * for this to work.
-	 * @param name name of the Music resource
+	 *
+	 * @param name           name of the Music resource
 	 * @param streamFromFile true if this Music should be streamed from a
-	 * temporary file to reduce memory overhead
+	 *                       temporary file to reduce memory overhead
 	 * @return Music resource as specified, null if not found/loaded
 	 */
 	public static Music loadMusic(String name, boolean streamFromFile) {
@@ -234,21 +247,23 @@ public class TinySound {
 		}
 		return TinySound.loadMusic(url, streamFromFile);
 	}
-	
+
 	/**
 	 * Load a Music by a File.  This will store audio data in memory.
+	 *
 	 * @param file the Music file to load
 	 * @return Music from file as specified, null if not found/loaded
 	 */
 	public static Music loadMusic(File file) {
 		return TinySound.loadMusic(file, false);
 	}
-	
+
 	/**
 	 * Load a Music by a File.
-	 * @param file the Music file to load
+	 *
+	 * @param file           the Music file to load
 	 * @param streamFromFile true if this Music should be streamed from a
-	 * temporary file to reduce memory overhead
+	 *                       temporary file to reduce memory overhead
 	 * @return Music from file as specified, null if not found/loaded
 	 */
 	public static Music loadMusic(File file, boolean streamFromFile) {
@@ -270,21 +285,23 @@ public class TinySound {
 		}
 		return TinySound.loadMusic(url, streamFromFile);
 	}
-	
+
 	/**
 	 * Load a Music by a URL.  This will store audio data in memory.
+	 *
 	 * @param url the URL of the Music
 	 * @return Music from URL as specified, null if not found/loaded
 	 */
 	public static Music loadMusic(URL url) {
 		return TinySound.loadMusic(url, false);
 	}
-	
+
 	/**
 	 * Load a Music by a URL.
-	 * @param url the URL of the Music
+	 *
+	 * @param url            the URL of the Music
 	 * @param streamFromFile true if this Music should be streamed from a
-	 * temporary file to reduce memory overhead
+	 *                       temporary file to reduce memory overhead
 	 * @return Music from URL as specified, null if not found/loaded
 	 */
 	public static Music loadMusic(URL url, boolean streamFromFile) {
@@ -329,23 +346,25 @@ public class TinySound {
 		//construct the Music object and register it with the mixer
 		return new MemMusic(data[0], data[1], TinySound.mixer);
 	}
-	
+
 	/**
 	 * Load a Sound by a resource name.  The resource must be on the classpath
 	 * for this to work.  This will store audio data in memory.
+	 *
 	 * @param name name of the Sound resource
 	 * @return Sound resource as specified, null if not found/loaded
 	 */
 	public static Sound loadSound(String name) {
 		return TinySound.loadSound(name, false);
 	}
-	
+
 	/**
 	 * Load a Sound by a resource name.  The resource must be on the classpath
 	 * for this to work.
-	 * @param name name of the Sound resource
+	 *
+	 * @param name           name of the Sound resource
 	 * @param streamFromFile true if this Music should be streamed from a
-	 * temporary file to reduce memory overhead
+	 *                       temporary file to reduce memory overhead
 	 * @return Sound resource as specified, null if not found/loaded
 	 */
 	public static Sound loadSound(String name, boolean streamFromFile) {
@@ -371,21 +390,23 @@ public class TinySound {
 		return TinySound.loadSound(url, streamFromFile);
 
 	}
-	
+
 	/**
 	 * Load a Sound by a File.  This will store audio data in memory.
+	 *
 	 * @param file the Sound file to load
 	 * @return Sound from file as specified, null if not found/loaded
 	 */
 	public static Sound loadSound(File file) {
 		return TinySound.loadSound(file, false);
 	}
-	
+
 	/**
 	 * Load a Sound by a File.
-	 * @param file the Sound file to load
+	 *
+	 * @param file           the Sound file to load
 	 * @param streamFromFile true if this Music should be streamed from a
-	 * temporary file to reduce memory overhead
+	 *                       temporary file to reduce memory overhead
 	 * @return Sound from file as specified, null if not found/loaded
 	 */
 	public static Sound loadSound(File file, boolean streamFromFile) {
@@ -407,21 +428,23 @@ public class TinySound {
 		}
 		return TinySound.loadSound(url, streamFromFile);
 	}
-	
+
 	/**
 	 * Load a Sound by a URL.  This will store audio data in memory.
+	 *
 	 * @param url the URL of the Sound
 	 * @return Sound from URL as specified, null if not found/loaded
 	 */
 	public static Sound loadSound(URL url) {
 		return TinySound.loadSound(url, false);
 	}
-	
+
 	/**
 	 * Load a Sound by a URL.  This will store audio data in memory.
-	 * @param url the URL of the Sound
+	 *
+	 * @param url            the URL of the Sound
 	 * @param streamFromFile true if this Music should be streamed from a
-	 * temporary file to reduce memory overhead
+	 *                       temporary file to reduce memory overhead
 	 * @return Sound from URL as specified, null if not found/loaded
 	 */
 	public static Sound loadSound(URL url, boolean streamFromFile) {
@@ -469,9 +492,10 @@ public class TinySound {
 		return new MemSound(data[0], data[1], TinySound.mixer,
 				TinySound.soundCount);
 	}
-	
+
 	/**
 	 * Reads all of the bytes from an AudioInputStream.
+	 *
 	 * @param stream the stream to read
 	 * @return all bytes from the stream, null if error
 	 */
@@ -492,15 +516,15 @@ public class TinySound {
 		} //handle 2-channel
 		else if (numChannels == 2) {
 			data = TinySound.readAllBytesTwoChannel(stream);
-		}
-		else { //wtf?
+		} else { //wtf?
 			System.err.println("Unable to read " + numChannels + " channels!");
 		}
 		return data;
 	}
-	
+
 	/**
 	 * Reads all of the bytes from a 1-channel AudioInputStream.
+	 *
 	 * @param stream the stream to read
 	 * @return all bytes from the stream, null if error
 	 */
@@ -509,19 +533,21 @@ public class TinySound {
 		byte[] data = null;
 		try {
 			data = TinySound.getBytes(stream);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			System.err.println("Error reading all bytes from stream!");
 			return null;
-		}
-		finally {
-			try { stream.close(); } catch (IOException e) {}
+		} finally {
+			try {
+				stream.close();
+			} catch (IOException e) {
+			}
 		}
 		return data;
 	}
-	
+
 	/**
 	 * Reads all of the bytes from a 2-channel AudioInputStream.
+	 *
 	 * @param stream the stream to read
 	 * @return all bytes from the stream, null if error
 	 */
@@ -542,19 +568,21 @@ public class TinySound {
 			data = new byte[2][];
 			data[0] = left;
 			data[1] = right;
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			System.err.println("Error reading all bytes from stream!");
 			return null;
-		}
-		finally {
-			try { stream.close(); } catch (IOException e) {}
+		} finally {
+			try {
+				stream.close();
+			} catch (IOException e) {
+			}
 		}
 		return data;
 	}
-	
+
 	/**
 	 * Gets and AudioInputStream in the TinySound system format.
+	 *
 	 * @param url URL of the resource
 	 * @return the specified stream as an AudioInputStream stream, null if
 	 * failure
@@ -568,11 +596,11 @@ public class TinySound {
 			AudioFormat mono16 = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
 					44100, 16, 1, 2, 44100, false);
 			//1 or 2 channel 8-bit may be easy to convert
-			AudioFormat mono8 =	new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
+			AudioFormat mono8 = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
 					44100, 8, 1, 1, 44100, false);
 			AudioFormat stereo8 =
-				new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 8, 2, 2,
-					44100, false);
+					new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 8, 2, 2,
+							44100, false);
 			//now check formats (attempt conversion as needed)
 			if (streamFormat.matches(TinySound.FORMAT) ||
 					streamFormat.matches(mono16)) {
@@ -619,23 +647,22 @@ public class TinySound {
 				System.err.println("Audio resource too long!");
 				return null;
 			}
-		}
-		catch (UnsupportedAudioFileException e) {
+		} catch (UnsupportedAudioFileException e) {
 			System.err.println("Unsupported audio resource!\n" +
 					e.getMessage());
 			return null;
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			System.err.println("Error getting resource stream!\n" +
 					e.getMessage());
 			return null;
 		}
 		return audioStream;
 	}
-	
+
 	/**
 	 * Converts an 8-bit, signed, 1-channel AudioInputStream to 16-bit, signed,
 	 * 1-channel.
+	 *
 	 * @param stream stream to convert
 	 * @return converted stream
 	 */
@@ -654,36 +681,37 @@ public class TinySound {
 			//convert bytes one-by-one to int, and then to 16-bit
 			for (int i = 0, j = 0; i < data.length; i++, j += 2) {
 				//convert it to a double
-				double floatVal = (double)data[i];
+				double floatVal = (double) data[i];
 				floatVal /= (floatVal < 0) ? 128 : 127;
 				if (floatVal < -1.0) { //just in case
 					floatVal = -1.0;
-				}
-				else if (floatVal > 1.0) {
+				} else if (floatVal > 1.0) {
 					floatVal = 1.0;
 				}
 				//convert it to an int and then to 2 bytes
-				int val = (int)(floatVal * Short.MAX_VALUE);
-				newData[j + 1] = (byte)((val >> 8) & 0xFF); //MSB
-				newData[j] = (byte)(val & 0xFF); //LSB
+				int val = (int) (floatVal * Short.MAX_VALUE);
+				newData[j + 1] = (byte) ((val >> 8) & 0xFF); //MSB
+				newData[j] = (byte) (val & 0xFF); //LSB
 			}
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			System.err.println("Error reading all bytes from stream!");
 			return null;
-		}
-		finally {
-			try { stream.close(); } catch (IOException e) {}
+		} finally {
+			try {
+				stream.close();
+			} catch (IOException e) {
+			}
 		}
 		AudioFormat mono16 = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
 				44100, 16, 1, 2, 44100, false);
 		return new AudioInputStream(new ByteArrayInputStream(newData), mono16,
 				newData.length / 2);
 	}
-	
+
 	/**
 	 * Converts an 8-bit, signed, 2-channel AudioInputStream to 16-bit, signed,
 	 * 2-channel.
+	 *
 	 * @param stream stream to convert
 	 * @return converted stream
 	 */
@@ -701,71 +729,72 @@ public class TinySound {
 			newData = new byte[newNumBytes];
 			for (int i = 0, j = 0; i < data.length; i += 2, j += 4) {
 				//convert them to doubles
-				double leftFloatVal = (double)data[i];
-				double rightFloatVal = (double)data[i + 1];
+				double leftFloatVal = (double) data[i];
+				double rightFloatVal = (double) data[i + 1];
 				leftFloatVal /= (leftFloatVal < 0) ? 128 : 127;
 				rightFloatVal /= (rightFloatVal < 0) ? 128 : 127;
 				if (leftFloatVal < -1.0) { //just in case
 					leftFloatVal = -1.0;
-				}
-				else if (leftFloatVal > 1.0) {
+				} else if (leftFloatVal > 1.0) {
 					leftFloatVal = 1.0;
 				}
 				if (rightFloatVal < -1.0) { //just in case
 					rightFloatVal = -1.0;
-				}
-				else if (rightFloatVal > 1.0) {
+				} else if (rightFloatVal > 1.0) {
 					rightFloatVal = 1.0;
 				}
 				//convert them to ints and then to 2 bytes each
-				int leftVal = (int)(leftFloatVal * Short.MAX_VALUE);
-				int rightVal = (int)(rightFloatVal * Short.MAX_VALUE);
+				int leftVal = (int) (leftFloatVal * Short.MAX_VALUE);
+				int rightVal = (int) (rightFloatVal * Short.MAX_VALUE);
 				//left channel bytes
-				newData[j + 1] = (byte)((leftVal >> 8) & 0xFF); //MSB
-				newData[j] = (byte)(leftVal & 0xFF); //LSB
+				newData[j + 1] = (byte) ((leftVal >> 8) & 0xFF); //MSB
+				newData[j] = (byte) (leftVal & 0xFF); //LSB
 				//then right channel bytes
-				newData[j + 3] = (byte)((rightVal >> 8) & 0xFF); //MSB
-				newData[j + 2] = (byte)(rightVal & 0xFF); //LSB
+				newData[j + 3] = (byte) ((rightVal >> 8) & 0xFF); //MSB
+				newData[j + 2] = (byte) (rightVal & 0xFF); //LSB
 			}
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			System.err.println("Error reading all bytes from stream!");
 			return null;
-		}
-		finally {
-			try { stream.close(); } catch (IOException e) {}
+		} finally {
+			try {
+				stream.close();
+			} catch (IOException e) {
+			}
 		}
 		AudioFormat stereo16 = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
 				44100, 16, 2, 4, 44100, false);
 		return new AudioInputStream(new ByteArrayInputStream(newData), stereo16,
 				newData.length / 4);
 	}
-	
+
 	/**
 	 * Read all of the bytes from an AudioInputStream.
+	 *
 	 * @param stream the stream from which to read bytes
 	 * @return all bytes read from the AudioInputStream
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	private static byte[] getBytes(AudioInputStream stream)
 			throws IOException {
 		//buffer 1-sec at a time
-		int bufSize = (int)TinySound.FORMAT.getSampleRate() *
-			TinySound.FORMAT.getChannels() * TinySound.FORMAT.getFrameSize();
+		int bufSize = (int) TinySound.FORMAT.getSampleRate() *
+				TinySound.FORMAT.getChannels() * TinySound.FORMAT.getFrameSize();
 		byte[] buf = new byte[bufSize];
 		ByteList list = new ByteList(bufSize);
 		int numRead = 0;
-		while ((numRead = stream.read(buf)) > -1)  {
+		while ((numRead = stream.read(buf)) > -1) {
 			for (int i = 0; i < numRead; i++) {
 				list.add(buf[i]);
 			}
 		}
 		return list.asArray();
 	}
-	
+
 	/**
 	 * Dumps audio data to a temporary file for streaming and returns a
 	 * StreamInfo for the stream.
+	 *
 	 * @param data the audio data to write to the temporary file
 	 * @return a StreamInfo for the stream
 	 */
@@ -806,15 +835,13 @@ public class TinySound {
 					out.write(data[0], i, 2);
 					//then right
 					out.write(data[1], i, 2);
-				}
-				catch (IOException e) {
+				} catch (IOException e) {
 					//hmm
 					System.err.println("Failed writing bytes to stream file!");
 					return null;
 				}
 			}
-		}
-		finally {
+		} finally {
 			try {
 				out.close();
 			} catch (IOException e) {
@@ -824,10 +851,11 @@ public class TinySound {
 		}
 		return new StreamInfo(url, data[0].length);
 	}
-	
+
 	/**
 	 * Iterates through available JavaSound Mixers looking for one that can
 	 * provide a line to the speakers.
+	 *
 	 * @return an opened SourceDataLine to the speakers
 	 */
 	private static SourceDataLine tryGetLine() {
@@ -835,18 +863,16 @@ public class TinySound {
 		DataLine.Info lineInfo = new DataLine.Info(SourceDataLine.class,
 				TinySound.FORMAT);
 		javax.sound.sampled.Mixer.Info[] mixerInfos =
-			AudioSystem.getMixerInfo();
+				AudioSystem.getMixerInfo();
 		//iterate through the mixers trying to find a line
 		for (int i = 0; i < mixerInfos.length; i++) {
 			javax.sound.sampled.Mixer mixer = null;
 			try {
 				//first try to actually get the mixer
 				mixer = AudioSystem.getMixer(mixerInfos[i]);
-			}
-			catch (SecurityException e) {
+			} catch (SecurityException e) {
 				//not much we can do here
-			}
-			catch (IllegalArgumentException e) {
+			} catch (IllegalArgumentException e) {
 				//this should never happen since we were told the mixer exists
 			}
 			//check if we got a mixer and our line is supported
@@ -856,26 +882,24 @@ public class TinySound {
 			//see if we can actually get a line
 			SourceDataLine line = null;
 			try {
-				line = (SourceDataLine)mixer.getLine(lineInfo);
+				line = (SourceDataLine) mixer.getLine(lineInfo);
 				//don't try to open if already open
 				if (!line.isOpen()) {
 					line.open(TinySound.FORMAT);
 				}
-			}
-			catch (LineUnavailableException e) {
+			} catch (LineUnavailableException e) {
 				//we either failed to get or open
 				//should we do anything here?
-			}
-			catch (SecurityException e) {
+			} catch (SecurityException e) {
 				//not much we can do here
 			}
 			//check if we succeeded
-			if (line != null && line.isOpen()) {			
+			if (line != null && line.isOpen()) {
 				return line;
 			}
 		}
 		//no good
 		return null;
 	}
-	
+
 }

@@ -1,5 +1,6 @@
 package dcode.games.uEngine2.games.ugametoolkit;
 
+import com.sun.jndi.url.corbaname.corbanameURLContextFactory;
 import dcode.games.uEngine2.GameContainer;
 import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
@@ -10,8 +11,13 @@ import dcode.games.uEngine2.games.ugametoolkit.insanity.MenuSanityChecker;
  */
 public class MenuLogic implements ILogicTask {
 
+    public static final int RENDERMODE_LIST = 10;
+    public static final int RENDERMODE_CONFIRM = 11;
+    public static final int RENDERMODE_INPUT = 12;
+
+
     public GameContainer menuGC;
-    private MenuSanityChecker msc;
+    private MenuSanityChecker msc = new MenuSanityChecker();
     public LAYER_menu lm;
 
     @Override
@@ -33,7 +39,8 @@ public class MenuLogic implements ILogicTask {
                     }
                     break;
                 case 10:
-
+                    StData.currentGC = menuGC;
+                    LStData.currentStatus = 101;
                     break;
                 case 101:
                     tickInput();
@@ -50,13 +57,28 @@ public class MenuLogic implements ILogicTask {
                     break;
                 case 1503:
                     menuGC.currentSC.layers_Center.add(new LAYER_menu(this));
+                    LStData.currentStatus = 1;
             }
         } else {
 
         }
     }
 
+    public int getRenderMode() {
+        return RENDERMODE_LIST;
+    }
+
+    public int getListLength() {
+        return 4;
+    }
+
+    public String getListEntry(int id) {
+        return "Entry " + id;
+    }
+
+
     private void tickInput() {
+
     }
 
     @Override

@@ -74,10 +74,12 @@ public class ballMan extends Sprite {
                 if (colldelay <= 0) {
                     if (col1 || col3) {
                         mirrorY = !mirrorY;
+                        LStData.wallHit.play();
                         colldelay = 30;
                     }
                     if (col2 || col4) {
                         mirrorX = !mirrorX;
+                        LStData.wallHit.play();
                         colldelay = 30;
                     }
                 } else {
@@ -93,6 +95,7 @@ public class ballMan extends Sprite {
 
                     if (Bcol1 || Bcol2 || Bcol3 || Bcol4) {
                         LStData.bats.collisionEffect(this);
+                        LStData.batHit.play();
                     }
 
                 } else {

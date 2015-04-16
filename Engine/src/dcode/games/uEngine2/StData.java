@@ -20,7 +20,7 @@ import java.io.File;
  */
 public class StData {
 
-	public static final String VersionString = "2.1.a.003";                    //Engine version string
+	public static final String VersionString = "2.1.a.004";                    //Engine version string
 
 	public static uGameSetup setup;                                             //game configuration object
 	public static DCoutputH LOG;                                                //Log output

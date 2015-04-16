@@ -20,7 +20,7 @@ public class GameContainer {
 	public BackgroundTasks currentBGT = null;
 
 	public GameContainer() {
-		currentAC = new AudioContent();
+		if (StData.setup.soundEnabled) currentAC = new AudioContent();
 		currentBGT = new BackgroundTasks();
 		currentLT = new LogicTasks();
 		currentSC = new ScreenContent();

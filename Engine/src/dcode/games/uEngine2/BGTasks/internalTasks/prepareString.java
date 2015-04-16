@@ -27,8 +27,8 @@ public class prepareString extends PBGTask {
 
 	@Override
 	public boolean isReady() {
-		StData.LOG.println("STILL WAITING");
-		return StData.resources.grf.isTextureAviable("FGENC5");
+		//StData.LOG.println("STILL WAITING");
+		return StData.resources.grf.isTextureAviable(container.texKey);
 	}
 
 	@Override

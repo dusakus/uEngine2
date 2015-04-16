@@ -7,6 +7,7 @@ import dcode.games.uEngine2.games.ld32warmup.Player;
 import dcode.games.uEngine2.tools.numbarTools;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * Created by dusakus on 11.04.15.
@@ -22,7 +23,7 @@ public class LAYER_GameSceneBACK implements ILayer {
                         400, 300
                 ), 0, 0, null);
             }catch (Exception e){
-
+                G2D.drawImage(StData.resources.grf.MISSINGTEX.getScaledInstance(400,300, BufferedImage.SCALE_REPLICATE),0,0,null);
             }
         }
     }

@@ -41,7 +41,7 @@ public class ThreadManager {
 	}
 
 	public void startEngine() {
-		TinySound.init();
+		if (StData.setup.soundEnabled) TinySound.init();
 
 		canvas = new Canvas();
 		window = new Window(canvas);
@@ -50,7 +50,7 @@ public class ThreadManager {
 		PW = new PointerWrapper();
 
 		RT.start();
-		AT.start();
+		if (StData.setup.soundEnabled) AT.start();
 		LT.start();
 		BGT.start();
 
@@ -68,6 +68,9 @@ public class ThreadManager {
 
 	void monitorThreads() {
 		StData.LOG.println("[Thread Manager] enering monitor mode");
+
+		Thread.currentThread().setName("Thread Monitor");
+
 		//last tick count
 		int ltc_RT = -1000;
 		int ltc_AT = -1000;
@@ -92,7 +95,7 @@ public class ThreadManager {
 					RT.start();
 					RT.ticks = ltc_RT + 1;
 				}
-				if (!AT.isAlive()) {
+				if (StData.setup.soundEnabled) if (!AT.isAlive()) {
 					StData.LOG.println("[Thread Manager] Audio thread died, recreating (C2)", "E3");
 					StData.LOG.dumpBuffer();
 					AT = new AudioThread();
@@ -126,12 +129,12 @@ public class ThreadManager {
 					RT.start();
 				}
 
-				if (tc_AT - ltc_AT < StData.setup.TPS_MSX / 2) {
+				if (StData.setup.soundEnabled) if (tc_AT - ltc_AT < StData.setup.TPS_MSX / 2) {
 					StData.LOG.println("[Thread Manager] Audio thread might be stuck", "E1");
 					StData.LOG.dumpBuffer();
 				}
 
-				if (tc_AT - ltc_AT < StData.setup.TPS_MSX / 20) {
+				if (StData.setup.soundEnabled) if (tc_AT - ltc_AT < StData.setup.TPS_MSX / 20) {
 					StData.LOG.println("[Thread Manager] Audio thread is stuck, resetting", "E3");
 					StData.LOG.dumpBuffer();
 					AT.stop();

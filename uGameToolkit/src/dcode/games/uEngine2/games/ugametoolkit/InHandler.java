@@ -9,6 +9,10 @@ public class InHandler extends dcode.games.uEngine2.PInputHandler {
 
     public static InHandler inst;
 
+    public static int lastRclickX = -1, lastRclickY = -1, lastLclickX = -1, lastLclickY = -1;
+    public static boolean clickedLeft = false, clickedRight = false;
+
+
     public InHandler() {
         inst = this;
     }
@@ -144,12 +148,16 @@ public class InHandler extends dcode.games.uEngine2.PInputHandler {
 
     @Override
     public void clickedRight(int x, int y) {
-
+        lastRclickX = x;
+        lastRclickY = y;
+        clickedRight = true;
     }
 
     @Override
     public void clickedLeft(int x, int y) {
-
+        lastLclickX = x;
+        lastLclickY = y;
+        clickedLeft = true;
     }
 
     @Override

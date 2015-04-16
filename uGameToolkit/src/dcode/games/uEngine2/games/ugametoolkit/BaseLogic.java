@@ -59,6 +59,7 @@ public class BaseLogic implements ILogicTask {
 
             case 51:
                 StData.logicTasks.registerBasic(new MenuLogic());
+                LStData.currentStatus = 209;
                 break;
 
             case 209:
@@ -67,6 +68,8 @@ public class BaseLogic implements ILogicTask {
 
             case 301:
                 LOG.println("[INIT] initialization finished, entering menu");
+                LStData.currentStatus = 1;
+                LStData.currentMode = LStData.MODE_MENU_MAIN;
                 break;
 
         }

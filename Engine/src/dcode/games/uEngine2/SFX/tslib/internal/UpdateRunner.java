@@ -66,6 +66,7 @@ public class UpdateRunner implements Runnable {
 		@Override
 		public void run() {
 			//mark the updater as running
+			Thread.currentThread().setName("TinySound runner");
 			this.running.set(true);
 			//1-sec buffer
 			int bufSize = (int) TinySound.FORMAT.getFrameRate() *

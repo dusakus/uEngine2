@@ -1,5 +1,7 @@
 package dcode.games.uEngine2.games.uping;
 
+import dcode.games.uEngine2.SFX.tslib.Sound;
+
 import java.awt.image.BufferedImage;
 
 /**
@@ -24,6 +26,9 @@ public class LStData {
 	public static LAYERs_GameScene gameworld;
 	public static ballMan ball;
 	public static BatMan bats;
+
+	public static Sound batHit;
+	public static Sound wallHit;
 
 	public static boolean enableCollisionOverlay = false;
 	public static BufferedImage collisionMap;

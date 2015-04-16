@@ -35,4 +35,18 @@ public class DSU_NODE_SUBSTOR {
 			if (get.KEY.equals(key)) objects.remove(get);
 		}
 	}
+
+	public void add(DSU_OBJECT ob) {
+		boolean stored = false;
+		for (int i = 0; i < objects.size(); i++) {
+			DSU_OBJECT get = objects.get(i);
+			if (get.KEY.equals(ob.KEY)) {
+				get.OBJ = ob.OBJ;
+				stored = true;
+			}
+		}
+		if(!stored){
+			objects.add(ob);
+		}
+	}
 }

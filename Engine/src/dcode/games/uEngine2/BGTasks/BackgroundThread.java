@@ -12,6 +12,8 @@ import dcode.games.uEngine2.StData;
  */
 public class BackgroundThread extends Thread {
 
+	private static int threadIteration = -1;
+
 	//Loop variables
 	public int LOOP_TPS = StData.setup.TPS_BG;
 	public int LOOP_ticks = 0;
@@ -26,6 +28,8 @@ public class BackgroundThread extends Thread {
 	@Override
 	public void run() {
 		//Timming variables
+		threadIteration++;
+		this.setName("Background Thread ITER"+threadIteration);
 		int timeStep = 1000000000 / LOOP_TPS;
 		long currentTime = System.nanoTime();
 		long nextTime = System.nanoTime() + timeStep;

@@ -5,6 +5,11 @@ import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
 import dcode.games.uEngine2.games.ld32warmup.levels.LevelList;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 import static dcode.games.uEngine2.StData.LOG;
 import static dcode.games.uEngine2.StData.currentGC;
 import static dcode.games.uEngine2.games.ld32warmup.LStData.*;
@@ -33,6 +38,16 @@ public class MainLogic implements ILogicTask {
                         LOG.println("[INIT] Logic Entrypoint reached");
                         LOG.println("[INIT] Quickstarting loading screen");
                         currentGC.currentSC.layers_Overlay.add(new LAYER_Loading(101));
+                        LOG.println("[INIT] Kappa");
+                        try {
+                            BufferedImage io = ImageIO.read(getClass().getResource("/dcode/kappa.jpg"));
+                            BufferedImage bf = new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB);
+                            Graphics g = bf.getGraphics();
+                            g.drawImage(io.getScaledInstance(64,64,BufferedImage.SCALE_REPLICATE), 0, 0, null);
+                            StData.resources.grf.MISSINGTEX = bf;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         currentStatus++;
                         break;
                     case 1:
