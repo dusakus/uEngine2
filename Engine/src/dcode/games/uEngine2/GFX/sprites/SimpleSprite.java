@@ -12,10 +12,11 @@ import java.awt.*;
  */
 public class SimpleSprite extends Sprite {
 
-    public SimpleSprite(String texID, int startCoordX, int startCoordY) {
+    public SimpleSprite(String texID, int startCoordX, int startCoordY, int coordZ) {
         this.textureKey = texID;
         x = startCoordX;
         y = startCoordY;
+        z = coordZ;
     }
 
     @Override

@@ -63,10 +63,17 @@ public class SpriteWrapper extends Sprite implements ILogicTask {
 	}
 
 	private Sprite getSprite() {
+		Sprite trg = null;
 		if (spriteId >= 0) {
-			return StData.currentGC.currentSC.sprites[spriteId];
+			trg = StData.currentGC.currentSC.sprites[spriteId];
 		}
-		return localSprite;
+		if(trg == null){
+			trg = localSprite;
+		}
+		if(trg == null){
+			trg = new SimpleSprite("MISS",-1000,-1000,-100);
+		}
+		return trg;
 	}
 
 	public void setSprite(int s) {

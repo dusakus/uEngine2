@@ -23,6 +23,8 @@ public class LD32W_INIT {
         gs.postProcCount = 2;
         gs.spriteLayerSize = 120;
 
+        gs.enableSpriteZSorting = true;
+
 
         gs.safeName = "ld32warmup";
         gs.screenName = "LD32WUP";

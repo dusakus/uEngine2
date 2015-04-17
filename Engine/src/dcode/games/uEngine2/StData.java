@@ -36,4 +36,5 @@ public class StData {
 	static PuGameBase GameInitializer;                                          //Game initialization object, provided by game itself
 	public static Translator translator;
 	public static boolean gameFreeze = false;
+	public static boolean isRendering = false;
 }

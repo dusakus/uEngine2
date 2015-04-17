@@ -35,7 +35,8 @@ public class uGameSetup {
 	// Sprite system settings
 	public int spriteTableSize = 64;                        //Size of the main sprite table
 	public int spriteLayerSize = 16;                        //Sprite Count per layer
-	public boolean enableSpriteWrappers = true;             //enable SpriteWrappers
+	public boolean enableSpriteWrappers = false;             //enable SpriteWrappers
+	public boolean enableSpriteZSorting = false;
 
 	// Translation module settings
 	public boolean enableTranslator = false;                //If the translation module should be enabled, will BORK if default lang doesn't exist
