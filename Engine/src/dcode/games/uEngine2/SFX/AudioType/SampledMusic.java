@@ -28,12 +28,12 @@ public class SampledMusic {
             wasPlaying = isPlaying;
         }
         if (isStopped != wasStopped) {
-            StData.resources.smsx.setStopped(msPlayerID, isPlaying);
+            StData.resources.smsx.setStopped(msPlayerID, isStopped);
             wasStopped = isStopped;
         }
         if (isLooped != wasLooped) {
-            StData.resources.smsx.setStopped(msPlayerID, isPlaying);
-            wasStopped = isStopped;
+            StData.resources.smsx.setLooped(msPlayerID, isLooped);
+            wasLooped = isLooped;
         }
     }
 }

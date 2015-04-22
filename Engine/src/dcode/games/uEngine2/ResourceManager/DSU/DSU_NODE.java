@@ -39,7 +39,7 @@ public class DSU_NODE {
         if (SS != null) {
             return SS.getObject(key);
         }
-        if (finalKey != null && finalKey.KEY.length() == level) {
+        if (finalKey != null && key.length() == level) {
             return finalKey.OBJ;
         }
         try {

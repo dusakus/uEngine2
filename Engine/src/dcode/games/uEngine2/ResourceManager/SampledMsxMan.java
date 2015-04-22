@@ -33,4 +33,11 @@ public class SampledMsxMan {
             }
         }
     }
+
+    public void setLooped(String streamID, boolean isLooped) {
+        Music m = (Music) musicRegistry.getObject(streamID);
+        if(m!= null){
+            m.setLoop(isLooped);
+        }
+    }
 }

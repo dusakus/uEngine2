@@ -46,7 +46,7 @@ public class RenderThread extends Thread {
         int FPS = 0;
         long lastFPSdraw = System.nanoTime();
         //LOOP
-        while (StData.gameIsRunning) {
+        while (StData.gameIsRunning && RUN) {
 
 
             //waiting for next planned time
@@ -121,7 +121,8 @@ public class RenderThread extends Thread {
 
             if (StData.threadManager.RT != this) {
                 RUN = false;
-                System.out.println("bug?");
+                StData.LOG.println("MULTIPLE INSTANCES OF RENDER THREAD DETECTED", "E3");
+                this.interrupt();
             }
             ticks++;
         }

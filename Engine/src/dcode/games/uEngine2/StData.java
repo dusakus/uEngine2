@@ -12,6 +12,7 @@ import dcode.games.uEngine2.translator.Translator;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Random;
 
 /**
  * THIS file stores essential game objects, accesed from multiple threads
@@ -20,7 +21,7 @@ import java.io.File;
  */
 public class StData {
 
-	public static final String VersionString = "2.1.a.004";                    //Engine version string
+	public static final String VersionString = "2.1.a.010";                    //Engine version string
 
 	public static uGameSetup setup;                                             //game configuration object
 	public static DCoutputH LOG;                                                //Log output
@@ -37,4 +38,5 @@ public class StData {
 	public static Translator translator;
 	public static boolean gameFreeze = false;
 	public static boolean isRendering = false;
+	public static Random gRand = new Random(System.currentTimeMillis());
 }

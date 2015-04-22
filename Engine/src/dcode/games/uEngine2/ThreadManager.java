@@ -124,7 +124,7 @@ public class ThreadManager {
 				if (tc_RT - ltc_RT < StData.setup.FPS / 20) {
 					StData.LOG.println("[Thread Manager] Render thread is stuck, resetting", "E3");
 					StData.LOG.dumpBuffer();
-					RT.stop();
+					//RT.stop();
 					RT = new RenderThread();
 					RT.start();
 				}
@@ -137,7 +137,7 @@ public class ThreadManager {
 				if (StData.setup.soundEnabled) if (tc_AT - ltc_AT < StData.setup.TPS_MSX / 20) {
 					StData.LOG.println("[Thread Manager] Audio thread is stuck, resetting", "E3");
 					StData.LOG.dumpBuffer();
-					AT.stop();
+					//AT.stop();
 					AT = new AudioThread();
 					AT.start();
 				}
@@ -151,7 +151,7 @@ public class ThreadManager {
 					if (LTCheckCount > 10) {
 						StData.LOG.println("[Thread Manager] Logic thread is stuck, game will be restarted", "E6S");
 						StData.LOG.dumpBuffer();
-						LT.stop();
+						//LT.stop();
 						reinitialize();
 						break;
 					} else {
@@ -171,7 +171,7 @@ public class ThreadManager {
 				try {
 					Thread.sleep(5);
 					currentTime = System.nanoTime();
-				} catch (InterruptedException ex) {
+				} catch (InterruptedException ignored) {
 				}
 			}
 			nextTime += timeStep;

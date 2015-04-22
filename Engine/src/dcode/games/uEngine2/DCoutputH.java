@@ -292,14 +292,14 @@ public class DCoutputH {
 		return true;
 	}
 
-	public void longMode(String text) {
+	private void longMode(String text) {
 		if (isLongMode) {
 			//println("________________________________________________________________________");
-			println("[" + timed.format(time) + "]    {" + text + "}                \\/");
-			//isLongMode = false;
+			println("[" + timed.format(time) + "]___{" + text + "}________________/\\/");
+			isLongMode = false;
 
 		} else {
-			//isLongMode = true;
+			isLongMode = true;
 			println("[" + timed.format(time) + "]___{" + text + "}_________________/\\");
 		}
 	}
