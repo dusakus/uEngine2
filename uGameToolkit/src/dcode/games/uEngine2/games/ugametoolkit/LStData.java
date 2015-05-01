@@ -1,6 +1,7 @@
 package dcode.games.uEngine2.games.ugametoolkit;
 
 import dcode.games.uEngine2.GameContainer;
+import dcode.games.uEngine2.StData;
 
 import java.io.File;
 
@@ -31,5 +32,6 @@ public class LStData {
 
     public static File target = null;
 
+    public static String defaultFile = new File(StData.gameStorageDirectory, "PROJECTS").getAbsolutePath();
 }
 

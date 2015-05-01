@@ -1,9 +1,11 @@
 package dcode.games.uEngine2.games.ugametoolkit;
 
-import dcode.games.uEngine2.BGTasks.internalTasks.LoadBitmapFont;
 import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
 import dcode.games.uEngine2.games.ugametoolkit.insanity.RuntimeSanityChecker;
+import dcode.games.uEngine2.games.ugametoolkit.thingstoload.ListofLists;
+
+import java.io.File;
 
 import static dcode.games.uEngine2.StData.LOG;
 
@@ -48,15 +50,33 @@ public class BaseLogic implements ILogicTask {
                 StData.currentGC = LStData.globalGameContainer;
                 LOG.println("[INIT] Quickstarting loading screen");
                 StData.currentGC.currentSC.layers_Foreground.add(new LAYER_Loading(101));
+                LStData.currentStatus++;
+                break;
+            case 1:
+                if (!new File(LStData.defaultFile).exists()) new File(LStData.defaultFile).mkdir();
                 LStData.currentStatus = 9;
                 break;
             case 9:
-                LOG.println("[INIT] Loading font...");
-                StData.threadManager.BGT.addTask(new LoadBitmapFont("FONT/pixel_7_9.png", "FGENB", 7, 9, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!?#*)(][><,.:;-+_=&~^$@\"/\\"));
-                StData.threadManager.BGT.addTask(new LoadBitmapFont("FONT/pixel_7_9_WHITE.png", "FGENW", 7, 9, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!?#*)(][><,.:;-+_=&~^$@\"/\\"));
-                LStData.currentStatus = 51;
+                LOG.println("[INIT] ...");
+                LStData.currentStatus = 21;
                 break;
 
+            case 21:
+                LOG.println("started content loader");
+                ListofLists.instance = new ListofLists();
+                ListofLists.instance.fillList();
+                LStData.currentStatus = 22;
+                break;
+            case 22:
+                if (ListofLists.instance.performNext()) LStData.currentStatus = 23;
+                break;
+            case 23:
+                if (ListofLists.instance.isFinished()) LStData.currentStatus = 25;
+                break;
+            case 25:
+                LOG.println("finished loading content");
+                LStData.currentStatus = 51;
+                break;
             case 51:
                 StData.logicTasks.registerBasic(new MenuLogic());
                 LStData.currentStatus = 209;

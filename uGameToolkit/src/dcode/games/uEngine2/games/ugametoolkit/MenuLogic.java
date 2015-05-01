@@ -1,10 +1,13 @@
 package dcode.games.uEngine2.games.ugametoolkit;
 
 import com.sun.jndi.url.corbaname.corbanameURLContextFactory;
+import dcode.games.uEngine2.GFX.layers.ClearColorLayer;
 import dcode.games.uEngine2.GameContainer;
 import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
 import dcode.games.uEngine2.games.ugametoolkit.insanity.MenuSanityChecker;
+
+import java.awt.*;
 
 /**
  * Created by dusakus on 09.04.15.
@@ -56,6 +59,7 @@ public class MenuLogic implements ILogicTask {
                     LStData.currentStatus++;
                     break;
                 case 1503:
+                    menuGC.currentSC.layers_Background.add(new ClearColorLayer(Color.WHITE));
                     menuGC.currentSC.layers_Center.add(new LAYER_menu(this));
                     LStData.currentStatus = 1;
             }
