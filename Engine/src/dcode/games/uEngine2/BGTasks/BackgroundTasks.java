@@ -77,4 +77,10 @@ public class BackgroundTasks {
 		didFinishLoop = true;
 	}
 
+	public void clear(){
+		HPTasks.clear();
+		LPTasks.clear();
+		WaitingTasks.clear();
+	}
+
 }

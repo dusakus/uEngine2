@@ -36,7 +36,7 @@ public class LogicThread extends Thread {
 		int FPS = 0;
 		long lastFPSdraw = System.nanoTime();
 		//LOOP
-		while (StData.gameIsRunning) {
+		while (StData.gameIsRunning && LOOP_RUN) {
 
 			//waiting for next planned time
 			while (currentTime < nextTime || StData.gameFreeze) {

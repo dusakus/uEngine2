@@ -13,17 +13,18 @@ import dcode.games.uEngine2.StData;
 public class AudioThread extends Thread {
 	private static int threadIteration = -1;
 
-	public int ticks = 0;
-	public boolean RUN = true;
-	//
-	private int TPS = 60;
+
+	public int LOOP_TPS = 60;
+	public int LOOP_ticks = 0;
+	public boolean LOOP_RUN = true;
+	public boolean LOOP_Recalculate = true;
 	private boolean disableSound = false;
 
 	public AudioThread() {
 
-		TPS = StData.setup.TPS_MSX;
+		LOOP_TPS = StData.setup.TPS_MSX;
 		if(StData.setup.TPS_MSX <= 0){
-			TPS = 2;
+			LOOP_TPS = 2;
 			disableSound = true;
 		}
 	}
@@ -33,7 +34,7 @@ public class AudioThread extends Thread {
 		threadIteration++;
 		this.setName("Audio Thread ITER"+threadIteration);
 		//Timming variables
-		int timeStep = 1000000000 / TPS;
+		int timeStep = 1000000000 / LOOP_TPS;
 		long currentTime = System.nanoTime();
 		long nextTime = System.nanoTime() + timeStep;
 
@@ -41,7 +42,7 @@ public class AudioThread extends Thread {
 		int FPS = 0;
 		long lastFPSdraw = System.nanoTime();
 		//LOOP
-		while (StData.gameIsRunning) {
+		while (StData.gameIsRunning && LOOP_RUN) {
 
 			//waiting for next planned time and performing sidetasks
 			while (currentTime < nextTime || StData.gameFreeze) {
@@ -71,12 +72,19 @@ public class AudioThread extends Thread {
 			if (StData.setup.debug) {
 				FPS++;
 				if (System.nanoTime() - lastFPSdraw >= 1000000000L) {
-					StData.LOG.println("[Audio Thread] Tick No." + ticks + ", measured TPS: " + FPS, "D");
+					StData.LOG.println("[Audio Thread] Tick No." + LOOP_ticks + ", measured TPS: " + FPS, "D");
 					FPS = 0;
 					lastFPSdraw = System.nanoTime();
 				}
 			}
-			ticks++;
+			LOOP_ticks++;
+			if (LOOP_Recalculate) {
+				StData.LOG.println("[Audio Thread] Tick No. " + LOOP_ticks + ", setting new loop speed: " + LOOP_TPS, "D");
+				timeStep = 1000000000 / LOOP_TPS;
+				currentTime = System.nanoTime();
+				nextTime = System.nanoTime() + timeStep;
+				LOOP_Recalculate = false;
+			}
 		}
 	}
 

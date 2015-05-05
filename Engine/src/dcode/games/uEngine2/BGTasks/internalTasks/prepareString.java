@@ -35,7 +35,7 @@ public class prepareString extends PBGTask {
     public void perform() {
         BufferedImage sizecheck = StData.resources.grf.getChar(container.texKey, 'A');
         int charWidth = sizecheck.getWidth();
-        BufferedImage out = new BufferedImage((container.text.length() + 1) * charWidth, sizecheck.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage out = new BufferedImage(container.text.length() * charWidth, sizecheck.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = out.createGraphics();
         for (int i = 0; i < container.text.length(); i++) {
             if (container.text.charAt(i) != ' ')

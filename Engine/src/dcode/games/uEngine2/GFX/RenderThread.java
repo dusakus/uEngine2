@@ -20,15 +20,17 @@ import java.util.ArrayList;
 public class RenderThread extends Thread {
     private static int threadIteration = -1;
 
-    public int ticks = 0;
-    public boolean RUN = true;
-    //
-    private int TPS = 60;
+    //Loop variables
+    public int LOOP_TPS = 60;
+    public int LOOP_ticks = 0;
+    public boolean LOOP_RUN = true;
+    public boolean LOOP_Recalculate = true;
+
     public boolean forceSpriteSort = false;
 
     public RenderThread() {
 
-        TPS = StData.setup.FPS;
+        LOOP_TPS = StData.setup.FPS;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class RenderThread extends Thread {
         threadIteration++;
         this.setName("Render Thread ITER" + threadIteration);
         //Timming variables
-        int timeStep = 1000000000 / TPS;
+        int timeStep = 1000000000 / LOOP_TPS;
         long currentTime = System.nanoTime();
         long nextTime = System.nanoTime() + timeStep;
 
@@ -46,7 +48,7 @@ public class RenderThread extends Thread {
         int FPS = 0;
         long lastFPSdraw = System.nanoTime();
         //LOOP
-        while (StData.gameIsRunning && RUN) {
+        while (StData.gameIsRunning && LOOP_RUN) {
 
 
             //waiting for next planned time
@@ -113,18 +115,25 @@ public class RenderThread extends Thread {
             if (StData.setup.debug) {
                 FPS++;
                 if (System.nanoTime() - lastFPSdraw >= 1000000000L) {
-                    StData.LOG.println("[Render Thread] Tick No." + ticks + ", measured TPS: " + FPS, "D");
+                    StData.LOG.println("[Render Thread] Tick No." + LOOP_ticks + ", measured TPS: " + FPS, "D");
                     FPS = 0;
                     lastFPSdraw = System.nanoTime();
                 }
             }
 
             if (StData.threadManager.RT != this) {
-                RUN = false;
+                LOOP_RUN = false;
                 StData.LOG.println("MULTIPLE INSTANCES OF RENDER THREAD DETECTED", "E3");
                 this.interrupt();
             }
-            ticks++;
+            LOOP_ticks++;
+            if (LOOP_Recalculate) {
+                StData.LOG.println("[Render Thread] Tick No. " + LOOP_ticks + ", setting new loop speed: " + LOOP_TPS, "D");
+                timeStep = 1000000000 / LOOP_TPS;
+                currentTime = System.nanoTime();
+                nextTime = System.nanoTime() + timeStep;
+                LOOP_Recalculate = false;
+            }
         }
     }
 
