@@ -2,6 +2,7 @@ package dcode.games.uEngine2.games.ugametoolkit;
 
 import dcode.games.uEngine2.GameContainer;
 import dcode.games.uEngine2.StData;
+import dcode.games.uEngine2.games.ugametoolkit.uiinput.ButtonList;
 
 import java.io.File;
 
@@ -29,6 +30,8 @@ public class LStData {
     public static int currentStatus = 0;                            //Represents current app status
 
     public static GameContainer globalGameContainer = new GameContainer();
+
+    public static ButtonList buttons = new ButtonList();
 
     public static File target = null;
 

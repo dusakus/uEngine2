@@ -4,6 +4,7 @@ import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
 import dcode.games.uEngine2.games.ugametoolkit.insanity.RuntimeSanityChecker;
 import dcode.games.uEngine2.games.ugametoolkit.thingstoload.ListofLists;
+import dcode.games.uEngine2.games.ugametoolkit.uiinput.ButtonsTask;
 
 import java.io.File;
 
@@ -78,6 +79,7 @@ public class BaseLogic implements ILogicTask {
                 LStData.currentStatus = 51;
                 break;
             case 51:
+                StData.logicTasks.registerBasic(new ButtonsTask());
                 StData.logicTasks.registerBasic(new MenuLogic());
                 LStData.currentStatus = 209;
                 break;

@@ -63,7 +63,7 @@ public class ListofLists {
         }
 
         public boolean isDone() {
-            if (System.nanoTime() - startedAt > 1000000) return true;
+            if (System.nanoTime() - startedAt > 10000000000L) return true;
             return toLoad.checkFinished();
         }
     }

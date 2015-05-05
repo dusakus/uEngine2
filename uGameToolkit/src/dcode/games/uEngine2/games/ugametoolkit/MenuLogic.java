@@ -6,13 +6,18 @@ import dcode.games.uEngine2.GameContainer;
 import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
 import dcode.games.uEngine2.games.ugametoolkit.insanity.MenuSanityChecker;
+import dcode.games.uEngine2.games.ugametoolkit.layers.LAYER_BG;
+import dcode.games.uEngine2.games.ugametoolkit.layers.LAYER_buttons;
+import dcode.games.uEngine2.games.ugametoolkit.randomParts.StringProvider;
+import dcode.games.uEngine2.games.ugametoolkit.uiinput.*;
+import dcode.games.uEngine2.games.ugametoolkit.uiinput.Button;
 
 import java.awt.*;
 
 /**
  * Created by dusakus on 09.04.15.
  */
-public class MenuLogic implements ILogicTask {
+public class MenuLogic implements ILogicTask, IButtonInputReceiver {
 
     public static final int RENDERMODE_LIST = 10;
     public static final int RENDERMODE_CONFIRM = 11;
@@ -59,8 +64,16 @@ public class MenuLogic implements ILogicTask {
                     LStData.currentStatus++;
                     break;
                 case 1503:
-                    menuGC.currentSC.layers_Background.add(new ClearColorLayer(Color.WHITE));
+                    menuGC.currentSC.layers_Background.add(new LAYER_BG("UIBG0"));
                     menuGC.currentSC.layers_Center.add(new LAYER_menu(this));
+                    menuGC.currentSC.layers_Foreground.add(new LAYER_buttons());
+                    LStData.buttons.registerButton(new Button(this, "UIbb",
+                            new StringProvider() {
+                                @Override
+                                public String updateSource() {
+                                    return "TESTIFICATE";
+                                }
+                            }, new Rectangle(128, 128, 80, 16), "FGENW"));
                     LStData.currentStatus = 1;
             }
         } else {
@@ -88,5 +101,16 @@ public class MenuLogic implements ILogicTask {
     @Override
     public boolean doRepeat() {
         return true;
+    }
+
+    @Override
+    public void handleButtonPress(Button b) {
+        StData.LOG.println("button pressed");
+        b.setIDforT(2, 16);
+    }
+
+    @Override
+    public void handleButtonRightClick(Button b) {
+
     }
 }
