@@ -8,10 +8,9 @@ import java.util.LinkedList;
  * Created by dusakus on 4/29/15.
  */
 public class ListofLists {
+    public static ListofLists instance;
     private LinkedList<Thingy> things = new LinkedList<Thingy>();
     private LinkedList<Thingy> finishedThings = new LinkedList<Thingy>();
-
-    public static ListofLists instance;
 
     public void fillList() {
         things.offer(new Thingy(new LoadBanners()));

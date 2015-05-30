@@ -18,10 +18,10 @@ public class LAYER_menu implements ILayer {
 
     @Override
     public void draw(Graphics2D G2D) {
-        switch (ml.getRenderMode()){
+        switch (ml.getRenderMode()) {
             case MenuLogic.RENDERMODE_LIST:
                 for (int i = 0; i < ml.getListLength(); i++) {
-                    G2D.drawImage(StData.resources.grf.getString("FGENW",ml.getListEntry(i)), 10, 20*i + 10, null);
+                    G2D.drawImage(StData.resources.grf.getString("FGENW", ml.getListEntry(i)), 10, 20 * i + 10, null);
                 }
                 break;
         }

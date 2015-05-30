@@ -6,7 +6,8 @@ import dcode.games.uEngine2.games.ugametoolkit.randomParts.SaveAction;
 
 import java.io.File;
 
-import static dcode.games.uEngine2.tools.Shortcuts.*;
+import static dcode.games.uEngine2.tools.Shortcuts.debug;
+import static dcode.games.uEngine2.tools.Shortcuts.log;
 
 /**
  * Created by dusakus on 23.04.15.
@@ -32,7 +33,7 @@ public class ACTION_saveFile implements ILogicTask {
 
     @Override
     public void perform() {
-        switch (status){
+        switch (status) {
             case 1:
                 log("[ACT_SaveToFile] INIT save screen");
                 status++;

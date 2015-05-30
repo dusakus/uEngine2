@@ -35,7 +35,7 @@ public class plbContainer {
 
 	public void loadBasicContent() {
 		title = "loading...";
-		dirEntries = new ArrayList<>();
+		dirEntries = new ArrayList<File>();
 		try {
 			File[] list = source.listFiles();
 			for (File f : list) {
@@ -169,8 +169,8 @@ public class plbContainer {
 
 
 	public class plbScript {
-		public ArrayList<String> lines = new ArrayList<>();
-		public LinkedList<SCommand> ScriptCommands = new LinkedList<>();
+		public ArrayList<String> lines = new ArrayList<String>();
+		public LinkedList<SCommand> ScriptCommands = new LinkedList<SCommand>();
 		public int cTarget = 0;
 
 		public int localVar_int1 = 0;

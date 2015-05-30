@@ -23,7 +23,7 @@ public class LAYER_BG implements ILayer {
     public void draw(Graphics2D G2D) {
         for (int i = 0; i < StData.setup.width / 16 + 1; i++) {
             for (int j = 0; j < StData.setup.height / 16 + 1; j++) {
-                G2D.drawImage(bgimg, i*16, j*16, null);
+                G2D.drawImage(bgimg, i * 16, j * 16, null);
                 //G2D.drawImage(Shortcuts.getTexture(tid), i*16, j*16, null);
             }
         }

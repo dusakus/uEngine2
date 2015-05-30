@@ -1,7 +1,6 @@
 package dcode.games.uEngine2.games.ugametoolkit.thingstoload;
 
 import dcode.games.uEngine2.BGTasks.internalTasks.LoadBitmapFont;
-import dcode.games.uEngine2.StData;
 
 /**
  * Created by dusakus on 4/29/15.

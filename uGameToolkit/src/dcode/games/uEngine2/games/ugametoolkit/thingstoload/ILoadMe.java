@@ -6,6 +6,7 @@ package dcode.games.uEngine2.games.ugametoolkit.thingstoload;
 public interface ILoadMe {
 
     void loadDys() throws Exception;
+
     boolean checkFinished();
 
 }

@@ -76,7 +76,7 @@ public class MenuLogic implements ILogicTask, IIp {
 					prepareFileList();
 					confirmReceived = false;
 					currentStatus = 11;
-					containerList = new ArrayList<>();
+					containerList = new ArrayList<plbContainer>();
 					break;
 				case 11:
 					if (containers.isEmpty()) {
@@ -114,7 +114,7 @@ public class MenuLogic implements ILogicTask, IIp {
 
 	private void prepareFileList() {
 		StData.LOG.println("Starting to build file list...", "N");
-		containers = new ArrayList<>();
+		containers = new ArrayList<File>();
 		File dir = new File(StData.gameStorageDirectory, "uVideos");
 		if (!dir.exists()) {
 			dir.mkdir();

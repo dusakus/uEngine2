@@ -32,7 +32,7 @@ public class LStData {
 
 	public static int ERRORCODE = 0; // Value other than 0 represents an error id, will be used someday...
 
-	public static ArrayList<File> containers = new ArrayList<>();
+	public static ArrayList<File> containers = new ArrayList<File>();
 
 	public static GameContainer GC_menu;
 	public static GameContainer GC_playback;

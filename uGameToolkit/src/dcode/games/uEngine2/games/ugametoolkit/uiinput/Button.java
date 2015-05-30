@@ -13,12 +13,12 @@ import java.awt.image.BufferedImage;
  */
 public class Button {
 
+    public int currentTexId;
     protected Image[] textures;
+    protected boolean renderable = false;
     private Rectangle Bounds;
     private StringProvider Text;
-    public int currentTexId;
     private IButtonInputReceiver reciv;
-    protected boolean renderable = false;
     private String texKey = "missing";
     private boolean countdownRunning = false;
     private int lasttid = 0;

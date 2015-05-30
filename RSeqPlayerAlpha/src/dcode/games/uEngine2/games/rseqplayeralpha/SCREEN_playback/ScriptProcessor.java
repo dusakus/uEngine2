@@ -53,18 +53,17 @@ public class ScriptProcessor {
 				while (sc != null && sc.processAt == tickID) {
 					StData.LOG.println("[SCR_PR]" + sc.commandGroup + "." + sc.commandKey + " is marked to be performed in this tick (" + tickID + ")", "D");
 					sc = PCont.Scripts[i].ScriptCommands.poll();
-					switch (sc.commandGroup) {
-						case "SYSTEM":
-							CG_SYSTEM(sc, i);
-							break;
-						case "VARS":
-							CG_VARS(sc, i);
-							break;
-						case "BACKGROUND":
-							CG_BACKGROUND(sc, i);
-							break;
-						default:
-							StData.LOG.println("ScriptProcessor: unknown command group: " + sc.commandGroup, "D");
+					if (sc.commandGroup.equals("SYSTEM")) {
+						CG_SYSTEM(sc, i);
+
+					} else if (sc.commandGroup.equals("VARS")) {
+						CG_VARS(sc, i);
+
+					} else if (sc.commandGroup.equals("BACKGROUND")) {
+						CG_BACKGROUND(sc, i);
+
+					} else {
+						StData.LOG.println("ScriptProcessor: unknown command group: " + sc.commandGroup, "D");
 					}
 
 					sc = PCont.Scripts[i].ScriptCommands.peek();
@@ -80,145 +79,138 @@ public class ScriptProcessor {
 	}
 
 	private boolean CG_VARS(plbContainer.SCommand sc, int scriptID) {
-		switch (sc.commandKey) {
-			case "SETBOOL":
-				if (sc.bool1) {
-					switch (sc.int1) {
-						case 1:
-							globalVar_bool1 = sc.bool2;
-							break;
-						case 2:
-							globalVar_bool2 = sc.bool2;
-							break;
-						case 3:
-							globalVar_bool3 = sc.bool2;
-							break;
-					}
-				} else {
-					switch (sc.int1) {
-						case 1:
-							PCont.Scripts[scriptID].localVar_bool1 = sc.bool2;
-							break;
-						case 2:
-							PCont.Scripts[scriptID].localVar_bool2 = sc.bool2;
-							break;
-						case 3:
-							PCont.Scripts[scriptID].localVar_bool3 = sc.bool2;
-							break;
-					}
+		if (sc.commandKey.equals("SETBOOL")) {
+			if (sc.bool1) {
+				switch (sc.int1) {
+					case 1:
+						globalVar_bool1 = sc.bool2;
+						break;
+					case 2:
+						globalVar_bool2 = sc.bool2;
+						break;
+					case 3:
+						globalVar_bool3 = sc.bool2;
+						break;
 				}
-				break;
-			case "SETINT":
-				if (sc.bool1) {
-					switch (sc.int1) {
-						case 1:
-							globalVar_int1 = sc.int2;
-							break;
-						case 2:
-							globalVar_int2 = sc.int2;
-							break;
-						case 3:
-							globalVar_int3 = sc.int2;
-							break;
-					}
-				} else {
-					switch (sc.int1) {
-						case 1:
-							PCont.Scripts[scriptID].localVar_int1 = sc.int2;
-							break;
-						case 2:
-							PCont.Scripts[scriptID].localVar_int2 = sc.int2;
-							break;
-						case 3:
-							PCont.Scripts[scriptID].localVar_int3 = sc.int2;
-							break;
-					}
+			} else {
+				switch (sc.int1) {
+					case 1:
+						PCont.Scripts[scriptID].localVar_bool1 = sc.bool2;
+						break;
+					case 2:
+						PCont.Scripts[scriptID].localVar_bool2 = sc.bool2;
+						break;
+					case 3:
+						PCont.Scripts[scriptID].localVar_bool3 = sc.bool2;
+						break;
 				}
-				break;
-			case "SETSTRING":
-				if (sc.bool1) {
-					switch (sc.int1) {
-						case 1:
-							globalVar_String1 = sc.extra;
-							break;
-						case 2:
-							globalVar_String2 = sc.extra;
-							break;
-						case 3:
-							globalVar_String3 = sc.extra;
-							break;
-					}
-				} else {
-					switch (sc.int1) {
-						case 1:
-							PCont.Scripts[scriptID].localVar_String1 = sc.extra;
-							break;
-						case 2:
-							PCont.Scripts[scriptID].localVar_String2 = sc.extra;
-							break;
-					}
-				}
-				break;
-			case "INCRINT":
-				if (sc.bool1) {
-					switch (sc.int1) {
-						case 1:
-							globalVar_int1 += sc.int2;
-							break;
-						case 2:
-							globalVar_int2 += sc.int2;
-							break;
-						case 3:
-							globalVar_int3 += sc.int2;
-							break;
-					}
-				} else {
-					switch (sc.int1) {
-						case 1:
-							PCont.Scripts[scriptID].localVar_int1 += sc.int2;
-							break;
-						case 2:
-							PCont.Scripts[scriptID].localVar_int2 += sc.int2;
-							break;
-						case 3:
-							PCont.Scripts[scriptID].localVar_int3 += sc.int2;
-							break;
-					}
-				}
-				break;
-			case "ROTATE":
+			}
 
-				break;
-			default:
-				StData.LOG.println("ScriptProcessor: unknown VARS command: " + sc.commandKey, "D");
+		} else if (sc.commandKey.equals("SETINT")) {
+			if (sc.bool1) {
+				switch (sc.int1) {
+					case 1:
+						globalVar_int1 = sc.int2;
+						break;
+					case 2:
+						globalVar_int2 = sc.int2;
+						break;
+					case 3:
+						globalVar_int3 = sc.int2;
+						break;
+				}
+			} else {
+				switch (sc.int1) {
+					case 1:
+						PCont.Scripts[scriptID].localVar_int1 = sc.int2;
+						break;
+					case 2:
+						PCont.Scripts[scriptID].localVar_int2 = sc.int2;
+						break;
+					case 3:
+						PCont.Scripts[scriptID].localVar_int3 = sc.int2;
+						break;
+				}
+			}
 
+		} else if (sc.commandKey.equals("SETSTRING")) {
+			if (sc.bool1) {
+				switch (sc.int1) {
+					case 1:
+						globalVar_String1 = sc.extra;
+						break;
+					case 2:
+						globalVar_String2 = sc.extra;
+						break;
+					case 3:
+						globalVar_String3 = sc.extra;
+						break;
+				}
+			} else {
+				switch (sc.int1) {
+					case 1:
+						PCont.Scripts[scriptID].localVar_String1 = sc.extra;
+						break;
+					case 2:
+						PCont.Scripts[scriptID].localVar_String2 = sc.extra;
+						break;
+				}
+			}
+
+		} else if (sc.commandKey.equals("INCRINT")) {
+			if (sc.bool1) {
+				switch (sc.int1) {
+					case 1:
+						globalVar_int1 += sc.int2;
+						break;
+					case 2:
+						globalVar_int2 += sc.int2;
+						break;
+					case 3:
+						globalVar_int3 += sc.int2;
+						break;
+				}
+			} else {
+				switch (sc.int1) {
+					case 1:
+						PCont.Scripts[scriptID].localVar_int1 += sc.int2;
+						break;
+					case 2:
+						PCont.Scripts[scriptID].localVar_int2 += sc.int2;
+						break;
+					case 3:
+						PCont.Scripts[scriptID].localVar_int3 += sc.int2;
+						break;
+				}
+			}
+
+		} else if (sc.commandKey.equals("ROTATE")) {
+		} else {
+			StData.LOG.println("ScriptProcessor: unknown VARS command: " + sc.commandKey, "D");
 		}
 
 		return false;
 	}
 
 	private boolean CG_SYSTEM(plbContainer.SCommand sc, int i) {
-		switch (sc.commandKey) {
-			case "PRINT":
-				StData.LOG.println("[SCRIPT]:" + sc.extra);
-				break;
-			case "SCRIPTENABLE":
-				StData.LOG.println("[SCRIPT]: setting script active flag of script with id " + sc.int1 + " to " + sc.bool1 + ", MSG: " + sc.extra, "N");
-				activeScripts[sc.int1] = sc.bool1;
-				break;
-			case "SETSPEED":
-				StData.LOG.println("[SCRIPT]: setting logic speed to " + sc.int1 + ", MSG: " + sc.extra, "N");
-				StData.threadManager.LT.LOOP_TPS = sc.int1;
-				StData.threadManager.LT.LOOP_Recalculate = true;
-				break;
-			case "DELAY":
-				StData.LOG.println("[SCRIPT]: delaying next tick by " + sc.int1 + ", MSG: " + sc.extra, "N");
-				nextTickDelay = sc.int1;
-				break;
-			default:
-				StData.LOG.println("ScriptProcessor: unknown SYSTEM command: " + sc.commandKey, "D");
+		if (sc.commandKey.equals("PRINT")) {
+			StData.LOG.println("[SCRIPT]:" + sc.extra);
 
+		} else if (sc.commandKey.equals("SCRIPTENABLE")) {
+			StData.LOG.println("[SCRIPT]: setting script active flag of script with id " + sc.int1 + " to " + sc.bool1 + ", MSG: " + sc.extra, "N");
+			activeScripts[sc.int1] = sc.bool1;
 
+		} else if (sc.commandKey.equals("SETSPEED")) {
+			StData.LOG.println("[SCRIPT]: setting logic speed to " + sc.int1 + ", MSG: " + sc.extra, "N");
+			StData.threadManager.LT.LOOP_TPS = sc.int1;
+			StData.threadManager.LT.LOOP_Recalculate = true;
+
+		} else if (sc.commandKey.equals("DELAY")) {
+			StData.LOG.println("[SCRIPT]: delaying next tick by " + sc.int1 + ", MSG: " + sc.extra, "N");
+			nextTickDelay = sc.int1;
+
+		} else {
+			StData.LOG.println("ScriptProcessor: unknown SYSTEM command: " + sc.commandKey, "D");
 		}
 
 		return false;

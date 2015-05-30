@@ -19,9 +19,11 @@ public class uGameSetup {
 	public String windowTitle = "Unnamed uGame";            //You guessed it, will be used as window title, a suffix will be added " | in DCode uEngine 2.[ver] r[rel]"
 
 	// Basic Render information
-	public int width = 320;                                //Width of internal canvas
+	public int width = 320;                                	//Width of internal canvas
 	public int height = 240;                                //Height of internal canvas
-	public int scale = 3;                                    //Scalig applied to internal canvas
+	public int scale = 3;                                   //Scalig applied to internal canvas
+	public FullMODE fullscreen = FullMODE.nope;				//WARNING: this will only work if supported by the runtime, will override scalling
+
 
 	// Extended Render information
 	public int postProcCount = 4;                            //number of aviable postProcessing Sockets
@@ -52,4 +54,8 @@ public class uGameSetup {
 
 	// Fonts
 	public int stringBufferSize = 16;
+
+	public enum FullMODE{
+		nope, box, stretch, scaled_box, colored_box, colored_scaled_box
+	}
 }

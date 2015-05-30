@@ -48,7 +48,7 @@ public class BaseLogic implements ILogicTask {
 
 						StData.currentGC.currentSC.sprites[1] = ball;
 						StData.currentGC.currentSC.sprites_middle[1] = 1;
-						StData.currentGC.currentSC.postProcessors[1] = new PP_scaleblur(1.5F);
+						//StData.currentGC.currentSC.postProcessors[1] = new PP_scaleblur(1.5F);
 
 						Music m = TinySound.loadMusic(getClass().getResource("/dcode/games/uEngine2/games/uping/res/msx/testificate.wav"));
 						LStData.batHit = TinySound.loadSound(getClass().getResource("/dcode/games/uEngine2/games/uping/res/sfx/hit.wav"));

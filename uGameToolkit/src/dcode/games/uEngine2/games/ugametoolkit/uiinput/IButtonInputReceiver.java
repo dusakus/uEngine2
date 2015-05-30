@@ -5,5 +5,6 @@ package dcode.games.uEngine2.games.ugametoolkit.uiinput;
  */
 public interface IButtonInputReceiver {
     void handleButtonPress(Button b);
+
     void handleButtonRightClick(Button b);
 }

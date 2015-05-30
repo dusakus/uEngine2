@@ -6,7 +6,7 @@ import dcode.games.uEngine2.tools.ext.j2s.gifReader;
 /**
  * Created by dusakus on 01.05.15.
  */
-public class LoadCursors implements  ILoadMe {
+public class LoadCursors implements ILoadMe {
     @Override
     public void loadDys() throws Exception {
         gifReader gr = new gifReader();

@@ -1,7 +1,5 @@
 package dcode.games.uEngine2.games.ugametoolkit;
 
-import com.sun.jndi.url.corbaname.corbanameURLContextFactory;
-import dcode.games.uEngine2.GFX.layers.ClearColorLayer;
 import dcode.games.uEngine2.GameContainer;
 import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
@@ -9,8 +7,8 @@ import dcode.games.uEngine2.games.ugametoolkit.insanity.MenuSanityChecker;
 import dcode.games.uEngine2.games.ugametoolkit.layers.LAYER_BG;
 import dcode.games.uEngine2.games.ugametoolkit.layers.LAYER_buttons;
 import dcode.games.uEngine2.games.ugametoolkit.randomParts.StringProvider;
-import dcode.games.uEngine2.games.ugametoolkit.uiinput.*;
 import dcode.games.uEngine2.games.ugametoolkit.uiinput.Button;
+import dcode.games.uEngine2.games.ugametoolkit.uiinput.IButtonInputReceiver;
 
 import java.awt.*;
 
@@ -25,8 +23,8 @@ public class MenuLogic implements ILogicTask, IButtonInputReceiver {
 
 
     public GameContainer menuGC;
-    private MenuSanityChecker msc = new MenuSanityChecker();
     public LAYER_menu lm;
+    private MenuSanityChecker msc = new MenuSanityChecker();
 
     @Override
     public boolean isReady() {
@@ -71,9 +69,9 @@ public class MenuLogic implements ILogicTask, IButtonInputReceiver {
                             new StringProvider() {
                                 @Override
                                 public String updateSource() {
-                                    return "TESTIFICATE";
+                                    return "$%$$$$$^^^";
                                 }
-                            }, new Rectangle(128, 128, 80, 16), "FGENW"));
+                            }, new Rectangle(128, 128, 10, 10), "FGENW"));
                     LStData.currentStatus = 1;
             }
         } else {

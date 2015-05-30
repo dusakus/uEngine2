@@ -10,6 +10,11 @@ import java.awt.image.BufferedImage;
 
 /**
  * Created by dusakus on 01.05.15.
+ *
+ *
+ * If you want your own intro here
+ * read the comments below
+ * it's really simple
  */
 public class introPlayer {
 
@@ -40,7 +45,7 @@ public class introPlayer {
 
     private void playback() {
         tmp = StData.setup.FPS;
-        Shortcuts.setRenderSpeed(45);
+        Shortcuts.setRenderSpeed(48); //here you can set starting playback speed
         while (ld.running && StData.gameIsRunning) {
             try {
                 Thread.sleep(5);
@@ -56,14 +61,14 @@ public class introPlayer {
         int h = StData.setup.height;
         scX = 1;
         scY = 1;
-        w -= 140;
-        while (w > 140) {
+        w -= frames.getFrame(0).getWidth();
+        while (w > frames.getFrame(0).getWidth()) {
             scX += 1;
             scY += 1;
-            w -= 140;
+            w -= frames.getFrame(0).getWidth();
         }
         pX = w / 2;
-        pY = (h - (int) (96 * scY)) / 2;
+        pY = (h - (int) (frames.getFrame(0).getHeight() * scY)) / 2;
 
         ld = new layerDraw(this);
         StData.currentGC.currentSC.layers_Foreground.add(new ClearColorLayer(Color.BLACK));
@@ -72,6 +77,7 @@ public class introPlayer {
 
     private void loadTextures() {
         frames = new gifReader();
+        //Here you change the filename to a proper gif. You can also replace the original gif for a custom one
         frames.read(this.getClass().getResourceAsStream("/dcode/games/uEngine2/res/intranim.gif"));
     }
 
@@ -97,7 +103,11 @@ public class introPlayer {
                     enddelay--;
                 }
             } else {
-                if (frame == 72) Shortcuts.setRenderSpeed(10);
+                //Here you can set specific frames where you want the intro to change playback speed
+                if (frame == 2) Shortcuts.setRenderSpeed(40);
+                if (frame == 72) Shortcuts.setRenderSpeed(5);
+                if (frame == 80) Shortcuts.setRenderSpeed(8);
+                if (frame == 90) Shortcuts.setRenderSpeed(15);
                 frame++;
             }
         }

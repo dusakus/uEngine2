@@ -10,7 +10,7 @@ public class LoadBackgrounds implements ILoadMe {
     @Override
     public void loadDys() throws Exception {
         for (int i = 0; i < 6; i++) {
-            Shortcuts.registerOneTimeBGTask(new LoadBasicTexture("GENERAL_UI/BG/BG-0" + i+".png", "UIBG"+i),true);
+            Shortcuts.registerOneTimeBGTask(new LoadBasicTexture("GENERAL_UI/BG/BG-0" + i + ".png", "UIBG" + i), true);
         }
     }
 

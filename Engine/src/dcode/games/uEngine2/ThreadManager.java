@@ -14,8 +14,10 @@ import dcode.games.uEngine2.SFX.AudioThread;
 import dcode.games.uEngine2.SFX.tslib.TinySound;
 import dcode.games.uEngine2.input.KeyWrapper;
 import dcode.games.uEngine2.input.PointerWrapper;
+import dcode.games.uEngine2.tools.Resize;
 import dcode.games.uEngine2.window.Canvas;
 import dcode.games.uEngine2.window.Window;
+import dcode.games.uEngine2.window.canvases.W_Std;
 
 /**
  * @author dusakus
@@ -27,12 +29,12 @@ public class ThreadManager {
     public LogicThread LT;
     public BackgroundThread BGT;
 
-    private KeyWrapper KW;
-    private PointerWrapper PW;
+    public KeyWrapper KW;
+    public PointerWrapper PW;
 
-    private Canvas canvas;
-    private Window window;
-    private boolean wasFreezed = false;
+    public Canvas canvas;
+    public Window window;
+    public boolean wasFreezed = false;
 
     public ThreadManager() {
         RT = new RenderThread();
@@ -44,8 +46,7 @@ public class ThreadManager {
     public void startEngine() {
         if (StData.setup.soundEnabled) TinySound.init();
 
-        canvas = new Canvas();
-        window = new Window(canvas);
+        Resize.updateRenderingSetup();
 
         KW = new KeyWrapper();
         PW = new PointerWrapper();
@@ -79,21 +80,23 @@ public class ThreadManager {
 
         int LTCheckCount = 0;
 
-        int timeStep = 1000000000;
+        int timeStep = 100000000;
         long currentTime = System.nanoTime();
         long nextTime = System.nanoTime() + timeStep;
 
         while (StData.gameIsRunning) {
-            if (wasFreezed) {
-                wasFreezed = false;
-                BGT.LOOP_TPS = StData.setup.TPS_BG;
-                BGT.LOOP_Recalculate = true;
-            }
+
             //tick count
             int tc_RT = RT.LOOP_ticks;
             int tc_AT = AT.LOOP_ticks;
             int tc_LT = LT.LOOP_ticks;
             if (!StData.gameFreeze) {
+                if (wasFreezed) {
+                    StData.LOG.println("[Thread Manager] focus regained, engine resumed");
+                    wasFreezed = false;
+                    BGT.LOOP_TPS = StData.setup.TPS_BG;
+                    BGT.LOOP_Recalculate = true;
+                }
                 if (!RT.isAlive()) {
                     StData.LOG.println("[Thread Manager] Render thread died, recreating", "E3");
                     StData.LOG.dumpBuffer();
@@ -122,12 +125,12 @@ public class ThreadManager {
                     BGT.start();
                 }
 
-                if (tc_RT - ltc_RT < StData.setup.FPS / 2) {
+                if (tc_RT - ltc_RT < StData.setup.FPS / 20) {
                     StData.LOG.println("[Thread Manager] Render thread might be stuck", "E1");
                     StData.LOG.dumpBuffer();
                 }
 
-                if (tc_RT - ltc_RT < StData.setup.FPS / 20) {
+                if (tc_RT - ltc_RT < StData.setup.FPS / 200) {
                     StData.LOG.println("[Thread Manager] Render thread is stuck, resetting", "E3");
                     StData.LOG.dumpBuffer();
                     //RT.stop();
@@ -135,12 +138,12 @@ public class ThreadManager {
                     RT.start();
                 }
 
-                if (StData.setup.soundEnabled) if (tc_AT - ltc_AT < StData.setup.TPS_MSX / 2) {
+                if (StData.setup.soundEnabled) if (tc_AT - ltc_AT < StData.setup.TPS_MSX / 20) {
                     StData.LOG.println("[Thread Manager] Audio thread might be stuck", "E1");
                     StData.LOG.dumpBuffer();
                 }
 
-                if (StData.setup.soundEnabled) if (tc_AT - ltc_AT < StData.setup.TPS_MSX / 20) {
+                if (StData.setup.soundEnabled) if (tc_AT - ltc_AT < StData.setup.TPS_MSX / 200) {
                     StData.LOG.println("[Thread Manager] Audio thread is stuck, resetting", "E3");
                     StData.LOG.dumpBuffer();
                     //AT.stop();
@@ -148,13 +151,13 @@ public class ThreadManager {
                     AT.start();
                 }
 
-                if (tc_LT - ltc_LT < StData.setup.TPS_logic / 5) {
+                if (tc_LT - ltc_LT < StData.setup.TPS_logic / 50) {
                     StData.LOG.println("[Thread Manager] Logic thread might be stuck", "E2");
                     StData.LOG.dumpBuffer();
                 }
 
                 if (tc_LT == ltc_LT) {
-                    if (LTCheckCount > 10) {
+                    if (LTCheckCount > 100) {
                         StData.LOG.println("[Thread Manager] Logic thread is stuck, game will be restarted", "E6S");
                         StData.LOG.dumpBuffer();
                         //LT.stop();

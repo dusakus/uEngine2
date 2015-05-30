@@ -27,10 +27,11 @@ public class UFlappy {
 		gs.TPS_MSX = 256;
 		gs.TPS_BG = 2;
 
-		gs.debug = true;
+		gs.debug = false;
 		gs.width = 400;
 		gs.height = 500;
 		gs.scale = 1;
+		gs.fullscreen = uGameSetup.FullMODE.colored_box;
 
 		gs.safeName = "uflappy";
 		gs.screenName = "uFlappy";
