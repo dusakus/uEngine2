@@ -45,6 +45,11 @@ public class Resize {
                 if (StData.threadManager.window != null) StData.threadManager.window.rimuw();
                 StData.threadManager.window = new Window(StData.threadManager.canvas, true);
                 break;
+            case setup_util:
+                StData.threadManager.canvas = new W_Eng();
+                if (StData.threadManager.window != null) StData.threadManager.window.rimuw();
+                StData.threadManager.window = new Window(StData.threadManager.canvas, false);
+                break;
             default:
                 StData.LOG.println("Unknown fullscreen mode, setting to window", "E2");
                 StData.setup.fullscreen = uGameSetup.FullMODE.nope;

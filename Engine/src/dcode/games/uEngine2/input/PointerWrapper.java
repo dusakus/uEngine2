@@ -108,6 +108,11 @@ public class PointerWrapper implements MouseListener {
                 offsetX = screen.width / 2 - sizeX / 2;
                 offsetY = screen.height / 2 - sizeY / 2;
 				break;
+			case setup_util:
+				scalemodX = 2;
+				scalemodY = 2;
+				offsetX = 0;
+				offsetY = 0;
 		}
         StData.LOG.println("[PWrap] ====Setting new input offsets====");
         StData.LOG.println("[PWrap] -> offsetX: " + offsetX);

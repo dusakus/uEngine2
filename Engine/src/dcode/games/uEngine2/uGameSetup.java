@@ -56,6 +56,6 @@ public class uGameSetup {
 	public int stringBufferSize = 16;
 
 	public enum FullMODE{
-		nope, box, stretch, scaled_box, colored_box, colored_scaled_box
+		nope, box, stretch, scaled_box, colored_box, setup_util, colored_scaled_box
 	}
 }
