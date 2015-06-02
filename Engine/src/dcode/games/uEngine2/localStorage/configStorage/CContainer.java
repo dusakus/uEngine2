@@ -4,18 +4,18 @@ import dcode.games.uEngine2.StData;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.regex.Pattern;
 
 /**
  * Created by dusakus on 31.05.15.
- *
- *
  */
 public class CContainer {
 
     public File fileLocation;
     public String configHeader;
-    private CLeaf missingLeaf;
+    CLeaf missingLeaf;
 
     private CBranch master;
 
@@ -27,21 +27,32 @@ public class CContainer {
 
     //Creates container from existing file
     public CContainer(File f) {
-
+        master = new CBranch("MASTER");
+        Load.LoadFromFile(this, f);
     }
 
     //Creates container from internal template
     public CContainer(URL u) {
-
+        master = new CBranch("MASTER");
     }
 
-    private CBranch getBranch(String key, boolean create) {
+    public void save() {
+        Save.saveToFile(this);
+    }
+
+    public void saveAs(File f) {
+        StData.LOG.println("[uGConf]SAVEAS " + f);
+        fileLocation = f;
+        Save.saveToFile(this);
+    }
+
+    CBranch getBranch(String key, boolean create) {
         String[] keys;
         CBranch currentTarget = master;
 
         //grab key list
-        if (key.contains(".")) keys = key.split(".");
-        else if (key.contains("/")) keys = key.split(".");
+        if (key.contains(".")) keys = key.split(Pattern.quote("."));
+        else if (key.contains("/")) keys = key.split(Pattern.quote("/"));
         else { //single step key is still a list...
             keys = new String[1];
             keys[0] = key;
@@ -59,25 +70,28 @@ public class CContainer {
         return currentTarget;
     }
 
-    private CLeaf getLeaf(String key, boolean create) {
+    protected CLeaf getLeaf(String key, boolean create) {
         String leafName;
         if (key.contains(".")) {
-            leafName = key.substring(key.lastIndexOf('.'), key.length());
+            leafName = key.substring(key.lastIndexOf('.') + 1, key.length());
             key = key.substring(0, key.lastIndexOf('.'));
         } else if (key.contains("/")) {
-            leafName = key.substring(key.lastIndexOf('/'), key.length());
+            leafName = key.substring(key.lastIndexOf('/') + 1, key.length());
             key = key.substring(0, key.lastIndexOf('/'));
         } else { //single step key is still a list...
             leafName = key;
             key = "this";
         }
-
-        return getBranch(key, create).getLeaf(leafName, create);
+        try {
+            return getBranch(key, create).getLeaf(leafName, create);
+        } catch (Exception e){
+            return missingLeaf;
+        }
     }
 
     public int getInt(String key, int DEFAULT) {
         CLeaf cl = getLeaf(key, false);
-        if (cl == null) {
+        if (cl == null || cl == missingLeaf) {
             StData.LOG.println("[CONFIG] Integer Leaf at " + key + " not found, creating", "E2");
             cl = getLeaf(key, true);
             cl.setInt(DEFAULT);
@@ -88,6 +102,7 @@ public class CContainer {
         }
         return cl.VALUE_INT;
     }
+
     public String getString(String key, String DEFAULT) {
         CLeaf cl = getLeaf(key, false);
         if (cl == null) {
@@ -101,6 +116,7 @@ public class CContainer {
         }
         return cl.VALUE_STR;
     }
+
     public float getFloat(String key, float DEFAULT) {
         CLeaf cl = getLeaf(key, false);
         if (cl == null) {
@@ -114,6 +130,7 @@ public class CContainer {
         }
         return cl.VALUE_FLOAT;
     }
+
     public boolean getBool(String key, boolean DEFAULT) {
         CLeaf cl = getLeaf(key, false);
         if (cl == null) {
@@ -128,6 +145,10 @@ public class CContainer {
         return cl.VALUE_BOOL;
     }
 
+    public CBranch getMaster() {
+        return master;
+    }
+
 
     private abstract class CObject {
         protected String key;
@@ -139,13 +160,14 @@ public class CContainer {
         }
     }
 
-    private class CBranch extends CObject {
+    protected class CBranch extends CObject {
         protected String header;
 
         private LinkedList<CObject> obs;
 
         public CBranch(String k) {
             key = k;
+            if (k == null) key = "ERROR";
             obs = new LinkedList<CObject>();
         }
 
@@ -176,9 +198,29 @@ public class CContainer {
         public boolean isLeaf() {
             return false;
         }
+
+        public CBranch[] getBranches() {
+            ArrayList<CBranch> br = new ArrayList<CBranch>();
+
+            for (CObject co : obs) {
+                if (!co.isLeaf()) br.add((CBranch) co);
+            }
+
+            return br.toArray(new CBranch[1]);
+        }
+
+        public CLeaf[] getLeaves() {
+            ArrayList<CLeaf> le = new ArrayList<CLeaf>();
+
+            for (CObject co : obs) {
+                if (co.isLeaf()) le.add((CLeaf) co);
+            }
+
+            return le.toArray(new CLeaf[1]);
+        }
     }
 
-    private class CLeaf extends CObject {
+    protected class CLeaf extends CObject {
 
         //INFO
         protected String INT_comment;

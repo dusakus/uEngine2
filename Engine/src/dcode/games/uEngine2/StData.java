@@ -10,6 +10,7 @@ import dcode.games.uEngine2.GFX.debugInfoLayer;
 import dcode.games.uEngine2.LOGIC.LogicTasks;
 import dcode.games.uEngine2.ResourceManager.ResMan;
 import dcode.games.uEngine2.localStorage.configStorage.CContainer;
+import dcode.games.uEngine2.tools.ExceptionHandler;
 import dcode.games.uEngine2.translator.Translator;
 
 import java.awt.image.BufferedImage;
@@ -41,6 +42,7 @@ public class StData {
 	public static boolean gameFreeze = false;
 	public static boolean isRendering = false;
 	public static Random gRand = new Random(System.currentTimeMillis());
+	public static ExceptionHandler EXC = new ExceptionHandler();
 	public static debugInfoLayer dlayer;
 	public static CContainer engineConfig;
 }

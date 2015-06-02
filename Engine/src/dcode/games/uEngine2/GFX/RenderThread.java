@@ -106,7 +106,7 @@ public class RenderThread extends Thread {
                     drawLayers(sc.layers_Overlay, G2D);
                 }
 
-                if (StData.setup.postProcCount > 0) postProcess(StData.NextFrame);
+                if (StData.setup.postProcCount > 0) postProcess(StData.NextFrame); //TODO try to find a way to move post processing AFTER scaling!!!
                 StData.isRendering = false;
 
             }

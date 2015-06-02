@@ -5,6 +5,8 @@
  */
 package dcode.games.uEngine2.BGTasks;
 
+import java.io.IOException;
+
 /**
  * @author dusakus
  */
@@ -18,7 +20,7 @@ public abstract class PBGTask {
 
 	public abstract boolean isReady();
 
-	public abstract void perform();
+	public abstract void perform() throws Exception;
 
 	public boolean isDone() {
 		return done;

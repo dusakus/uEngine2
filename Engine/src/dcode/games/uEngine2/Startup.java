@@ -24,7 +24,8 @@ public class Startup {
         Thread.currentThread().setName("ITNI");
         StData.GameInitializer = GB;
         StData.setup = GB.setup;
-        StData.gameStorageDirectory = new File(System.getProperty("user.dir") + "/DCODE/uEngine/" + StData.setup.safeName);
+        StData.gameStorageDirectory = new File(System.getProperty("user.dir") + "/DCODE/uEngine2/" + StData.setup.safeName);
+        if (!StData.gameStorageDirectory.exists()) StData.gameStorageDirectory.mkdirs();
         StData.LOG = new DCoutputH(GB.setup.debug);
         StData.threadManager = new ThreadManager();
         StData.resources = new ResMan();
@@ -35,7 +36,11 @@ public class Startup {
         StData.threadManager.startEngine();
         StData.threadManager.setInputHandler(GB.initialInputHandler);
         if (!GB.setup.debug) new introPlayer().playIntro();
-        GB.contentInitializer.loadInitialGameContent();
+        try {
+            GB.contentInitializer.loadInitialGameContent();
+        } catch (Exception e) {
+            StData.LOG.printerr(e, "GAME MIGHT BE BORKED!!!", "E3");
+        }
         StData.threadManager.monitorThreads();
         TinySound.shutdown();
         StData.LOG.println("MONITOR THREAD CEASED BEING ALIVE, EXITTING");

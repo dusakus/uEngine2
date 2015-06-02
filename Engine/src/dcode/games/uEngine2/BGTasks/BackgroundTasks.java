@@ -48,8 +48,10 @@ public class BackgroundTasks {
 		if (!HPTasks.isEmpty()) {
 			for (PBGTask task : HPTasks) {
 				lastTask = task;
-				if (task.isReady()) {
+				try {
 					task.perform();
+				} catch (Exception e) {
+					StData.EXC.BOOM(e, "LPTask", task);
 				}
 			}
 		}
@@ -57,7 +59,11 @@ public class BackgroundTasks {
 			PBGTask task = LPTasks.poll();
 			lastTask = task;
 			if (task.isReady()) {
-				task.perform();
+				try {
+					task.perform();
+				} catch (Exception e) {
+					StData.EXC.BOOM(e, "LPTask", task);
+				}
 			} else {
 				LPTasks.offer(task);
 			}

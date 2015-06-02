@@ -17,7 +17,7 @@ public class LD32W_INIT {
         gs.width = 400;
         gs.height = 300;
         gs.scale = 2;
-        gs.fullscreen = uGameSetup.FullMODE.colored_box;
+        gs.fullscreen = uGameSetup.FullMODE.stretch;
 
         gs.spriteTableSize = 120;
         gs.enableSpriteWrappers = true;

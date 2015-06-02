@@ -11,4 +11,12 @@ public class BadThings {
     public static void insertOwnMouseHandler(MouseListener mouseListener){
         StData.threadManager.window.registerExtMouseListener(mouseListener);
     }
+
+    public static String repeatString(String s, int times){
+        String t = "";
+        for (int i = 0; i < times; i++) {
+            t = t+s;
+        }
+        return t;
+    }
 }

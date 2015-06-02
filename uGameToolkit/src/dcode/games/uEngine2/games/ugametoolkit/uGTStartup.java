@@ -1,6 +1,9 @@
 package dcode.games.uEngine2.games.ugametoolkit;
 
 import dcode.games.uEngine2.*;
+import dcode.games.uEngine2.localStorage.configStorage.CContainer;
+
+import java.io.File;
 
 /**
  * Created by dusakus on 24.03.15.
@@ -42,6 +45,14 @@ public class uGTStartup {
         public void loadInitialGameContent() {
             StData.currentGC = new GameContainer();
             StData.logicTasks.registerBasic(new BaseLogic());
+
+
+
+
+            CContainer c = new CContainer(new File(StData.gameStorageDirectory, "testConfig.ugc"));
+
+
+            c.saveAs(new File(StData.gameStorageDirectory, "testConfig.ugc"));
         }
     }
 }
