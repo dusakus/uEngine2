@@ -45,4 +45,5 @@ public class StData {
 	public static ExceptionHandler EXC = new ExceptionHandler();
 	public static debugInfoLayer dlayer;
 	public static CContainer engineConfig;
+	public static boolean INSETUP = false;
 }

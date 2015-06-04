@@ -16,9 +16,16 @@ import java.util.regex.Pattern;
 public class Save {
 
     public static boolean saveToFile(CContainer c) {
-
-        Shortcuts.registerOneTimeBGTask(new ConfigSaver(c, c.fileLocation), true);
-
+        try {
+            Shortcuts.registerOneTimeBGTask(new ConfigSaver(c, c.fileLocation), true);
+        } catch (Exception e){
+            StData.LOG.println("[Config save] BG task is not aviable, saving from current thread...");
+            try {
+                new ConfigSaver(c, c.fileLocation).perform();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
         return false;
     }
 

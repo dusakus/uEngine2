@@ -52,7 +52,7 @@ public class BackgroundTasks {
                     try {
                         task.perform();
                     } catch (Exception e) {
-                        StData.EXC.BOOM(e, "LPTask", task);
+                        StData.EXC.BOOM(e, "HPTask", task);
                     }
                 }
             }

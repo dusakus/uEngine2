@@ -6,12 +6,14 @@
 package dcode.games.uEngine2;
 
 import dcode.games.uEngine2.BGTasks.BackgroundTasks;
+import dcode.games.uEngine2.GFX.eui.SCU;
 import dcode.games.uEngine2.LOGIC.LogicTasks;
 import dcode.games.uEngine2.ResourceManager.ResMan;
 import dcode.games.uEngine2.SFX.tslib.TinySound;
 import dcode.games.uEngine2.tools.introPlayer;
 import dcode.games.uEngine2.translator.Translator;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 /**
@@ -27,6 +29,7 @@ public class Startup {
         StData.gameStorageDirectory = new File(System.getProperty("user.dir") + "/DCODE/uEngine2/" + StData.setup.safeName);
         if (!StData.gameStorageDirectory.exists()) StData.gameStorageDirectory.mkdirs();
         StData.LOG = new DCoutputH(GB.setup.debug);
+        StData.setup.loadSettings();
         StData.threadManager = new ThreadManager();
         StData.resources = new ResMan();
         StData.currentGC = new GameContainer();
@@ -36,6 +39,7 @@ public class Startup {
         StData.threadManager.startEngine();
         StData.threadManager.setInputHandler(GB.initialInputHandler);
         if (!GB.setup.debug) new introPlayer().playIntro();
+        checkSCU();
         try {
             GB.contentInitializer.loadInitialGameContent();
         } catch (Exception e) {
@@ -56,5 +60,24 @@ public class Startup {
         } catch (InterruptedException ignored) {
         }
         GB.contentInitializer.engineStopped();
+    }
+
+    private static void checkSCU() {
+        if (!StData.INSETUP) {
+            try {
+                for (int i = 0; i < 100; i++) {
+                    if (!StData.INSETUP && StData.threadManager.KW.isKeyHeld(KeyEvent.VK_F8)) new SCU();
+                    Thread.sleep(1);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        while (StData.INSETUP && StData.gameIsRunning) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+            }
+        }
     }
 }

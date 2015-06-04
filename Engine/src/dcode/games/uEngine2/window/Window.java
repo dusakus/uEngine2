@@ -72,6 +72,7 @@ public class Window {
     }
 
     public void registerListeners(KeyWrapper keyM, PointerWrapper pointM) {
+        StData.LOG.println("Attaching input listeners to window...");
         gc.addKeyListener(keyM);
         gc.addMouseListener(pointM);
         gc.requestFocus();

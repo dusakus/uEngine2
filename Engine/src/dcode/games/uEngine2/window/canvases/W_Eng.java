@@ -16,14 +16,10 @@ import java.awt.image.BufferedImage;
  */
 public class W_Eng extends Canvas {
 
-    private SCU utillayer;
-
     public W_Eng() {
         setMaximumSize(new Dimension(640, 480));
         setPreferredSize(new Dimension(640, 480));
         StData.NextFrame = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
-
-        utillayer = new SCU();
     }
 
     public void render() {
@@ -32,10 +28,6 @@ public class W_Eng extends Canvas {
             createBufferStrategy(2);
             bs = getBufferStrategy();
         }
-
-        Graphics2D g = StData.NextFrame.createGraphics();
-        utillayer.draw(g);
-        g.dispose();
 
         Graphics grf = bs.getDrawGraphics();
         grf.drawImage(StData.NextFrame.getScaledInstance(640, 480, Image.SCALE_REPLICATE), 0, 0, null);

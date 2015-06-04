@@ -3,6 +3,7 @@ package dcode.games.uEngine2.tools;
 import dcode.games.uEngine2.BGTasks.internalTasks.DelayedInputresize;
 import dcode.games.uEngine2.StData;
 import dcode.games.uEngine2.uGameSetup;
+import dcode.games.uEngine2.window.Canvas;
 import dcode.games.uEngine2.window.Window;
 import dcode.games.uEngine2.window.canvases.*;
 
@@ -11,52 +12,60 @@ import dcode.games.uEngine2.window.canvases.*;
  */
 public class Resize {
     public static void updateRenderingSetup() {
+        updateRenderingSetup(StData.setup.fullscreen);
+    }
 
-        StData.LOG.println("Setting fullscren mode to " + StData.setup.fullscreen, "D");
-
-        switch (StData.setup.fullscreen) {
+    public static void updateRenderingSetup(uGameSetup.FullMODE setting) {
+        StData.LOG.println("Setting fullscren mode to " + setting, "D");
+        StData.threadManager.canvas = null;
+        Canvas c = null;
+        switch (setting) {
             case nope:
-                StData.threadManager.canvas = new W_Std();
+                c = new W_Std();
                 if (StData.threadManager.window != null) StData.threadManager.window.rimuw();
-                StData.threadManager.window = new Window(StData.threadManager.canvas, false);
+                StData.threadManager.window = new Window(c, false);
                 break;
             case box:
-                StData.threadManager.canvas = new FS_Box();
+                c = new FS_Box();
                 if (StData.threadManager.window != null) StData.threadManager.window.rimuw();
-                StData.threadManager.window = new Window(StData.threadManager.canvas, true);
+                StData.threadManager.window = new Window(c, true);
                 break;
             case colored_box:
-                StData.threadManager.canvas = new FS_CBox();
+                c = new FS_CBox();
                 if (StData.threadManager.window != null) StData.threadManager.window.rimuw();
-                StData.threadManager.window = new Window(StData.threadManager.canvas, true);
+                StData.threadManager.window = new Window(c, true);
                 break;
             case stretch:
-                StData.threadManager.canvas = new FS_Stretch();
+                c = new FS_Stretch();
                 if (StData.threadManager.window != null) StData.threadManager.window.rimuw();
-                StData.threadManager.window = new Window(StData.threadManager.canvas, true);
+                StData.threadManager.window = new Window(c, true);
                 break;
             case scaled_box:
-                StData.threadManager.canvas = new FS_scBox();
                 if (StData.threadManager.window != null) StData.threadManager.window.rimuw();
-                StData.threadManager.window = new Window(StData.threadManager.canvas, true);
+                c = new FS_scBox();
+                StData.threadManager.window = new Window(c, true);
                 break;
             case colored_scaled_box:
-                StData.threadManager.canvas = new FS_scCBox();
+                c = new FS_scCBox();
                 if (StData.threadManager.window != null) StData.threadManager.window.rimuw();
-                StData.threadManager.window = new Window(StData.threadManager.canvas, true);
+                StData.threadManager.window = new Window(c, true);
                 break;
             case setup_util:
-                StData.threadManager.canvas = new W_Eng();
+                c = new W_Eng();
                 if (StData.threadManager.window != null) StData.threadManager.window.rimuw();
-                StData.threadManager.window = new Window(StData.threadManager.canvas, false);
+                StData.threadManager.window = new Window(c, false);
                 break;
             default:
                 StData.LOG.println("Unknown fullscreen mode, setting to window", "E2");
-                StData.setup.fullscreen = uGameSetup.FullMODE.nope;
-                updateRenderingSetup();
+                updateRenderingSetup(uGameSetup.FullMODE.nope);
+        }
+        StData.threadManager.canvas = c;
+        if (StData.threadManager.canvas == null){
+            StData.LOG.println("CANVAS NOT CREATED WHILE SWITCHING RENDER MODE", "E5");
         }
         try {
             StData.threadManager.PW.updateFSOffsets();
+            StData.threadManager.window.registerListeners(StData.threadManager.KW, StData.threadManager.PW);
         } catch (Exception e){
             StData.LOG.println("Unable to update mouse offsets settings, queued for later");
             Shortcuts.registerOneTimeBGTask(new DelayedInputresize(), true);

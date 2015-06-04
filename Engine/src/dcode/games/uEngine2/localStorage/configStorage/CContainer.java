@@ -27,6 +27,7 @@ public class CContainer {
 
     //Creates container from existing file
     public CContainer(File f) {
+        fileLocation = f;
         master = new CBranch("MASTER");
         Load.LoadFromFile(this, f);
     }
@@ -70,7 +71,7 @@ public class CContainer {
         return currentTarget;
     }
 
-    protected CLeaf getLeaf(String key, boolean create) {
+    public CLeaf getLeaf(String key, boolean create) {
         String leafName;
         if (key.contains(".")) {
             leafName = key.substring(key.lastIndexOf('.') + 1, key.length());
@@ -220,13 +221,13 @@ public class CContainer {
         }
     }
 
-    protected class CLeaf extends CObject {
+    public class CLeaf extends CObject {
 
         //INFO
-        protected String INT_comment;
-        protected String FLOAT_comment;
-        protected String STR_comment;
-        protected String BOOL_comment;
+        public String INT_comment;
+        public String FLOAT_comment;
+        public String STR_comment;
+        public String BOOL_comment;
 
         //valus set
         protected boolean hasIntSet = false;
@@ -267,6 +268,19 @@ public class CContainer {
         @Override
         public boolean isLeaf() {
             return true;
+        }
+
+        public void setBComment(String s) {
+            BOOL_comment = s;
+        }
+        public void setFComment(String s) {
+            FLOAT_comment = s;
+        }
+        public void setSComment(String s) {
+            STR_comment = s;
+        }
+        public void setIComment(String s) {
+            INT_comment = s;
         }
     }
 

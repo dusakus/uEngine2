@@ -25,6 +25,7 @@ public class DelayedInputresize extends PBGTask {
 
         try {
             StData.threadManager.PW.updateFSOffsets();
+            StData.threadManager.window.registerListeners(StData.threadManager.KW, StData.threadManager.PW);
         } catch (Exception e) {
             StData.LOG.println("Unable to update mouse offsets settings, queued for later");
             Shortcuts.registerOneTimeBGTask(new DelayedInputresize(), true);

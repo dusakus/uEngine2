@@ -17,7 +17,6 @@ import dcode.games.uEngine2.input.PointerWrapper;
 import dcode.games.uEngine2.tools.Resize;
 import dcode.games.uEngine2.window.Canvas;
 import dcode.games.uEngine2.window.Window;
-import dcode.games.uEngine2.window.canvases.W_Std;
 
 /**
  * @author dusakus
@@ -65,7 +64,8 @@ public class ThreadManager {
     }
 
     public void updateCanvas() {
-        canvas.render();
+        if (canvas != null)
+            canvas.render();
     }
 
     void monitorThreads() {
@@ -213,4 +213,6 @@ public class ThreadManager {
         }).start();
         window.rimuw();
     }
+
+
 }

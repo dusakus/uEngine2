@@ -1,17 +1,19 @@
 package dcode.games.uEngine2.tools;
 
 import dcode.games.uEngine2.GFX.ILayer;
+import dcode.games.uEngine2.GFX.eui.SCU;
 import dcode.games.uEngine2.GFX.layers.ClearColorLayer;
 import dcode.games.uEngine2.StData;
 import dcode.games.uEngine2.tools.ext.j2s.gifReader;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 /**
  * Created by dusakus on 01.05.15.
- *
- *
+ * <p/>
+ * <p/>
  * If you want your own intro here
  * read the comments below
  * it's really simple
@@ -96,7 +98,10 @@ public class introPlayer {
         @Override
         public void draw(Graphics2D G2D) {
             G2D.drawImage(trgt.frames.getFrame(frame).getScaledInstance((int) (trgt.frames.getFrameSize().getWidth() * trgt.scX), (int) (trgt.frames.getFrameSize().getHeight() * trgt.scY), BufferedImage.SCALE_REPLICATE), trgt.pX, trgt.pY, null);
-            if (frame == trgt.frames.getFrameCount() - 1) {
+            if (StData.threadManager.KW.isKeyHeld(KeyEvent.VK_F8)) {
+                new SCU();
+                running = false;
+            } else if (frame == trgt.frames.getFrameCount() - 1) {
                 if (enddelay < 0) {
                     running = false;
                 } else {
@@ -114,12 +119,12 @@ public class introPlayer {
 
         @Override
         public boolean removeMe() {
-            return false;
+            return !running;
         }
 
         @Override
         public boolean renderMe() {
-            return true;
+            return running;
         }
     }
 }
