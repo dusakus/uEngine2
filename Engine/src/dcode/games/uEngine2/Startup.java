@@ -65,7 +65,7 @@ public class Startup {
     private static void checkSCU() {
         if (!StData.INSETUP) {
             try {
-                for (int i = 0; i < 100; i++) {
+                for (int i = 0; i < 600; i++) {
                     if (!StData.INSETUP && StData.threadManager.KW.isKeyHeld(KeyEvent.VK_F8)) new SCU();
                     Thread.sleep(1);
                 }

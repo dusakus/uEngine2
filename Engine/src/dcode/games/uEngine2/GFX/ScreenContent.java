@@ -45,6 +45,8 @@ public class ScreenContent {
 
 	public ScreenContent() {
 
+		StData.LOG.println("Creating new ScreenContent container", "D");
+
 		//construction of object storage
 		layers_Background = new ArrayList<ILayer>();
 		sprites_back = new int[StData.setup.spriteLayerSize];
@@ -71,6 +73,8 @@ public class ScreenContent {
 		sprites = new Sprite[StData.setup.spriteTableSize];
 
 		postProcessors = new IGrfPostProcessor[StData.setup.postProcCount];
+		StData.LOG.println("Creating new ScreenContent container: DONE", "D");
+
 	}
 
 }

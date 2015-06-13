@@ -7,6 +7,7 @@ package dcode.games.uEngine2;
 
 import dcode.games.uEngine2.BGTasks.BackgroundTasks;
 import dcode.games.uEngine2.GFX.debugInfoLayer;
+import dcode.games.uEngine2.GFX.eui.SCU;
 import dcode.games.uEngine2.LOGIC.LogicTasks;
 import dcode.games.uEngine2.ResourceManager.ResMan;
 import dcode.games.uEngine2.localStorage.configStorage.CContainer;
@@ -38,12 +39,13 @@ public class StData {
 	public static File gameStorageDirectory;
 	public static boolean gameIsRunning = true;                                 //is game running, or should stop execution
 	static PuGameBase GameInitializer;                                          //Game initialization object, provided by game itself
-	public static Translator translator;
-	public static boolean gameFreeze = false;
-	public static boolean isRendering = false;
-	public static Random gRand = new Random(System.currentTimeMillis());
-	public static ExceptionHandler EXC = new ExceptionHandler();
-	public static debugInfoLayer dlayer;
-	public static CContainer engineConfig;
-	public static boolean INSETUP = false;
+	public static Translator translator;										//If enabled, translation utility, else null
+	public static boolean gameFreeze = false;									//If game is frezeed (window lost focus)
+	public static boolean isRendering = false;									//If rendering is in progress, if true [NextFrame] shouldn't be modified
+	public static Random gRand = new Random(System.currentTimeMillis());		//A random random, in case you need it
+	public static ExceptionHandler EXC = new ExceptionHandler();				//nah, who cares
+	public static debugInfoLayer dlayer;										//A layer for drawing additional info, NIY
+	public static CContainer engineConfig;										//System configuration file, use it if you are lazy, else create your own
+	public static boolean INSETUP = false;										//Is the startup configuration utility running
+	public static SCU scu;														//reference to startup configuration utility
 }

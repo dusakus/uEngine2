@@ -1,6 +1,7 @@
 package dcode.games.uEngine2.tools;
 
 import dcode.games.uEngine2.GFX.ILayer;
+import dcode.games.uEngine2.GFX.ScreenContent;
 import dcode.games.uEngine2.GFX.eui.SCU;
 import dcode.games.uEngine2.GFX.layers.ClearColorLayer;
 import dcode.games.uEngine2.StData;
@@ -40,7 +41,6 @@ public class introPlayer {
     }
 
     private void clear() {
-        StData.currentGC.currentSC.layers_Foreground.clear();
         frames = null;
         ld = null;
     }
@@ -99,6 +99,7 @@ public class introPlayer {
         public void draw(Graphics2D G2D) {
             G2D.drawImage(trgt.frames.getFrame(frame).getScaledInstance((int) (trgt.frames.getFrameSize().getWidth() * trgt.scX), (int) (trgt.frames.getFrameSize().getHeight() * trgt.scY), BufferedImage.SCALE_REPLICATE), trgt.pX, trgt.pY, null);
             if (StData.threadManager.KW.isKeyHeld(KeyEvent.VK_F8)) {
+                StData.currentGC.currentSC = new ScreenContent();
                 new SCU();
                 running = false;
             } else if (frame == trgt.frames.getFrameCount() - 1) {

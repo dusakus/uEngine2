@@ -40,7 +40,9 @@ public class SCU implements ILayer, ILogicTask {
     }
 
     private void renderModule(Graphics2D g, SCUM module) {
-
+        g.setColor(Color.BLACK);
+        g.fillRect(0,0,320,240);
+        g.drawImage(module.content,0,0,null);
     }
 
     @Override
@@ -61,6 +63,8 @@ public class SCU implements ILayer, ILogicTask {
         StData.threadManager.LT.LOOP_Recalculate = true;
         StData.currentGC.currentLT.registerBasic(this);
         Resize.updateRenderingSetup(uGameSetup.FullMODE.setup_util);
+        StData.scu = this;
+        currentModule.TriggerEvent(null);
     }
 
     private void leaveSetup() {
