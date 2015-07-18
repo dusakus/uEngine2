@@ -39,7 +39,7 @@ public class Startup {
         StData.threadManager.startEngine();
         StData.threadManager.setInputHandler(GB.initialInputHandler);
         if (!GB.setup.debug) new introPlayer().playIntro();
-        checkSCU();
+        //checkSCU();               //Will be part of uE2b
         try {
             GB.contentInitializer.loadInitialGameContent();
         } catch (Exception e) {
@@ -63,6 +63,10 @@ public class Startup {
     }
 
     private static void checkSCU() {
+        if (StData.doEnterSetup){
+            StData.doEnterSetup = false;
+            new SCU();
+        }
         if (!StData.INSETUP) {
             try {
                 for (int i = 0; i < 600; i++) {

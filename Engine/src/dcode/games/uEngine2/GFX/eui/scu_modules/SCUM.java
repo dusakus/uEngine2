@@ -38,6 +38,10 @@ public abstract class SCUM {
                 break;
             default:
                 elements.get(currentID).triggerEvent(e);
+        } else {
+            for (SCUME sc : elements){
+                sc.init(this);
+            }
         }
         redraw();
     }
@@ -45,13 +49,14 @@ public abstract class SCUM {
     private void redraw() {
         content = new BufferedImage(320, 20*(elements.size() + 3), BufferedImage.TYPE_INT_ARGB);
         Graphics g = content.createGraphics();
-        g.setColor(Color.YELLOW);
-        g.fillRect(320, 22, 0, 39 + currentID*20);
+        g.setColor(new Color(64,64,8));
+        g.fillRect(0, 40 + currentID*20, 320, 20);
 
 
         for (int i = 0; i < elements.size(); i++) {
             g.drawImage(elements.get(i).getLine(),0,40+i*20, null);
         }
+        g.dispose();
     }
 
 }

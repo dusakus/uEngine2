@@ -50,7 +50,7 @@ public class introPlayer {
         Shortcuts.setRenderSpeed(48); //here you can set starting playback speed
         while (ld.running && StData.gameIsRunning) {
             try {
-                Thread.sleep(5);
+                Thread.sleep(64);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -98,9 +98,8 @@ public class introPlayer {
         @Override
         public void draw(Graphics2D G2D) {
             G2D.drawImage(trgt.frames.getFrame(frame).getScaledInstance((int) (trgt.frames.getFrameSize().getWidth() * trgt.scX), (int) (trgt.frames.getFrameSize().getHeight() * trgt.scY), BufferedImage.SCALE_REPLICATE), trgt.pX, trgt.pY, null);
-            if (StData.threadManager.KW.isKeyHeld(KeyEvent.VK_F8)) {
-                StData.currentGC.currentSC = new ScreenContent();
-                new SCU();
+            if (StData.threadManager.KW.isKeyHeld(KeyEvent.VK_F8) && running) {
+                StData.doEnterSetup = true;
                 running = false;
             } else if (frame == trgt.frames.getFrameCount() - 1) {
                 if (enddelay < 0) {

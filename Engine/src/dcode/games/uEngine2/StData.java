@@ -48,4 +48,5 @@ public class StData {
 	public static CContainer engineConfig;										//System configuration file, use it if you are lazy, else create your own
 	public static boolean INSETUP = false;										//Is the startup configuration utility running
 	public static SCU scu;														//reference to startup configuration utility
+	public static boolean doEnterSetup = false;									//should the setup utility be started
 }

@@ -45,14 +45,6 @@ public class uGTStartup {
         public void loadInitialGameContent() {
             StData.currentGC = new GameContainer();
             StData.logicTasks.registerBasic(new BaseLogic());
-
-
-
-
-            CContainer c = new CContainer(new File(StData.gameStorageDirectory, "testConfig.ugc"));
-
-
-            c.saveAs(new File(StData.gameStorageDirectory, "testConfig.ugc"));
         }
     }
 }

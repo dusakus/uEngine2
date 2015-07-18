@@ -1,12 +1,15 @@
 package dcode.games.uEngine2.GFX.eui;
 
+import dcode.games.uEngine2.BGTasks.PBGTask;
 import dcode.games.uEngine2.GFX.ILayer;
+import dcode.games.uEngine2.GFX.ScreenContent;
 import dcode.games.uEngine2.GFX.eui.scu_modules.SCUM;
 import dcode.games.uEngine2.GFX.eui.scu_modules.SCUM_Master;
 import dcode.games.uEngine2.GameContainer;
 import dcode.games.uEngine2.LOGIC.ILogicTask;
 import dcode.games.uEngine2.StData;
 import dcode.games.uEngine2.tools.Resize;
+import dcode.games.uEngine2.tools.Shortcuts;
 import dcode.games.uEngine2.uGameSetup;
 
 import java.awt.*;
@@ -41,8 +44,8 @@ public class SCU implements ILayer, ILogicTask {
 
     private void renderModule(Graphics2D g, SCUM module) {
         g.setColor(Color.BLACK);
-        g.fillRect(0,0,320,240);
-        g.drawImage(module.content,0,0,null);
+        g.fillRect(0, 0, 320, 240);
+        g.drawImage(module.content, 0, 0, null);
     }
 
     @Override
@@ -63,6 +66,12 @@ public class SCU implements ILayer, ILogicTask {
         StData.threadManager.LT.LOOP_Recalculate = true;
         StData.currentGC.currentLT.registerBasic(this);
         Resize.updateRenderingSetup(uGameSetup.FullMODE.setup_util);
+        Graphics g = StData.NextFrame.getGraphics();
+        g.setColor(Color.BLUE);
+        g.fillRect(0, 0, 320, 240);
+        g.setColor(Color.YELLOW);
+        g.setFont(new Font(Font.MONOSPACED,Font.BOLD,32));
+        g.drawString("ENTERING SETUP...", 2, 64);
         StData.scu = this;
         currentModule.TriggerEvent(null);
     }

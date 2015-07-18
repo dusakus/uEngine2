@@ -1,8 +1,12 @@
 package dcode.games.uEngine2.tools;
 
+import dcode.games.uEngine2.BGTasks.BackgroundThread;
 import dcode.games.uEngine2.BGTasks.PBGTask;
 import dcode.games.uEngine2.BGTasks.internalTasks.LoadBasicTexture;
+import dcode.games.uEngine2.GFX.RenderThread;
 import dcode.games.uEngine2.GFX.sprites.Sprite;
+import dcode.games.uEngine2.LOGIC.LogicThread;
+import dcode.games.uEngine2.SFX.AudioThread;
 import dcode.games.uEngine2.StData;
 
 import java.awt.*;
@@ -139,5 +143,13 @@ public class Shortcuts {
 
     public static Image getTexture(String tid) {
         return StData.resources.grf.getTexture(tid);
+    }
+
+    // System ==========================================================================================================
+    public static void resetThread(String threadsToReset) {
+        if(threadsToReset.toUpperCase().contains("R")) StData.threadManager.RT = new RenderThread();
+        if(threadsToReset.toUpperCase().contains("L")) StData.threadManager.LT = new LogicThread();
+        if(threadsToReset.toUpperCase().contains("A")) StData.threadManager.AT = new AudioThread();
+        if(threadsToReset.toUpperCase().contains("B")) StData.threadManager.BGT = new BackgroundThread();
     }
 }
